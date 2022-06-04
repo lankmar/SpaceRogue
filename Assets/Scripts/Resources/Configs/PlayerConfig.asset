@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   movement:
-    MaximumSpeed: 10
-    AccelerationTime: 2
-    StartingTurnSpeed: 0.5
-    MaximumTurnSpeed: 1
-    TurnAccelerationTime: 2
+    maximumSpeed: 10
+    maximumBackwardSpeed: 1
+    accelerationTime: 2
+    startingTurnSpeed: 0.5
+    maximumTurnSpeed: 1
+    turnAccelerationTime: 2

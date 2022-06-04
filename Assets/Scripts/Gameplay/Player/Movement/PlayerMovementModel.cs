@@ -7,12 +7,19 @@ namespace Gameplay.Player.Movement
     public class PlayerMovementModel
     {
         [Header("Speed")] 
-        [SerializeField] public float MaximumSpeed;
-        [SerializeField] public float AccelerationTime;
+        [Min(0.1f)]
+        [SerializeField] public float maximumSpeed = 0.1f;
+        [Min(0.1f)]
+        [SerializeField] public float maximumBackwardSpeed = 0.1f;
+        [Min(0.1f)]
+        [SerializeField] public float accelerationTime = 0.1f;
 
         [Header("Turn speed")] 
-        [SerializeField] public float StartingTurnSpeed;
-        [SerializeField] public float MaximumTurnSpeed;
-        [SerializeField] public float TurnAccelerationTime;
+        [Min(0.1f)]
+        [SerializeField] public float startingTurnSpeed = 0.1f;
+        [Min(0.1f)]
+        [SerializeField] public float maximumTurnSpeed = 0.1f;
+        [Min(0.1f)]
+        [SerializeField] public float turnAccelerationTime = 0.1f;
     }
 }
