@@ -1,10 +1,8 @@
 using Abstracts;
-using Gameplay.Input;
-using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
 
-namespace Gameplay
+namespace Gameplay.Input
 {
     public class InputController : BaseController
     {

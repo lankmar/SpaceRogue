@@ -72,5 +72,15 @@ namespace Abstracts
             TView view = viewObject.GetComponent<TView>();
             return view;
         }
+        
+        protected TView LoadView<TView>(ResourcePath path, Vector3 position)
+        {
+            GameObject prefab = ResourceLoader.LoadPrefab(path);
+            GameObject viewObject = Object.Instantiate(prefab, position, Quaternion.identity);
+            AddGameObject(viewObject);
+
+            TView view = viewObject.GetComponent<TView>();
+            return view;
+        }
     }
 }
