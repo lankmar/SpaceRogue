@@ -15,18 +15,8 @@ namespace Gameplay
             SubscribedProperty<float> horizontalInput,
             SubscribedProperty<float> verticalInput)
         {
-            _view = LoadView();
+            _view = LoadView<BaseInputView>(_viewPrefabPath);
             _view.Init(horizontalInput, verticalInput);
-        }
-
-        private BaseInputView LoadView()
-        {
-            GameObject prefab = ResourceLoader.LoadPrefab(_viewPrefabPath);
-            GameObject viewObject = Object.Instantiate(prefab);
-            AddGameObject(viewObject);
-
-            BaseInputView view = viewObject.GetComponent<BaseInputView>();
-            return view;
         }
     }
 }

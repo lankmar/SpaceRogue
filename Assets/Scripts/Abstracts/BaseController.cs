@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.ResourceManagement;
 using Object = UnityEngine.Object;
 
 namespace Abstracts
@@ -60,6 +61,16 @@ namespace Abstracts
         {
             _gameObjects ??= new List<GameObject>();
             _gameObjects.Add(gameObject);
+        }
+        
+        protected TView LoadView<TView>(ResourcePath path)
+        {
+            GameObject prefab = ResourceLoader.LoadPrefab(path);
+            GameObject viewObject = Object.Instantiate(prefab);
+            AddGameObject(viewObject);
+
+            TView view = viewObject.GetComponent<TView>();
+            return view;
         }
     }
 }
