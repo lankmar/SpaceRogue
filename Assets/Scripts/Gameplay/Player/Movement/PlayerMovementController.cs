@@ -8,26 +8,22 @@ namespace Gameplay.Player.Movement
     {
         private readonly SubscribedProperty<float> _horizontalInput;
         private readonly SubscribedProperty<float> _verticalInput;
-        
-        private readonly PlayerView _view;
+
         private readonly PlayerMovementModel _model;
-
-        private float CurrentSpeed = 0.0f;
-        private float CurrentTurnRate = 0.0f;
-
-        private float TurnSpeedDifference => _model.maximumTurnSpeed - _model.startingTurnSpeed;
-
+        private readonly PlayerView _view;
         
+
+
         public PlayerMovementController(
             SubscribedProperty<float> horizontalInput, 
             SubscribedProperty<float> verticalInput,
-            PlayerMovementModel model,
+            PlayerMovementConfig config,
             PlayerView view)
         {
             _horizontalInput = horizontalInput;
             _verticalInput = verticalInput;
             _view = view;
-            _model = model;
+            _model = new PlayerMovementModel(config);
             _horizontalInput.Subscribe(HandleHorizontalInput);
             _verticalInput.Subscribe(HandleVerticalInput);
         }
@@ -39,49 +35,19 @@ namespace Gameplay.Player.Movement
         }
 
         
-        private void HandleVerticalInput(float inputValue)
+        private void HandleVerticalInput(float newInputValue)
         {
+            
         }
         
-        //TODO rework
-        private void HandleHorizontalInput(float inputValue)
+        private void HandleHorizontalInput(float newInputValue)
         {
-            if (inputValue == 0 && CurrentTurnRate > 0)
+            _model.Turn(newInputValue);
+            var currentTurnAngle = _model.CurrentTurnRate;
+            if (currentTurnAngle != 0)
             {
-                StopTurning();
-                return;
-            }
-
-            var turnAcceleration = CountAcceleration(TurnSpeedDifference, _model.accelerationTime, inputValue, Time.deltaTime);
-            if (inputValue < 0)
-            {
-                if (CurrentTurnRate > 0)
-                {
-                    StopTurning();
-                    CurrentTurnRate -= _model.startingTurnSpeed;
-                    _view.transform.Rotate(Vector3.forward, CurrentTurnRate);
-                    CurrentTurnRate -= turnAcceleration;
-                }
-                else
-                {
-                    if (Mathf.Abs(CurrentTurnRate) >= _model.maximumTurnSpeed)
-                    {
-                        CurrentTurnRate = 0 - _model.maximumTurnSpeed;
-                    }
-                    _view.transform.Rotate(Vector3.forward, CurrentTurnRate);
-                }
+                _view.transform.Rotate(Vector3.forward, currentTurnAngle);
             }
         }
-        
-
-        private void StopTurning() => CurrentTurnRate = 0.0f;
-
-        private static float CountAcceleration(float speedDifference, float accelerationTime, float inputValue, float deltaTime)
-        {
-            if (accelerationTime <= 0) return speedDifference * deltaTime * inputValue * 10; //Prevents zero division
-            return speedDifference * inputValue * deltaTime / accelerationTime;
-        }
-
-        
     }
 }

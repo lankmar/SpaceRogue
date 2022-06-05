@@ -6,6 +6,6 @@ namespace Scriptables
     [CreateAssetMenu(fileName = nameof(PlayerConfig), menuName = "Configs/" + nameof(PlayerConfig))]
     public class PlayerConfig : ScriptableObject
     {
-        public PlayerMovementModel movement;
+        public PlayerMovementConfig movement;
     }
 }

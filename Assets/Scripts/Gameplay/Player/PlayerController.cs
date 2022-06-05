@@ -28,9 +28,9 @@ namespace Gameplay.Player
             _movementController = AddInputController(_config.movement, _view);
         }
 
-        private PlayerMovementController AddInputController(PlayerMovementModel movementModel, PlayerView view)
+        private PlayerMovementController AddInputController(PlayerMovementConfig movementConfig, PlayerView view)
         {
-            var movementController = new PlayerMovementController(_horizontalInput, _verticalInput, movementModel, view);
+            var movementController = new PlayerMovementController(_horizontalInput, _verticalInput, movementConfig, view);
             AddController(movementController);
             return movementController;
         }
