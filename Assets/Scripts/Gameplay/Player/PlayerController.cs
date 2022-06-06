@@ -10,7 +10,7 @@ namespace Gameplay.Player
     public class PlayerController : BaseController
     {
         private readonly ResourcePath _configPath = new("Configs/PlayerConfig");
-        private readonly ResourcePath _viewPath = new("Prefabs/Player");
+        private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
         
         private readonly PlayerConfig _config;
         private readonly PlayerView _view;
@@ -23,7 +23,7 @@ namespace Gameplay.Player
         public PlayerController()
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
-            _view = LoadView<PlayerView>(_viewPath);
+            _view = LoadView<PlayerView>(_viewPath, Vector3.zero);
 
             _movementController = AddInputController(_config.movement, _view);
         }

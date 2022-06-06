@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utilities.Extensions;
 
 namespace Gameplay.Player.Movement
 {
@@ -6,7 +7,6 @@ namespace Gameplay.Player.Movement
     {
         private readonly PlayerMovementConfig _config;
 
-        private bool TurningLeft = false;
         public float CurrentSpeed { get; private set; }
         public float CurrentTurnRate { get; private set; }
         
@@ -19,40 +19,64 @@ namespace Gameplay.Player.Movement
             CurrentTurnRate = 0.0f;
         }
 
-        public void Turn(float inputValue)
+        public void Accelerate(bool movingForward)
         {
-            if (inputValue == 0 && CurrentTurnRate != 0)
-            {
-                StopTurning();
-                return;
-            }
-            
-            var isContinuingTurn = CurrentTurnRate < 0 == inputValue < 0;
-            
-            if (!isContinuingTurn)
-            {
-                CurrentSpeed = _config.startingTurnSpeed;
-                return;
-            }
-            
-            var turnAcceleration = CountAcceleration(TurnSpeedDifference, _config.turnAccelerationTime, inputValue, Time.deltaTime);
+            float acceleration = CountAcceleration(_config.maximumSpeed, _config.accelerationTime);
+            acceleration *= movingForward ? 1 : -1;
+            float maxSpeed = movingForward ? _config.maximumSpeed : -1 * _config.maximumBackwardSpeed;
 
-            if (CurrentTurnRate < _config.maximumTurnSpeed)
+            switch (movingForward)
             {
-                CurrentTurnRate += turnAcceleration;
-                return;
+                case true when Mathf.Abs(CurrentSpeed) < Mathf.Abs(maxSpeed):
+                case false when CurrentSpeed > maxSpeed:
+                    CurrentSpeed += acceleration;
+                    return;
+                case true when Mathf.Abs(CurrentSpeed) > Mathf.Abs(maxSpeed):
+                case false when CurrentSpeed < maxSpeed:
+                    CurrentSpeed = maxSpeed;
+                    break;
             }
-                
-            CurrentTurnRate = _config.maximumTurnSpeed;
         }
 
-        private void StopMoving() => CurrentSpeed = 0.0f;
-        private void StopTurning() => CurrentTurnRate = 0.0f;
-        
-        private static float CountAcceleration(float speedDifference, float accelerationTime, float inputValue, float deltaTime)
+        public void Turn(bool turningLeft)
         {
-            if (accelerationTime <= 0) return speedDifference * deltaTime * inputValue * 10; //Prevents zero division
-            return speedDifference * inputValue * deltaTime / accelerationTime;
+            bool isContinuingTurn = CurrentTurnRate < 0 == turningLeft;
+
+            if (!isContinuingTurn || CurrentTurnRate == 0)
+            {
+                float startingTurnSpeed = turningLeft ? -1 * _config.startingTurnSpeed : _config.startingTurnSpeed;
+                CurrentTurnRate = startingTurnSpeed;
+                return;
+            }
+            
+            float turnAcceleration = CountAcceleration(TurnSpeedDifference, _config.turnAccelerationTime);
+
+            if (Mathf.Abs(CurrentTurnRate) > _config.maximumTurnSpeed)
+            {
+                CurrentTurnRate = turningLeft ? -1 * _config.maximumTurnSpeed : _config.maximumTurnSpeed;
+            }
+            
+            if (Mathf.Abs(CurrentTurnRate) < _config.maximumTurnSpeed)
+            {
+                float signedAcceleration = turningLeft ? -1 * turnAcceleration : turnAcceleration;
+                CurrentTurnRate += signedAcceleration;
+                return;
+            }
+            
+            if (Mathf.Abs(CurrentTurnRate) > _config.maximumTurnSpeed)
+            {
+                CurrentTurnRate = turningLeft ? -1 * _config.maximumTurnSpeed : _config.maximumTurnSpeed;
+            }
+        }
+        
+        public void StopTurning() => CurrentTurnRate = 0.0f;
+        public void StopMoving() => CurrentSpeed = 0.0f;
+
+        private static float CountAcceleration(float speedDifference, float accelerationTime)
+        {
+            float deltaTime = Time.deltaTime;
+            if (accelerationTime <= 0) return speedDifference * deltaTime * 10; //Prevents zero division
+            return speedDifference * deltaTime / accelerationTime;
         }
     }
 }

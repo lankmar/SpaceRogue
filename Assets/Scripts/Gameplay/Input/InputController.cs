@@ -16,5 +16,6 @@ namespace Gameplay.Input
             _view = LoadView<BaseInputView>(_viewPrefabPath);
             _view.Init(horizontalInput, verticalInput);
         }
+
     }
 }

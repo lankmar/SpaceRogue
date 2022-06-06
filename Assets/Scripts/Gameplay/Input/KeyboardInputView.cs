@@ -24,19 +24,19 @@ namespace Gameplay.Input
 
         private void CheckHorizontalInput()
         {
-            var horizontalOffset = UnityEngine.Input.GetAxis(Horizontal);
-            var inputValue = CalculateInputValue(horizontalOffset, horizontalAxisInputMultiplier, Time.deltaTime);
+            float horizontalOffset = UnityEngine.Input.GetAxis(Horizontal);
+            float inputValue = CalculateInputValue(horizontalOffset, horizontalAxisInputMultiplier);
             OnHorizontalInput(inputValue);
         }
 
         private void CheckVerticalInput()
         {
-            var verticalOffset = UnityEngine.Input.GetAxis(Vertical);
-            var inputValue = CalculateInputValue(verticalOffset, verticalAxisInputMultiplier, Time.deltaTime);
+            float verticalOffset = UnityEngine.Input.GetAxis(Vertical);
+            float inputValue = CalculateInputValue(verticalOffset, verticalAxisInputMultiplier);
             OnVerticalInput(inputValue);
         }
 
-        private static float CalculateInputValue(float axisOffset, float inputMultiplier, float deltaTime) 
-            => axisOffset * inputMultiplier * deltaTime;
+        private static float CalculateInputValue(float axisOffset, float inputMultiplier)
+            => axisOffset * inputMultiplier;
     }
 }

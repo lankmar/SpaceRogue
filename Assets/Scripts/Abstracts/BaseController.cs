@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utilities.ResourceManagement;
 using Object = UnityEngine.Object;
+using UnityDebug = UnityEngine.Debug;
+
 
 namespace Abstracts
 {
@@ -81,6 +83,11 @@ namespace Abstracts
 
             TView view = viewObject.GetComponent<TView>();
             return view;
+        }
+
+        protected void Debug(string info)
+        {
+            UnityDebug.Log(info);
         }
     }
 }
