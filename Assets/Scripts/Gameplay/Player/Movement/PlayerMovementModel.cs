@@ -1,3 +1,4 @@
+using Scriptables.Modules;
 using UnityEngine;
 
 
@@ -5,14 +6,14 @@ namespace Gameplay.Player.Movement
 {
     public class PlayerMovementModel
     {
-        private readonly PlayerMovementConfig _config;
+        private readonly EngineModuleConfig _config;
 
         public float CurrentSpeed { get; private set; }
         public float CurrentTurnRate { get; private set; }
         
         
         private float TurnSpeedDifference => _config.maximumTurnSpeed - _config.startingTurnSpeed;
-        public PlayerMovementModel(PlayerMovementConfig config)
+        public PlayerMovementModel(EngineModuleConfig config)
         {
             _config = config;
             CurrentSpeed = 0.0f;
