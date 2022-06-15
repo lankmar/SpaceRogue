@@ -1,11 +1,11 @@
-using Gameplay.Player.Movement;
+using Gameplay.Player.Inventory;
 using UnityEngine;
 
 namespace Scriptables
 {
-    [CreateAssetMenu(fileName = nameof(PlayerConfig), menuName = "Configs/" + nameof(PlayerConfig))]
+    [CreateAssetMenu(fileName = nameof(PlayerConfig), menuName = "Configs/Player/" + nameof(PlayerConfig))]
     public class PlayerConfig : ScriptableObject
     {
-        public PlayerMovementConfig movement;
+        [field: SerializeField] public PlayerInventoryConfig Inventory { get; private set; }
     }
 }

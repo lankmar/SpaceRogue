@@ -1,5 +1,6 @@
 using Abstracts;
 using Gameplay.Input;
+using Scriptables.Modules;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 
@@ -18,7 +19,7 @@ namespace Gameplay.Player.Movement
         public PlayerMovementController(
             SubscribedProperty<float> horizontalInput, 
             SubscribedProperty<float> verticalInput,
-            PlayerMovementConfig config,
+            EngineModuleConfig config,
             PlayerView view)
         {
             _horizontalInput = horizontalInput;
