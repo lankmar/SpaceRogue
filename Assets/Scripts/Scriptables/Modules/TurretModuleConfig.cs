@@ -1,3 +1,4 @@
+using Gameplay.Shooting;
 using UnityEngine;
 
 namespace Scriptables.Modules
@@ -5,8 +6,7 @@ namespace Scriptables.Modules
     [CreateAssetMenu(fileName = nameof(TurretModuleConfig), menuName = "Configs/Modules/" + nameof(TurretModuleConfig))]
     public class TurretModuleConfig : BaseModuleConfig
     {
-        [field: SerializeField, Min(0.1f)] public float DamageAmount { get; private set; }
-        [field: SerializeField, Min(0.1f)] public float FireRatePerSecond { get; private set; }
-        [field: SerializeField, Min(0.1f)] public float ProjectileSpeed { get; private set; }
+        [field: SerializeField, Min(0.1f)] public float Cooldown { get; private set; }
+        [field: SerializeField] public ProjectileConfig ProjectileConfig { get; private set; }
     }
 }

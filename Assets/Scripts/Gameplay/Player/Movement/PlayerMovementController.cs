@@ -1,5 +1,4 @@
 using Abstracts;
-using Gameplay.Input;
 using Scriptables.Modules;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
@@ -26,10 +25,7 @@ namespace Gameplay.Player.Movement
             _verticalInput = verticalInput;
             _view = view;
             _model = new PlayerMovementModel(config);
-            
-            var inputController = new InputController(horizontalInput, verticalInput);
-            AddController(inputController);
-            
+
             _horizontalInput.Subscribe(HandleHorizontalInput);
             _verticalInput.Subscribe(HandleVerticalInput);
         }

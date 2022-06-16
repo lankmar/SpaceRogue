@@ -9,17 +9,20 @@ namespace Gameplay.Input
 
         private const string Horizontal = "Horizontal";
         private const string Vertical = "Vertical";
+        private const KeyCode PrimaryFire = KeyCode.Mouse0;
 
         private void Start()
         {
             EntryPoint.SubscribeToUpdate(CheckHorizontalInput);
             EntryPoint.SubscribeToUpdate(CheckVerticalInput);
+            EntryPoint.SubscribeToUpdate(CheckFiringInput);
         }
 
         private void OnDestroy()
         {
             EntryPoint.UnsubscribeFromUpdate(CheckHorizontalInput);
             EntryPoint.UnsubscribeFromUpdate(CheckVerticalInput);
+            EntryPoint.UnsubscribeFromUpdate(CheckFiringInput);
         }
 
         private void CheckHorizontalInput()
@@ -34,6 +37,12 @@ namespace Gameplay.Input
             float verticalOffset = UnityEngine.Input.GetAxis(Vertical);
             float inputValue = CalculateInputValue(verticalOffset, verticalAxisInputMultiplier);
             OnVerticalInput(inputValue);
+        }
+
+        private void CheckFiringInput()
+        {
+            bool value = UnityEngine.Input.GetKey(PrimaryFire);
+            OnPrimaryFireInput(value);
         }
 
         private static float CalculateInputValue(float axisOffset, float inputMultiplier)

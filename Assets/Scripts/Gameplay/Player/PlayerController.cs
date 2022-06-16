@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using Abstracts;
+using Gameplay.Input;
+using Gameplay.Player.FrontalGuns;
 using Gameplay.Player.Inventory;
 using Gameplay.Player.Movement;
 using Scriptables;
@@ -19,17 +22,19 @@ namespace Gameplay.Player
 
         private readonly SubscribedProperty<float> _horizontalInput = new();
         private readonly SubscribedProperty<float> _verticalInput = new();
-        private readonly PlayerMovementController _movementController;
-        private readonly PlayerInventoryController _inventoryController;
-        
+        private readonly SubscribedProperty<bool> _primaryFireInput = new();
 
         public PlayerController()
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, Vector3.zero);
+            
+            var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
+            AddController(inputController);
 
-            _inventoryController = AddInventoryController(_config.Inventory);
-            _movementController = AddInputController(_inventoryController.Engine, _view);
+            var inventoryController = AddInventoryController(_config.Inventory);
+            var movementController = AddMovementController(inventoryController.Engine, _view);
+            var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets);
         }
 
         private PlayerInventoryController AddInventoryController(PlayerInventoryConfig config)
@@ -39,11 +44,18 @@ namespace Gameplay.Player
             return inventoryController;
         }
 
-        private PlayerMovementController AddInputController(EngineModuleConfig movementConfig, PlayerView view)
+        private PlayerMovementController AddMovementController(EngineModuleConfig movementConfig, PlayerView view)
         {
             var movementController = new PlayerMovementController(_horizontalInput, _verticalInput, movementConfig, view);
             AddController(movementController);
             return movementController;
+        }
+
+        private FrontalGunsController AddFrontalGunsController(List<TurretModuleConfig> turretConfigs)
+        {
+            var frontalGunsController = new FrontalGunsController(_primaryFireInput, turretConfigs);
+            AddController(frontalGunsController);
+            return frontalGunsController;
         }
     }
 }
