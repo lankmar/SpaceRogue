@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: BaseTurretConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: base-turret-00
-  <DamageAmount>k__BackingField: 1
-  <FireRatePerSecond>k__BackingField: 0.5
-  <ProjectileSpeed>k__BackingField: 1
+  <Cooldown>k__BackingField: 1
+  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 3a3a768c7b747ea4abac3f173360a451, type: 2}

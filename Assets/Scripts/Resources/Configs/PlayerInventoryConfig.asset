@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: PlayerInventoryConfig
   m_EditorClassIdentifier: 
   <Engine>k__BackingField: {fileID: 11400000, guid: a27a946b68a240b42a876e86b3f76e70, type: 2}
-  <Shields>k__BackingField: []
-  <Turrets>k__BackingField: []
+  <Shields>k__BackingField:
+  - {fileID: 11400000, guid: b7c465fc8e6f3a94a9bb635d26f1a800, type: 2}
+  <Turrets>k__BackingField:
+  - {fileID: 11400000, guid: b774d047ca3666840a69dea21314ae6c, type: 2}
