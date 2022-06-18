@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf549a721f77445cb4fecf5822f7c818, type: 3}
-  m_Name: BaseTurretConfig
+  m_Name: BaseTurret00
   m_EditorClassIdentifier: 
   <Id>k__BackingField: base-turret-00
   <Cooldown>k__BackingField: 1

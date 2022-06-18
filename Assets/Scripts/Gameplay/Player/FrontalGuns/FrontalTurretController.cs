@@ -2,46 +2,52 @@ using Abstracts;
 using Gameplay.Shooting;
 using Scriptables.Modules;
 using UnityEngine;
+using Utilities.ResourceManagement;
 
 namespace Gameplay.Player.FrontalGuns
 {
     public class FrontalTurretController : BaseController
     {
         private readonly TurretModuleConfig _config;
+        private readonly ProjectileFactory _projectileFactory;
 
-        private float CooldownTimer;
+        private float _cooldownTimer;
 
-        public FrontalTurretController(TurretModuleConfig config)
+        public FrontalTurretController(TurretModuleConfig config, GameObject projectileSpawnGo)
         {
             _config = config;
-            CooldownTimer = 0.0f;
+            
+            _projectileFactory = new ProjectileFactory(_config.ProjectileConfig, _config.ProjectileConfig.Prefab, projectileSpawnGo.transform);
+            
+            _cooldownTimer = 0.0f;
+            
+            AddGameObject(projectileSpawnGo);
         }
 
         public void CommenceFiring()
         {
-            if (CooldownTimer > 0)
+            if (_cooldownTimer > 0)
             {
                 return;
             }
 
-            var projectile = new ProjectileController(
-                _config.ProjectileConfig, Vector3.forward); //TODO Replace with projectile spawn point
+            var projectile = _projectileFactory.CreateProjectile();
             AddController(projectile);
 
-            CooldownTimer = _config.Cooldown;
+            _cooldownTimer = _config.Cooldown;
         }
 
         public void CoolDown()
         {
-            switch (CooldownTimer)
+            switch (_cooldownTimer)
             {
                 case 0:
                     return;
                 case < 0:
-                    CooldownTimer = 0;
+                    _cooldownTimer = 0;
                     return;
                 case > 0:
-                    CooldownTimer -= Time.deltaTime;
+                    _cooldownTimer -= Time.deltaTime;
                     return;
             }
         }

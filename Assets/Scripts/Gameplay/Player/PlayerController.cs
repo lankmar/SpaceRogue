@@ -34,7 +34,7 @@ namespace Gameplay.Player
 
             var inventoryController = AddInventoryController(_config.Inventory);
             var movementController = AddMovementController(inventoryController.Engine, _view);
-            var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets);
+            var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
         }
 
         private PlayerInventoryController AddInventoryController(PlayerInventoryConfig config)
@@ -51,9 +51,9 @@ namespace Gameplay.Player
             return movementController;
         }
 
-        private FrontalGunsController AddFrontalGunsController(List<TurretModuleConfig> turretConfigs)
+        private FrontalGunsController AddFrontalGunsController(List<TurretModuleConfig> turretConfigs, PlayerView view)
         {
-            var frontalGunsController = new FrontalGunsController(_primaryFireInput, turretConfigs);
+            var frontalGunsController = new FrontalGunsController(_primaryFireInput, turretConfigs, view);
             AddController(frontalGunsController);
             return frontalGunsController;
         }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using Abstracts;
 using Scriptables.Modules;
+using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
+using Utilities.ResourceManagement;
 
 namespace Gameplay.Player.FrontalGuns
 {
@@ -11,16 +13,20 @@ namespace Gameplay.Player.FrontalGuns
         private readonly List<TurretModuleConfig> _turretConfigs;
         private readonly List<FrontalTurretController> _turretControllers;
 
-        public FrontalGunsController(SubscribedProperty<bool> primaryFireInput, List<TurretModuleConfig> turretConfigs)
+        private readonly ResourcePath _gunPointPrefab = new("Prefabs/Stuff/GunPoint");
+        private readonly GameObject _gunPointView;
+
+        public FrontalGunsController(SubscribedProperty<bool> primaryFireInput, List<TurretModuleConfig> turretConfigs, PlayerView playerView)
         {
             _primaryFireInput = primaryFireInput;
             _turretConfigs = turretConfigs;
 
+            _gunPointView = ResourceLoader.LoadPrefab(_gunPointPrefab);
             _turretControllers = new List<FrontalTurretController>();
 
             foreach (var config in turretConfigs)
             {
-                InitializeTurret(config);
+                InitializeTurret(config, playerView);
             }
             
             _primaryFireInput.Subscribe(HandleFiring);
@@ -40,9 +46,16 @@ namespace Gameplay.Player.FrontalGuns
             }
         }
 
-        private void InitializeTurret(TurretModuleConfig turretConfig)
+        private void InitializeTurret(TurretModuleConfig turretConfig, PlayerView view)
         {
-            var turretController = new FrontalTurretController(turretConfig);
+            var transform = view.transform;
+            var turretPoint = Object.Instantiate(
+                _gunPointView, 
+                transform.TransformDirection(Vector3.up * 4), 
+                transform.rotation
+            );
+            turretPoint.transform.parent = transform;
+            var turretController = new FrontalTurretController(turretConfig, turretPoint);
             AddController(turretController);
             _turretControllers.Add(turretController);
         }
