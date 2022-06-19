@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c778bb43676f471db4284bc0232827c1, type: 3}
   m_Name: SunStarConfig
   m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: -2578164791343960300, guid: 796ce20e71d95af459b00990c646b520, type: 3}
   <MinSize>k__BackingField: 15
   <MaxSize>k__BackingField: 25
   <MinPlanetCount>k__BackingField: 1

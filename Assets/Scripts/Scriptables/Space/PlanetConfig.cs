@@ -1,3 +1,4 @@
+using Gameplay.Space.Planet;
 using UnityEngine;
 
 namespace Scriptables.Space
@@ -5,6 +6,8 @@ namespace Scriptables.Space
     [CreateAssetMenu(fileName = nameof(PlanetConfig), menuName = "Configs/Space/" + nameof(PlanetConfig))]
     public class PlanetConfig : ScriptableObject
     {
+        [field: SerializeField, Header("Prefab")] public PlanetView Prefab { get; private set; }
+        
         [field: SerializeField, Min(0.1f), Header("Movement")] public float MinSpeed { get; private set; } = 0.1f;
         [field: SerializeField, Min(1f)] public float MaxSpeed { get; private set; } = 1f;
         

@@ -8,21 +8,24 @@ namespace Gameplay.Space
 {
     public class SpaceController : BaseController
     {
-        private readonly ResourcePath _configPath = new("Configs/SpaceConfig");
-        private readonly SpaceConfig _config;
+        private readonly ResourcePath _configPath = new("Configs/Space/SpaceConfig");
 
-        private readonly ResourcePath _planetSpawnConfigPath = new("Configs/PlanetSpawnConfig");
+        private readonly ResourcePath _starSpawnConfigPath = new("Configs/Space/DefaultStarSpawn");
+        private readonly StarFactory _starFactory;
+        
+        private readonly ResourcePath _planetSpawnConfigPath = new("Configs/Space/DefaultPlanetSpawn");
         private readonly PlanetFactory _planetFactory;
 
-        private readonly ResourcePath _starSpawnConfigPath = new("Configs/StarSpawnConfig");
-        private readonly StarFactory _starFactory;
+        
         
         public SpaceController()
         {
             //TODO Replace with map generation
-            _config = ResourceLoader.LoadObject<SpaceConfig>(_configPath);
+            var config = ResourceLoader.LoadObject<SpaceConfig>(_configPath);
+            var starSpawnConfigPath = ResourceLoader.LoadObject<StarSpawnConfig>(_starSpawnConfigPath);
+            var planetSpawnConfig = ResourceLoader.LoadObject<PlanetSpawnConfig>(_planetSpawnConfigPath);
 
-            foreach (var starSpawnPoint in _config.StarSpawnPoints)
+            foreach (var starSpawnPoint in config.StarSpawnPoints)
             {
                 //TODO Replace with CreateStar
                 //Создаем контроллеры для каждого типа объекта

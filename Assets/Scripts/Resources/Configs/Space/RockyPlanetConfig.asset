@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbf8db06754f436ebffd55396cdb5130, type: 3}
   m_Name: RockyPlanetConfig
   m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 8729221345787254480, guid: a233a7562853bb84d8a4032b78152767, type: 3}
   <MinSpeed>k__BackingField: 1
   <MaxSpeed>k__BackingField: 3
   <MinSize>k__BackingField: 3

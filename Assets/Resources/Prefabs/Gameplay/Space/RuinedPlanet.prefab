@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 305016165844794655}
   - component: {fileID: 413425888046034639}
+  - component: {fileID: -6696340050246795805}
   m_Layer: 0
   m_Name: RuinedPlanet
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6696340050246795805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4863364052809989618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b36705fd4b441b6be1dca017c4ac9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

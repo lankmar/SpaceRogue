@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4553655728115147979}
   - component: {fileID: 1304870059818893394}
+  - component: {fileID: -2578164791343960300}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-2578164791343960300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8541186611180247692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc07c70aa0f4d739841adcfb39c3194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
