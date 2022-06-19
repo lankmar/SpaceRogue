@@ -4,11 +4,11 @@ namespace Gameplay.Space.Star
 {
     public class StarController : BaseController
     {
-        private readonly StarView _view;
+        public StarView StarView { get; }
         
-        public StarController(StarView view)
+        public StarController(StarView starView)
         {
-            _view = view;
+            StarView = starView;
         }
 
     }

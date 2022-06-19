@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Space.Star;
 
 namespace Gameplay.Space.Planet
 {
@@ -6,9 +7,12 @@ namespace Gameplay.Space.Planet
     {
         private readonly PlanetView _view;
         
-        public PlanetController(PlanetView view)
+        private readonly StarView _starView;
+
+        public PlanetController(PlanetView view, StarView starView)
         {
             _view = view;
+            _starView = starView;
         }
     }
 }

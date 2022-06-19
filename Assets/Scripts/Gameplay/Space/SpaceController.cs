@@ -20,15 +20,18 @@ namespace Gameplay.Space
         
         public SpaceController()
         {
-            //TODO Replace with map generation
             var config = ResourceLoader.LoadObject<SpaceConfig>(_configPath);
-            var starSpawnConfigPath = ResourceLoader.LoadObject<StarSpawnConfig>(_starSpawnConfigPath);
+            var starSpawnConfig = ResourceLoader.LoadObject<StarSpawnConfig>(_starSpawnConfigPath);
             var planetSpawnConfig = ResourceLoader.LoadObject<PlanetSpawnConfig>(_planetSpawnConfigPath);
 
+            _starFactory = new StarFactory(starSpawnConfig);
+            _planetFactory = new PlanetFactory(planetSpawnConfig);
+
+            //TODO Replace with map generation
             foreach (var starSpawnPoint in config.StarSpawnPoints)
             {
-                //TODO Replace with CreateStar
-                //Создаем контроллеры для каждого типа объекта
+                var star = _starFactory.CreateStar(starSpawnPoint);
+                AddController(star);
             }
         }
     }
