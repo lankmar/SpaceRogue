@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scriptables;
@@ -24,6 +25,12 @@ namespace Utilities.Mathematics
             }
 
             return orderedWeights[^1].Config;
+        }
+
+        public static float PickRandomBetweenTwoValues(float minValue, float maxValue, Random r)
+        {
+            float difference = maxValue - minValue;
+            return (float)Math.Round(r.NextDouble() * difference + minValue, 2);
         }
     }
 }

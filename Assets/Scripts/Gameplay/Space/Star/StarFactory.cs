@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Scriptables.Space;
 using UnityEngine;
 using Utilities.Mathematics;
@@ -19,15 +18,9 @@ namespace Gameplay.Space.Star
         public StarController CreateStar(Vector3 spawnPosition)
         {
             var config = PickAStar();
-            return new StarController(CreateStarView(config.Prefab, PickSize(config.MinSize, config.MaxSize), spawnPosition));
+            return new StarController(CreateStarView(config.Prefab, RandomPicker.PickRandomBetweenTwoValues(config.MinSize, config.MaxSize, _random) , spawnPosition));
         }
 
-        private float PickSize(float minSize, float maxSize)
-        {
-            float sizeDifference = maxSize - minSize;
-            return (float)Math.Round(_random.NextDouble() * sizeDifference + minSize, 3);
-        }
-        
         private static StarView CreateStarView(StarView prefab, float size, Vector3 spawnPosition)
         {
             var viewGo = UnityEngine.Object.Instantiate(prefab, spawnPosition, Quaternion.identity);

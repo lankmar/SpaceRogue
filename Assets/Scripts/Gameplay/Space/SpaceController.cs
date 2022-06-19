@@ -16,8 +16,6 @@ namespace Gameplay.Space
         private readonly ResourcePath _planetSpawnConfigPath = new("Configs/Space/DefaultPlanetSpawn");
         private readonly PlanetFactory _planetFactory;
 
-        
-        
         public SpaceController()
         {
             var config = ResourceLoader.LoadObject<SpaceConfig>(_configPath);
