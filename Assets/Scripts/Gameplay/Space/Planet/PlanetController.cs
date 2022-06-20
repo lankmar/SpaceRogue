@@ -32,7 +32,7 @@ namespace Gameplay.Space.Planet
             {
                 _view.transform.RotateAround(
                     _starView.transform.position,
-                    IsMovingRetrograde ? Vector3.back : Vector3.forward,
+                    IsMovingRetrograde ? Vector3.forward : Vector3.back,
                     _currentSpeed * Time.deltaTime
                 );
             }

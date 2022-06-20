@@ -32,5 +32,7 @@ namespace Utilities.Mathematics
             float difference = maxValue - minValue;
             return (float)Math.Round(r.NextDouble() * difference + minValue, 2);
         }
+
+        public static int PickRandomBetweenTwoValues(int minValue, int maxValue, Random r) => r.Next(minValue, maxValue + 1);
     }
 }

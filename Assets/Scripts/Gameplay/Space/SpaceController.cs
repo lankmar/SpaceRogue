@@ -1,6 +1,6 @@
+using System.Linq;
 using Abstracts;
 using Gameplay.Space.Planet;
-using Gameplay.Space.Star;
 using Scriptables.Space;
 using Utilities.ResourceManagement;
 
@@ -11,10 +11,8 @@ namespace Gameplay.Space
         private readonly ResourcePath _configPath = new("Configs/Space/SpaceConfig");
 
         private readonly ResourcePath _starSpawnConfigPath = new("Configs/Space/DefaultStarSpawn");
-        private readonly StarFactory _starFactory;
-        
         private readonly ResourcePath _planetSpawnConfigPath = new("Configs/Space/DefaultPlanetSpawn");
-        private readonly PlanetFactory _planetFactory;
+        private readonly SpaceObjectFactory _spaceObjectFactory;
 
         public SpaceController()
         {
@@ -22,14 +20,23 @@ namespace Gameplay.Space
             var starSpawnConfig = ResourceLoader.LoadObject<StarSpawnConfig>(_starSpawnConfigPath);
             var planetSpawnConfig = ResourceLoader.LoadObject<PlanetSpawnConfig>(_planetSpawnConfigPath);
 
-            _starFactory = new StarFactory(starSpawnConfig);
-            _planetFactory = new PlanetFactory(planetSpawnConfig);
+            _spaceObjectFactory = new SpaceObjectFactory(starSpawnConfig, planetSpawnConfig);
 
             //TODO Replace with map generation
             foreach (var starSpawnPoint in config.StarSpawnPoints)
             {
-                var star = _starFactory.CreateStar(starSpawnPoint);
+                var (star, planetControllers) = _spaceObjectFactory.CreateStarSystem(starSpawnPoint);
                 AddController(star);
+                AddPlanetControllers(planetControllers);
+            }
+        }
+
+        private void AddPlanetControllers(PlanetController[] planetControllers)
+        {
+            if (!planetControllers.Any()) return;
+            foreach (var planet in planetControllers)
+            {
+                AddController(planet);
             }
         }
     }
