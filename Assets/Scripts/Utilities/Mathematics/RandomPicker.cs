@@ -27,6 +27,12 @@ namespace Utilities.Mathematics
             return orderedWeights[^1].Config;
         }
 
+        public static bool TakeChance(float chance, Random r)
+        {
+            double randomDouble = r.NextDouble();
+            return randomDouble <= chance;
+        }
+
         public static float PickRandomBetweenTwoValues(float minValue, float maxValue, Random r)
         {
             float difference = maxValue - minValue;

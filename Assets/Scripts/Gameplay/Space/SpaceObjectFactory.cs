@@ -37,8 +37,9 @@ namespace Gameplay.Space
                 float planetOrbit = RandomPicker.PickRandomBetweenTwoValues(planetConfig.MinOrbit, planetConfig.MaxOrbit, _random);
                 float planetSize = RandomPicker.PickRandomBetweenTwoValues(planetConfig.MinSize, planetConfig.MaxSize, _random);
                 float planetSpeed = RandomPicker.PickRandomBetweenTwoValues(planetConfig.MinSpeed, planetConfig.MaxSpeed, _random);
+                bool isPlanetMovingRetrograde = RandomPicker.TakeChance(planetConfig.RetrogradeMovementChance, _random);
                 var planetView = CreatePlanetView(planetConfig.Prefab, planetSize, starSize, planetOrbit, starSpawnPosition);
-                planets[i] = new PlanetController(planetView, starView, planetSpeed);
+                planets[i] = new PlanetController(planetView, starView, planetSpeed, isPlanetMovingRetrograde);
             }
             return (new StarController(starView), planets);
         }

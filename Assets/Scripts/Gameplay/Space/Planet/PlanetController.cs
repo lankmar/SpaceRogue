@@ -8,15 +8,16 @@ namespace Gameplay.Space.Planet
     {
         private readonly PlanetView _view;
         private readonly float _currentSpeed;
-        private const bool IsMovingRetrograde = false;
+        private readonly bool _isMovingRetrograde;
         
         private readonly StarView _starView;
 
-        public PlanetController(PlanetView view, StarView starView, float speed)
+        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde)
         {
             _view = view;
             _starView = starView;
             _currentSpeed = speed;
+            _isMovingRetrograde = isMovingRetrograde;
             
             EntryPoint.SubscribeToUpdate(Move);
         }
@@ -32,7 +33,7 @@ namespace Gameplay.Space.Planet
             {
                 _view.transform.RotateAround(
                     _starView.transform.position,
-                    IsMovingRetrograde ? Vector3.forward : Vector3.back,
+                    _isMovingRetrograde ? Vector3.forward : Vector3.back,
                     _currentSpeed * Time.deltaTime
                 );
             }
