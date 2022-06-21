@@ -15,6 +15,7 @@ namespace Gameplay.Space.Planet
         public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde)
         {
             _view = view;
+            AddGameObject(view.gameObject);
             _starView = starView;
             _currentSpeed = speed;
             _isMovingRetrograde = isMovingRetrograde;

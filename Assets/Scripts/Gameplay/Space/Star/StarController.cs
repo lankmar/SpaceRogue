@@ -9,6 +9,7 @@ namespace Gameplay.Space.Star
         public StarController(StarView starView)
         {
             StarView = starView;
+            AddGameObject(starView.gameObject);
         }
 
     }
