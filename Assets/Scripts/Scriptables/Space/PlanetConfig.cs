@@ -14,9 +14,5 @@ namespace Scriptables.Space
         
         [field: SerializeField, Min(0.1f), Header("Size")] public float MinSize { get; private set; } = 0.1f;
         [field: SerializeField, Min(1f)] public float MaxSize { get; private set; } = 1f;
-        
-        [field: SerializeField, Min(0.1f), Header("Orbit")] public float MinOrbit { get; private set; } = 0.1f;
-        [field: SerializeField, Min(1f)] public float MaxOrbit { get; private set; } = 1f;
-        
     }
 }

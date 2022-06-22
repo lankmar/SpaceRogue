@@ -5,6 +5,7 @@ using Scriptables;
 using Scriptables.Space;
 using UnityEngine;
 using Utilities.Mathematics;
+using Object = UnityEngine.Object;
 
 namespace Gameplay.Space
 {
@@ -30,15 +31,16 @@ namespace Gameplay.Space
             var planets = new PlanetController[planetCount];
             
             if (planetCount <= 0) return (new StarController(starView), planets);
-            
+
+            float[] planetOrbits = GetPlanetOrbitList(planetCount, config.MinOrbit, config.MaxOrbit, starSize, _random);
+
             for (int i = 0; i < planets.Length; i++)
             {
                 var planetConfig = PickPlanet(_planetSpawnConfig.WeightConfigs, _random);
-                float planetOrbit = RandomPicker.PickRandomBetweenTwoValues(planetConfig.MinOrbit, planetConfig.MaxOrbit, _random);
                 float planetSize = RandomPicker.PickRandomBetweenTwoValues(planetConfig.MinSize, planetConfig.MaxSize, _random);
                 float planetSpeed = RandomPicker.PickRandomBetweenTwoValues(planetConfig.MinSpeed, planetConfig.MaxSpeed, _random);
                 bool isPlanetMovingRetrograde = RandomPicker.TakeChance(planetConfig.RetrogradeMovementChance, _random);
-                var planetView = CreatePlanetView(planetConfig.Prefab, planetSize, starSize, planetOrbit, starSpawnPosition);
+                var planetView = CreatePlanetView(planetConfig.Prefab, planetSize, starSize, planetOrbits[i], starSpawnPosition);
                 planets[i] = new PlanetController(planetView, starView, planetSpeed, isPlanetMovingRetrograde);
             }
             return (new StarController(starView), planets);
@@ -59,12 +61,35 @@ namespace Gameplay.Space
             return viewGo;
         }
 
+        private static float[] GetPlanetOrbitList(int planetCount, float minOrbit, float maxOrbit, float starSize, System.Random random)
+        {
+            var orbits = new float[planetCount];
+            float realMinOrbit = starSize / 2 + minOrbit;
+            float realMaxOrbit = starSize / 2 + maxOrbit;
+
+            if (planetCount == 1)
+            {
+                orbits[0] = RandomPicker.PickRandomBetweenTwoValues(realMinOrbit, realMaxOrbit, random);
+                return orbits;
+            }
+
+            float orbitChunk = realMaxOrbit - realMinOrbit / planetCount;
+            
+            for (int i = 0; i < planetCount; i++)
+            {
+                float minChunkOrbit = realMinOrbit + i * orbitChunk;
+                float maxChunkOrbit = realMinOrbit + (i + 1) * orbitChunk;
+                orbits[i] = RandomPicker.PickRandomBetweenTwoValues(minChunkOrbit, maxChunkOrbit, random);
+            }
+
+            return orbits;
+        }
+
         private static StarConfig PickStar(List<WeightConfig<StarConfig>> weightConfigs, System.Random random) 
             => RandomPicker.PickOneElementByWeights(weightConfigs, random);
 
         private static PlanetConfig PickPlanet(List<WeightConfig<PlanetConfig>> weightConfigs, System.Random random) => 
             RandomPicker.PickOneElementByWeights(weightConfigs, random);
 
-        
     }
 }

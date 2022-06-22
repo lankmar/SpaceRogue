@@ -17,3 +17,5 @@ MonoBehaviour:
   <MaxSize>k__BackingField: 10
   <MinPlanetCount>k__BackingField: 0
   <MaxPlanetCount>k__BackingField: 3
+  <MinOrbit>k__BackingField: 10
+  <MaxOrbit>k__BackingField: 25
