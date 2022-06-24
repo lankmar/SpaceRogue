@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraView : MonoBehaviour
+namespace CameraInGame
 {
-    
+    public class CameraView : MonoBehaviour
+    {
+    }
 }

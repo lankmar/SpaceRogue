@@ -2,18 +2,30 @@ using Abstracts;
 using Gameplay.Player;
 using UnityEngine;
 
-public class CameraController : BaseController
+namespace CameraInGame
 {
-    private CameraView _cameraView = Camera.main.GetComponent<CameraView>();
-    private readonly PlayerView _playerView = GameObject.FindObjectOfType<PlayerView>();
-
-    public CameraController()
+    public class CameraController : BaseController
     {
-        EntryPoint.SubscribeToUpdate(MovementCamera);
-    }
+        private CameraView _cameraView = Camera.main.GetComponent<CameraView>();
+        private readonly PlayerView _playerView;
+        private const int CameraZAxisOffset = -10;
 
-    public void MovementCamera()
-    {
-        _cameraView.gameObject.transform.position = new Vector3(_playerView.gameObject.transform.position.x, _playerView.gameObject.transform.position.y, _playerView.transform.position.z - 10);
+        public CameraController(PlayerView playerView)
+        {
+            _playerView = playerView;
+            EntryPoint.SubscribeToUpdate(MovementedCamera);
+        }
+
+        private void MovementedCamera()
+        {
+            Vector3 playerPosistion = _playerView.gameObject.transform.position;
+            playerPosistion.z = CameraZAxisOffset;
+            _cameraView.gameObject.transform.position = playerPosistion;
+        }
+
+        protected override void OnDispose()
+        {
+            EntryPoint.UnsubscribeFromUpdate(MovementedCamera);
+        }
     }
 }
