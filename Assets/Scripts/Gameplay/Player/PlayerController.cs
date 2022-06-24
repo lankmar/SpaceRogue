@@ -14,6 +14,8 @@ namespace Gameplay.Player
 {
     public class PlayerController : BaseController
     {
+        public PlayerView View => _view; 
+        
         private readonly ResourcePath _configPath = new("Configs/PlayerConfig");
         private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
         

@@ -1,5 +1,6 @@
 using Abstracts;
 using Gameplay.Enemy;
+using Gameplay.Camera;
 using Gameplay.GameState;
 using Gameplay.Player;
 using Gameplay.Space;
@@ -12,6 +13,7 @@ namespace Gameplay
         private readonly PlayerController _playerController;
         private readonly SpaceController _spaceController;
         private readonly EnemySpawnController _enemySpawnController;
+        private readonly CameraController _cameraController;
 
         public GameController(CurrentState currentState)
         {
@@ -19,6 +21,9 @@ namespace Gameplay
             
             _playerController = new PlayerController();
             AddController(_playerController);
+
+            _cameraController = new CameraController(_playerController.View);
+            AddController(_cameraController);
 
             _spaceController = new SpaceController();
             AddController(_spaceController);
