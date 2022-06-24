@@ -18,7 +18,7 @@ namespace Gameplay.Player
         private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
         
         private readonly PlayerConfig _config;
-        private readonly PlayerView _view;
+        internal readonly PlayerView _view;
 
         private readonly SubscribedProperty<float> _horizontalInput = new();
         private readonly SubscribedProperty<float> _verticalInput = new();
