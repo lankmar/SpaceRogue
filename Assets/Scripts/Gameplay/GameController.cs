@@ -1,8 +1,8 @@
 using Abstracts;
+using Gameplay.Camera;
 using Gameplay.GameState;
 using Gameplay.Player;
 using Gameplay.Space;
-using CameraInGame;
 
 namespace Gameplay
 {
@@ -20,7 +20,7 @@ namespace Gameplay
             _playerController = new PlayerController();
             AddController(_playerController);
 
-            _cameraController = new CameraController(_playerController._view);
+            _cameraController = new CameraController(_playerController.View);
             AddController(_cameraController);
 
             _spaceController = new SpaceController();

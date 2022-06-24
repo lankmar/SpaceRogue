@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CameraInGame
+namespace Gameplay.Camera
 {
     public class CameraView : MonoBehaviour
     {

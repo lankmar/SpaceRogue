@@ -14,11 +14,13 @@ namespace Gameplay.Player
 {
     public class PlayerController : BaseController
     {
+        public PlayerView View => _view; 
+        
         private readonly ResourcePath _configPath = new("Configs/PlayerConfig");
         private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
         
         private readonly PlayerConfig _config;
-        internal readonly PlayerView _view;
+        private readonly PlayerView _view;
 
         private readonly SubscribedProperty<float> _horizontalInput = new();
         private readonly SubscribedProperty<float> _verticalInput = new();
