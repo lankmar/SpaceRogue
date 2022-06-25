@@ -31,19 +31,18 @@ public class MainController : BaseController
 
     private void OnGameStateChange(GameState newState)
     {
+        DisposeAllControllers();
+        
         switch (newState)
         {
             case GameState.Menu:
                 _mainMenuController = new MainMenuController(_currentState, new RectTransform());
-                _gameController?.Dispose();
                 break;
             case GameState.Game:
                 _gameController = new GameController(_currentState);
-                _mainMenuController?.Dispose();
                 break;
-            default: 
-                DisposeAllControllers();
-                break;
+            case GameState.None:
+            default: break;
         }
     }
 

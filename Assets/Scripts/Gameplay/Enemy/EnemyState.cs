@@ -2,8 +2,9 @@ namespace Gameplay.Enemy
 {
     public enum EnemyState
     {
-        None = 0,
+        Idle = 0,
         PassiveRoaming,
+        SeekingPlayer,
         InCombat
     }
 }
