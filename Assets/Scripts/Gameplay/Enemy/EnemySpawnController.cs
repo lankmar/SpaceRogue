@@ -37,7 +37,7 @@ namespace Gameplay.Enemy
             var unitSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle * spawnCircleRadius);
             float unitMaxSize = unitSize.MaxVector3CoordinateOnPlane();
             
-            while (UnityHelper.IsObjectAtPosition(unitSpawnPoint, unitMaxSize))
+            while (UnityHelper.IsAnyObjectAtPosition(unitSpawnPoint, unitMaxSize))
             {
                 unitSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle * spawnCircleRadius);
             }
