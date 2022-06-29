@@ -28,7 +28,7 @@ namespace Gameplay
             _spaceController = new SpaceController();
             AddController(_spaceController);
 
-            _enemySpawnController = new EnemySpawnController();
+            _enemySpawnController = new EnemySpawnController(_playerController.View);
             AddController(_enemySpawnController);
         }
     }
