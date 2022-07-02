@@ -39,6 +39,7 @@ public class PlayerStatusBarController : BaseController
 
     private void UpdateHealtShieldToolBar()
     {
+        /* Освободить, когда привяжем игрокувсе начальные параметры здоровья и щита
         if (hpToolBarSlider.maxValue != playerHealthShieldModel.MaximumHealth)
         {
             hpToolBarSlider.maxValue = playerHealthShieldModel.MaximumHealth;
@@ -52,6 +53,7 @@ public class PlayerStatusBarController : BaseController
         }
 
         spToolBarSlider.value = playerHealthShieldModel.CurrentShield;
+        */
     }
 
     protected override void OnDispose()

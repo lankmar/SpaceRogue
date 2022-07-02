@@ -1,3 +1,4 @@
+using Gameplay.Health;
 using Gameplay.Player.Inventory;
 using UnityEngine;
 
@@ -7,5 +8,6 @@ namespace Scriptables
     public class PlayerConfig : ScriptableObject
     {
         [field: SerializeField] public PlayerInventoryConfig Inventory { get; private set; }
+        [field: SerializeField] public HealthModel HealthShield { get; private set; }
     }
 }
