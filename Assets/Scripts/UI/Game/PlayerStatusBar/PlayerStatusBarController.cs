@@ -14,8 +14,8 @@ public class PlayerStatusBarController : BaseController
     private readonly HealthModel playerHealthShieldModel;
     private readonly Transform barTransform;
 
-    private Slider hpToolBarSlider;
-    private Slider spToolBarSlider;
+    private Slider healthToolBarSlider;
+    private Slider shieldToolBarSlider;
 
     public PlayerStatusBarController()
     {
@@ -23,36 +23,36 @@ public class PlayerStatusBarController : BaseController
         healthShieldToolBarView = LoadView<PlayerStatusBarView>(healtShieldToolBarPath);
 
         barTransform = healthShieldToolBarView.gameObject.transform;
-        hpToolBarSlider = GameObject.Instantiate<Slider>(healthShieldToolBarView.Health);
-        hpToolBarSlider.transform.parent = barTransform.transform;
-        spToolBarSlider = GameObject.Instantiate<Slider>(healthShieldToolBarView.Shield);
-        spToolBarSlider.transform.parent = barTransform.transform;
+        healthToolBarSlider = GameObject.Instantiate<Slider>(healthShieldToolBarView.HealthSlider);
+        healthToolBarSlider.transform.parent = barTransform.transform;
+        shieldToolBarSlider = GameObject.Instantiate<Slider>(healthShieldToolBarView.ShieldSlider);
+        shieldToolBarSlider.transform.parent = barTransform.transform;
 
         barTransform.parent = canvase.transform;
         barTransform.localScale = Vector3.one;
-        RectTransform rect = healthShieldToolBarView.gameObject.GetComponent<RectTransform>();
-        rect.anchoredPosition = Vector3.zero;
-        rect.sizeDelta = Vector3.zero;
+        RectTransform rectTransformToolBar = healthShieldToolBarView.gameObject.GetComponent<RectTransform>();
+        rectTransformToolBar.anchoredPosition = Vector3.zero;
+        rectTransformToolBar.sizeDelta = Vector3.zero;
 
         EntryPoint.SubscribeToUpdate(UpdateHealtShieldToolBar);
     }
 
     private void UpdateHealtShieldToolBar()
     {
-        /* Освободить, когда привяжем игрокувсе начальные параметры здоровья и щита
-        if (hpToolBarSlider.maxValue != playerHealthShieldModel.MaximumHealth)
+        /* Освободить, когда привяжем игрокувсе начальные максимальные и фактические параметры здоровья и щита отличные от 0
+        if (healthToolBarSlider.maxValue != playerHealthShieldModel.MaximumHealth)
         {
-            hpToolBarSlider.maxValue = playerHealthShieldModel.MaximumHealth;
+            healthToolBarSlider.maxValue = playerHealthShieldModel.MaximumHealth;
         }
 
-        hpToolBarSlider.value = playerHealthShieldModel.CurrentHealth;
-
-        if (spToolBarSlider.maxValue != playerHealthShieldModel.MaximumShield)
+        if (shieldToolBarSlider.maxValue != playerHealthShieldModel.MaximumShield)
         {
-            spToolBarSlider.maxValue = playerHealthShieldModel.MaximumShield;
+            shieldToolBarSlider.maxValue = playerHealthShieldModel.MaximumShield;
         }
+        
+        healthToolBarSlider.value = playerHealthShieldModel.CurrentHealth;
 
-        spToolBarSlider.value = playerHealthShieldModel.CurrentShield;
+        shieldToolBarSlider.value = playerHealthShieldModel.CurrentShield;
         */
     }
 
