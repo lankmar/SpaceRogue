@@ -14,6 +14,7 @@ namespace Gameplay
         private readonly SpaceController _spaceController;
         private readonly EnemySpawnController _enemySpawnController;
         private readonly CameraController _cameraController;
+        private readonly CanvasController _canvasController;
 
         public GameController(CurrentState currentState)
         {

@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3af1f81ad8d4e0a98951f4f5e6f0ad2, type: 3}
-  m_Name: BaseShieldConfig
+  m_Script: {fileID: 11500000, guid: bc225a310bce4ebbacc86a609feadf39, type: 3}
+  m_Name: HealthConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: base-shield-00
-  <ShieldAmount>k__BackingField: 100
-  <Cooldown>k__BackingField: 1
+  <MaximumHealth>k__BackingField: 1000
+  <StartingHealth>k__BackingField: 100
+  <HealthRegen>k__BackingField: 1
