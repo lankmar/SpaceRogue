@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Abstracts;
+using Gameplay.Health;
 using Gameplay.Input;
 using Gameplay.Player.FrontalGuns;
 using Gameplay.Player.Inventory;
@@ -14,11 +15,11 @@ namespace Gameplay.Player
 {
     public class PlayerController : BaseController
     {
-        public PlayerView View => _view; 
-        
+        public PlayerView View => _view;
+
         private readonly ResourcePath _configPath = new("Configs/PlayerConfig");
         private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
-        
+
         private readonly PlayerConfig _config;
         private readonly PlayerView _view;
 
@@ -30,13 +31,29 @@ namespace Gameplay.Player
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, Vector3.zero);
-            
+
             var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
 
             var inventoryController = AddInventoryController(_config.Inventory);
             var movementController = AddMovementController(inventoryController.Engine, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
+            var healthController = AddHealthController(_config.HealthConfig, _config.Inventory.Shields[0]);
+            var canvasController = AddCanvasController(healthController, movementController.CurrentSpeed, movementController.MaxSpeed);
+        }
+
+        private CanvasController AddCanvasController(HealthController healthController, float CurrentSpeed, float MaxSpeed)
+        {
+            var canvasController = new CanvasController(healthController, CurrentSpeed, MaxSpeed);
+            AddController(canvasController);
+            return canvasController;
+        }
+
+        private HealthController AddHealthController(HealthConfig healthConfig, ShieldModuleConfig shieldConfig)
+        {
+            var healthController = new HealthController(healthConfig, shieldConfig);
+            AddController(healthController);
+            return healthController;
         }
 
         private PlayerInventoryController AddInventoryController(PlayerInventoryConfig config)
