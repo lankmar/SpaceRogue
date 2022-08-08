@@ -16,6 +16,7 @@ namespace Gameplay.Enemy.Behaviour
         protected override void OnUpdate()
         {
             //TODO move view randomly
+            _movementModel.RotateTowardsPlayer();
         }
     }
 }

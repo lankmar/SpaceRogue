@@ -52,8 +52,12 @@ namespace Gameplay.Enemy.Movement
         
         public void RotateTowardsPlayer()
         {
-            Vector3 currentDirection = _view.transform.position - Vector3.up;
-            Vector3 direction = _view.transform.position - _player.transform.position;
+            Vector3 currentDirection = _view.transform.TransformDirection(Vector3.up);
+            Vector3 direction = (_view.transform.position - _player.transform.position).normalized;
+
+            //TODO continue development
+            _movementModel.TurnRight();
+
             Debug.Log(currentDirection);
             Debug.Log(direction);
         }
@@ -83,6 +87,11 @@ namespace Gameplay.Enemy.Movement
         public void StopTurning()
         {
             _movementModel.StopTurning();
+        }
+
+        private void Rotate(Vector3 currentDirection, Vector3 targetDirection)
+        {
+            
         }
     }
 }

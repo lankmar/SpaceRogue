@@ -46,6 +46,7 @@ namespace Gameplay.Enemy
                 : new HealthController(_config.Health, _config.Shield, _view);
             
             healthController.SubscribeToOnDestroy(Dispose);
+            AddController(_healthController);
             return healthController;
         }
     }
