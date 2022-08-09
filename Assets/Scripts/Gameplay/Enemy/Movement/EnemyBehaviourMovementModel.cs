@@ -1,5 +1,7 @@
 using Gameplay.Player;
 using UnityEngine;
+using Utilities.Mathematics;
+using Utilities.Unity;
 
 namespace Gameplay.Enemy.Movement
 {
@@ -8,12 +10,16 @@ namespace Gameplay.Enemy.Movement
         private readonly EnemyView _view;
         private readonly EnemyMovementModel _movementModel;
         private readonly PlayerView _player;
-        
+        private readonly System.Random _random;
+
+        private const int RandomMovementAngle = 20;
+
         public EnemyBehaviourMovementModel(EnemyMovementModel movementModel, EnemyView view, PlayerView playerView)
         {
             _movementModel = movementModel;
             _view = view;
             _player = playerView;
+            _random = new System.Random();
         }
 
         public void MoveForward()
@@ -52,19 +58,23 @@ namespace Gameplay.Enemy.Movement
         
         public void RotateTowardsPlayer()
         {
-            Vector3 currentDirection = _view.transform.TransformDirection(Vector3.up);
-            Vector3 direction = (_view.transform.position - _player.transform.position).normalized;
-
-            //TODO continue development
-            _movementModel.TurnRight();
-
-            Debug.Log(currentDirection);
-            Debug.Log(direction);
+            //TODO Complete
+            Transform transform = _view.transform;
+            Vector3 currentDirection = transform.TransformDirection(Vector3.up);
+            Vector3 targetDirection = (transform.position - _player.transform.position).normalized;
+            
+            if (UnityHelper.Approximately(currentDirection, targetDirection, 0.05f)) return;
+            
+            Rotate(currentDirection, targetDirection);
         }
 
         public void RotateByRandomAngle()
         {
-            //10-20 degree rotation
+            //TODO Complete
+            Transform transform = _view.transform;
+            Vector3 currentDirection = transform.TransformDirection(Vector3.up);
+            Vector3 targetDirection = RandomPicker.PickRandomAngle(transform.position, RandomMovementAngle, _random);
+            Rotate(currentDirection, targetDirection);
         }
 
         public void StopMoving()
@@ -91,7 +101,13 @@ namespace Gameplay.Enemy.Movement
 
         private void Rotate(Vector3 currentDirection, Vector3 targetDirection)
         {
-            
+            //TODO complete
+            if ((currentDirection - targetDirection).normalized.x <= 0.0f)
+            {
+                _movementModel.TurnLeft();
+                return;
+            }
+            _movementModel.TurnRight();
         }
     }
 }

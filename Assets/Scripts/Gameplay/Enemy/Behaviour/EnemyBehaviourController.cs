@@ -30,6 +30,7 @@ namespace Gameplay.Enemy.Behaviour
         protected override void OnDispose()
         {
             _enemyCurrentState.Unsubscribe(OnEnemyStateChange);
+            _currentBehaviour.Dispose();
         }
         
         private void OnEnemyStateChange(EnemyState newState)
