@@ -13,6 +13,11 @@ namespace Gameplay.Enemy.Movement
         private readonly System.Random _random;
 
         private const int RandomMovementAngle = 20;
+        
+        public bool IsFacingPlayer => UnityHelper.Approximately(CurrentDirection, PlayerDirection, 0.05f);
+
+        private Vector3 CurrentDirection => _view.transform.TransformDirection(Vector3.up);
+        private Vector3 PlayerDirection => (_view.transform.position - _player.transform.position).normalized;
 
         public EnemyBehaviourMovementModel(EnemyMovementModel movementModel, EnemyView view, PlayerView playerView)
         {
@@ -58,23 +63,22 @@ namespace Gameplay.Enemy.Movement
         
         public void RotateTowardsPlayer()
         {
-            //TODO Complete
-            Transform transform = _view.transform;
-            Vector3 currentDirection = transform.TransformDirection(Vector3.up);
-            Vector3 targetDirection = (transform.position - _player.transform.position).normalized;
-            
-            if (UnityHelper.Approximately(currentDirection, targetDirection, 0.05f)) return;
-            
-            Rotate(currentDirection, targetDirection);
+            if (IsFacingPlayer)
+            {
+                _movementModel.StopTurning();
+            }
+            else
+            {
+                Rotate(CurrentDirection, PlayerDirection);
+            }
         }
 
         public void RotateByRandomAngle()
         {
             //TODO Complete
             Transform transform = _view.transform;
-            Vector3 currentDirection = transform.TransformDirection(Vector3.up);
             Vector3 targetDirection = RandomPicker.PickRandomAngle(transform.position, RandomMovementAngle, _random);
-            Rotate(currentDirection, targetDirection);
+            Rotate(CurrentDirection, targetDirection);
         }
 
         public void StopMoving()
