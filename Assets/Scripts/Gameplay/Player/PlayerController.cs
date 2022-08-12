@@ -76,7 +76,7 @@ namespace Gameplay.Player
         private Vector3 StartedPlayerPosition()
         {
             Vector3 startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
-            while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, 10f))
+            while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, 40f))
             {
                 startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
             };
