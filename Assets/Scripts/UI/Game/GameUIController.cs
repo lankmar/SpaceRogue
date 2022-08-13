@@ -1,6 +1,8 @@
 using Abstracts;
+using System;
 using UI.Abstracts;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities.ResourceManagement;
 
 namespace UI.Game
@@ -9,7 +11,7 @@ namespace UI.Game
     {
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
-        public static DestroyPlayerView DestroyPlayerView { get; private set; }
+        public static DestroyPlayerView DestroyPlayerViewComponent { get; private set; }
 
         private readonly Canvas _mainCanvas;
 
@@ -31,6 +33,7 @@ namespace UI.Game
             
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
+            AddDestroyPlayerMessage();
         }
 
         private void AddPlayerStatusBar()
@@ -51,15 +54,24 @@ namespace UI.Game
 
         protected override void OnDispose()
         {
-            DestroyPlayerMessage();
         }
             
-        public void DestroyPlayerMessage()
+        public void AddDestroyPlayerMessage()
         {
             _playerDestroyPlayerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyPlayerCanvasPath, _mainCanvas.transform);
             _playerDestroyPlayerView = _playerDestroyPlayerCanvas.GetComponent<DestroyPlayerView>();
-            DestroyPlayerView = _playerDestroyPlayerView;
+            DestroyPlayerViewComponent = _playerDestroyPlayerView;
+            DestroyPlayerViewComponent.gameObject.GetComponentInChildren<Button>().onClick.AddListener(QuitGame);
+            ActivatorButtonDestroyPlayer(false);
             AddGameObject(_playerDestroyPlayerCanvas.gameObject);
+
         }
+
+        public static void ActivatorButtonDestroyPlayer (Boolean activeButtonTrueOrFalse)
+        {
+            DestroyPlayerViewComponent.gameObject.SetActive(activeButtonTrueOrFalse);
+        }
+
+        private void QuitGame() => Application.Quit();
     }
 }

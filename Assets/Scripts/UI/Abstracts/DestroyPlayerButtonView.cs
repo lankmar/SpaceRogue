@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DestroyPlayerButtonView : MonoBehaviour
 {
-    public void BackToMenu(Transform uiPosition, GameObject entryPoint)
+    public void BackToMenu(GameObject entryPoint)
     {
         var gameState = new CurrentState(GameState.Menu);
         MainController mainController = new MainController(gameState, entryPoint.transform);
