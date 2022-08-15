@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Abstracts;
 using Gameplay.Health;
 using Gameplay.Input;
+using Gameplay.Movement;
 using Gameplay.Player.FrontalGuns;
 using Gameplay.Player.Inventory;
 using Gameplay.Player.Movement;
@@ -38,7 +39,7 @@ namespace Gameplay.Player
             AddController(inputController);
 
             var inventoryController = AddInventoryController(_config.Inventory);
-            var movementController = AddMovementController(inventoryController.Engine, _view);
+            var movementController = AddMovementController(_config.Movement, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
             var healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig);
         }
@@ -58,7 +59,7 @@ namespace Gameplay.Player
             return inventoryController;
         }
 
-        private PlayerMovementController AddMovementController(EngineModuleConfig movementConfig, PlayerView view)
+        private PlayerMovementController AddMovementController(MovementConfig movementConfig, PlayerView view)
         {
             var movementController = new PlayerMovementController(_horizontalInput, _verticalInput, movementConfig, view);
             AddController(movementController);
