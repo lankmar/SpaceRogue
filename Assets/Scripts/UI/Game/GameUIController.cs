@@ -64,7 +64,6 @@ namespace UI.Game
             DestroyPlayerViewComponent.gameObject.GetComponentInChildren<Button>().onClick.AddListener(QuitGame);
             ActivatorButtonDestroyPlayer(false);
             AddGameObject(_playerDestroyPlayerCanvas.gameObject);
-
         }
 
         public static void ActivatorButtonDestroyPlayer (Boolean activeButtonTrueOrFalse)
@@ -72,6 +71,10 @@ namespace UI.Game
             DestroyPlayerViewComponent.gameObject.SetActive(activeButtonTrueOrFalse);
         }
 
-        private void QuitGame() => Application.Quit();
+        private void QuitGame()
+        {
+            ActivatorButtonDestroyPlayer(false);
+            Application.Quit();
+        }
     }
 }
