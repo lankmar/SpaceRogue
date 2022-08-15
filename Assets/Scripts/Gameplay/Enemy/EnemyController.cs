@@ -16,7 +16,6 @@ namespace Gameplay.Enemy
         private readonly EnemyConfig _config;
         private readonly FrontalTurretController _turret;
         private readonly EnemyMovementController _movementController;
-        private readonly MovementModel _movementModel;
         private readonly EnemyBehaviourController _behaviourController;
         private readonly HealthController _healthController;
         private readonly PlayerView _playerView;
@@ -30,8 +29,8 @@ namespace Gameplay.Enemy
             _turret = WeaponFactory.CreateFrontalTurret(_config.Weapon, _view.transform);
             AddController(_turret);
             
-            _movementModel = new MovementModel(_config.Movement);
-            _behaviourController = new EnemyBehaviourController(_movementModel, _view, _turret, _playerView);
+            var movementModel = new MovementModel(_config.Movement);
+            _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerView);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(_config.Health, _config.Shield);

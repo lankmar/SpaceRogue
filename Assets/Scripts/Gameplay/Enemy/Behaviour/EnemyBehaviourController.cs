@@ -22,6 +22,7 @@ namespace Gameplay.Enemy.Behaviour
         public EnemyBehaviourController(MovementModel movementModel, EnemyView view, FrontalTurretController turretController, PlayerView playerView)
         {
             _view = view;
+            _movementModel = movementModel;
             _inputController = AddInputController();
             _movementController = AddMovementController();
 

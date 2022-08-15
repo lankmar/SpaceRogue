@@ -30,7 +30,7 @@ namespace Gameplay.Enemy.Movement
             _verticalInput.Value = -1.0f;
         }
         
-        public void StopAcceleration()
+        public void HoldSpeed()
         {
             _verticalInput.Value = 0.0f;
         }
