@@ -1,8 +1,8 @@
-using UnityEngine;
+using Abstracts;
 
 namespace Gameplay.Enemy
 {
-    public class EnemyView : MonoBehaviour
+    public class EnemyView : UnitView
     {
     }
 }

@@ -1,8 +1,8 @@
-using UnityEngine;
+using Abstracts;
 
 namespace Gameplay.Player
 {
-    public class PlayerView : MonoBehaviour
+    public class PlayerView : UnitView
     {
     }
 }
