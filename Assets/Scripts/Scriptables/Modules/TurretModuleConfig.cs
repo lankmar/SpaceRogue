@@ -9,6 +9,7 @@ namespace Scriptables.Modules
         [field: SerializeField, Min(0.1f)] public float Cooldown { get; private set; }
         [field: SerializeField] public ProjectileConfig ProjectileConfig { get; private set; }
         [field: SerializeField] public WeaponType WeaponType { get; private set; }
+        [field: SerializeField] public SpecificWeaponConfig SpecificWeapon { get; private set; }
         
     }
 }
