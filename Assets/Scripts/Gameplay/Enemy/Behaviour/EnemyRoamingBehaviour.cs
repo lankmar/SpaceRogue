@@ -58,12 +58,10 @@ namespace Gameplay.Enemy.Behaviour
         private void TurnToRandomDirection()
         {
             var currentDirection = View.transform.TransformDirection(Vector3.up);
-            Debug.Log($"currentDirection - _targetDirection x {(currentDirection - _targetDirection).x}");
-            Debug.Log($"currentDirection - _targetDirection y {(currentDirection - _targetDirection).y}");
 
             if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
             {
-                _targetDirection = RandomPicker.PickRandomAngle(360, new Random());
+                _targetDirection = RandomPicker.PickRandomAngle(180, new Random());
                 _inputController.StopTurning();
             }
             else
