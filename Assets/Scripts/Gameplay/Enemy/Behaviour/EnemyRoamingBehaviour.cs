@@ -78,17 +78,14 @@ namespace Gameplay.Enemy.Behaviour
 
         private void HandleTurn(Vector3 currentDirection)
         {
-            float x = (currentDirection - _targetDirection).x;
-            float y = (currentDirection - _targetDirection).y;
-
-            Action turnAction = (x, y) switch
+            if ((currentDirection - _targetDirection).x < 0)
             {
-                (< 0, _) => _inputController.TurnLeft,
-                (>= 0, _) => _inputController.TurnRight,
-                _ => _inputController.TurnLeft
-            };
-
-            turnAction();
+                _inputController.TurnLeft();
+            }
+            else
+            {
+                _inputController.TurnRight();
+            }
         }
 
         private void TickDownTimer()
@@ -96,7 +93,7 @@ namespace Gameplay.Enemy.Behaviour
             if (_rotationTimer <= 0.0f)
             {
                 _rotationTimer = RotationDelay;
-                _targetDirection = RandomPicker.PickRandomAngle(180, new Random());
+                _targetDirection = RandomPicker.PickRandomAngle(360, new Random());
             }
             else
             {
