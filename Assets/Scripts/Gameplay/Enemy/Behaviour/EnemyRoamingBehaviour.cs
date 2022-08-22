@@ -16,7 +16,11 @@ namespace Gameplay.Enemy.Behaviour
         private readonly EnemyInputController _inputController;
 
         private readonly Random _random;
-        private Vector3 _targetDirection; 
+        private Vector3 _targetDirection;
+
+        private float _rotationTimer;
+
+        private const float RotationDelay = 2.0f;
         
         public EnemyRoamingBehaviour(
             SubscribedProperty<EnemyState> enemyState,
@@ -28,7 +32,8 @@ namespace Gameplay.Enemy.Behaviour
             _movementModel = movementModel;
             _inputController = inputController;
             _random = new Random();
-            _targetDirection = View.transform.TransformDirection(Vector3.up);
+            _targetDirection = RandomPicker.PickRandomAngle(180, new Random());
+            _rotationTimer = RotationDelay;
         }
         
         protected override void OnUpdate()
@@ -61,13 +66,14 @@ namespace Gameplay.Enemy.Behaviour
 
             if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
             {
-                _targetDirection = RandomPicker.PickRandomAngle(180, new Random());
                 _inputController.StopTurning();
             }
             else
             {
                 HandleTurn(currentDirection);
             }
+            
+            TickDownTimer();
         }
 
         private void HandleTurn(Vector3 currentDirection)
@@ -83,6 +89,19 @@ namespace Gameplay.Enemy.Behaviour
             };
 
             turnAction();
+        }
+
+        private void TickDownTimer()
+        {
+            if (_rotationTimer <= 0.0f)
+            {
+                _rotationTimer = RotationDelay;
+                _targetDirection = RandomPicker.PickRandomAngle(180, new Random());
+            }
+            else
+            {
+                _rotationTimer -= Time.deltaTime;
+            }
         }
 
         private void EnterCombat()
