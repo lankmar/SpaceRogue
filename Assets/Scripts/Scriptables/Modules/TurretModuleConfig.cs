@@ -10,6 +10,5 @@ namespace Scriptables.Modules
         [field: SerializeField] public ProjectileConfig ProjectileConfig { get; private set; }
         [field: SerializeField] public WeaponType WeaponType { get; private set; }
         [field: SerializeField] public SpecificWeaponConfig SpecificWeapon { get; private set; }
-        
     }
 }

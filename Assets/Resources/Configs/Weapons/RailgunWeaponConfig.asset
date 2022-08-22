@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d824bd189d09d746b95fad29c21be26, type: 3}
   m_Name: RailgunWeaponConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 3f1ad222-7a65-4cbc-b9a4-6a50d3e31b31
-  <RailgunProjectile>k__BackingField: {fileID: 11400000, guid: a7e4ca66fb363054fab2e8ef76139f6c, type: 2}
+  <Id>k__BackingField: 7cd9c3f2-e43a-48c3-8059-2e88a1c71573
+  <RailgunProjectile>k__BackingField: {fileID: 0}

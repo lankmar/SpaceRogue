@@ -5,8 +5,17 @@ namespace Gameplay.Shooting
 {
     public class FrontalMinigunController : FrontalTurretController
     {
+        private readonly MinigunWeaponConfig _config;
+
         public FrontalMinigunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
+            var minigunConfig = config.SpecificWeapon as MinigunWeaponConfig;
+            if (minigunConfig is null)
+            {
+                throw new System.Exception("wrong config type was provided");
+            }
+            _config = minigunConfig;
+
             EntryPoint.SubscribeToUpdate(CoolDown);
         }
         

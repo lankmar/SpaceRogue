@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: base-turret-00
   <Cooldown>k__BackingField: 1
-  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 3a3a768c7b747ea4abac3f173360a451, type: 2}
+  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: b2a657a5c9ca54544a3d0cfd4070af1a, type: 2}
   <WeaponType>k__BackingField: 3
+  <SpecificWeapon>k__BackingField: {fileID: 11400000, guid: d1f9d344806f3f044858b4c2571f8672, type: 2}
