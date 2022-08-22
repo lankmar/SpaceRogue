@@ -42,13 +42,15 @@ namespace Utilities.Mathematics
 
         public static int PickRandomBetweenTwoValues(int minValue, int maxValue, Random r) => r.Next(minValue, maxValue + 1);
 
-        public static Vector3 PickRandomAngle(Vector3 objectPosition, int leftAngle, int rightAngle, Random r)
+        public static Vector3 PickRandomAngle(int leftAngle, int rightAngle, Random r)
         {
-            //TODO complete
-            int angleSum = leftAngle + rightAngle;
-            return new Vector3(0, 0, 0);
+            int randomAngle = r.Next(-leftAngle, rightAngle + 1);
+            float radianAngle = randomAngle * Mathf.PI / 180.0f;
+            float x = Mathf.Cos(radianAngle);
+            float y = Mathf.Sin(radianAngle);
+            return new Vector3(x, y, 0);
         }
         
-        public static Vector3 PickRandomAngle(Vector3 objectPosition, int angle, Random r) => PickRandomAngle(objectPosition, angle, angle, r);
+        public static Vector3 PickRandomAngle(int angle, Random r) => PickRandomAngle(angle, angle, r);
     }
 }
