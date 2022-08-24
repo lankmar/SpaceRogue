@@ -5,7 +5,7 @@ namespace Gameplay.Shooting
 {
     public class FrontalRailgunController : FrontalTurretController
     {
-        private readonly RailgunWeaponConfig _config;
+        private readonly RailgunWeaponConfig _weaponConfig;
 
         public FrontalRailgunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
@@ -14,7 +14,7 @@ namespace Gameplay.Shooting
             {
                 throw new System.Exception("wrong config type was provided");
             }
-            _config = railgunConfig;
+            _weaponConfig = railgunConfig;
 
             EntryPoint.SubscribeToUpdate(CoolDown);
         }

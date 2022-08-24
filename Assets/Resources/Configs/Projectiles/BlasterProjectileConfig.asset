@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4959d3b90d4591b2daafa186e8cb0a, type: 3}
-  m_Name: BlasterProjectileConfig 1
+  m_Name: BlasterProjectileConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 56217ae3-ab34-4ee4-8f1d-d2e5488ee1c5
+  <Id>k__BackingField: 40a609c6-b27a-4771-a34d-26180310c5cb
   <Prefab>k__BackingField: {fileID: 5373172656145502590, guid: ca5073dec663d494c9b378aa95523cb9, type: 3}
   <DamageAmount>k__BackingField: 1
   <Speed>k__BackingField: 1
   <LifeTime>k__BackingField: 10
+  <IsDestroyedOnHit>k__BackingField: 1
