@@ -34,7 +34,7 @@ namespace Gameplay.Shooting
             var projectile = ProjectileFactory.CreateProjectile();
             AddController(projectile);
 
-            CooldownTimer = Config.Cooldown;
+            CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
 
         public override void CoolDown()
