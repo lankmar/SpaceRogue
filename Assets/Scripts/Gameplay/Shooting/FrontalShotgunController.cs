@@ -1,5 +1,7 @@
 using Scriptables.Modules;
 using UnityEngine;
+using Utilities.Mathematics;
+using Random = System.Random;
 
 namespace Gameplay.Shooting
 {
@@ -31,8 +33,7 @@ namespace Gameplay.Shooting
                 return;
             }
 
-            var projectile = ProjectileFactory.CreateProjectile();
-            AddController(projectile);
+            FireMultipleProjectiles(_weaponConfig.PelletAmount, _weaponConfig.SprayAngle);
 
             CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
@@ -40,6 +41,25 @@ namespace Gameplay.Shooting
         public override void CoolDown()
         {
             BasicCoolDown();
+        }
+
+        private void FireMultipleProjectiles(int count, int sprayAngle)
+        {
+            int minimumAngle = -sprayAngle / 2;
+            int singlePelletAngle = sprayAngle / count;
+            Random r = new Random();
+
+            for (int i = 0; i < count; i++)
+            {
+                int minimumPelletAngle = minimumAngle + i * singlePelletAngle;
+                int maximumPelletAngle = minimumAngle + (i + 1) * singlePelletAngle;
+
+                int pelletAngle = RandomPicker.PickRandomBetweenTwoValues(minimumPelletAngle, maximumPelletAngle, r);
+                Vector3 pelletVector = (pelletAngle + 90).ToVector3();
+                //TODO check 90 degrees turn
+                var projectile = ProjectileFactory.CreateProjectile(pelletVector);
+                AddController(projectile);
+            }
         }
     }   
 }
