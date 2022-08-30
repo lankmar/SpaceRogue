@@ -33,7 +33,7 @@ namespace Gameplay.Player
         public PlayerController()
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
-            _view = LoadView<PlayerView>(_viewPath, StartedPlayerPosition());
+            _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
 
             var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
@@ -73,13 +73,23 @@ namespace Gameplay.Player
             return frontalGunsController;
         }
 
-        private Vector3 StartedPlayerPosition()
+        private Vector3 GetPlayerSpawnPosition()
         {
             Vector3 startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
-            while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, 10f))
+            int tryCount = 0;
+            do
             {
-                startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
-            };
+                if (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, 40f))
+                {
+                    startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
+                    tryCount++;
+                }
+                else
+                {
+                    //TODO Clear position for player spawn when too many tries happened
+                    break;
+                }
+            } while (tryCount <= 10);
             return startPlayerPosition;
         }
 
