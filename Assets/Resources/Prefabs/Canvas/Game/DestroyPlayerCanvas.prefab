@@ -211,7 +211,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.1
+  m_fontSize: 39.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -412,7 +412,6 @@ GameObject:
   - component: {fileID: 2504204473860334477}
   - component: {fileID: 8203489878189471907}
   - component: {fileID: 3196654476480183682}
-  - component: {fileID: 4554426713898217183}
   m_Layer: 0
   m_Name: DestroyPlayerButton
   m_TagString: Untagged
@@ -523,15 +522,3 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4554426713898217183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9167199104376560405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ae4c309f426293428533228bfb0c6c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
