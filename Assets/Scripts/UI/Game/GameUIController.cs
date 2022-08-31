@@ -54,6 +54,8 @@ namespace UI.Game
 
         protected override void OnDispose()
         {
+            PlayerStatusBarView = null;
+            PlayerSpeedometerView = null;
         }
             
         public void AddDestroyPlayerMessage()
