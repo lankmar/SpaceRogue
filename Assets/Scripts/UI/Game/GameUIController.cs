@@ -65,10 +65,5 @@ namespace UI.Game
             DestroyPlayerViewComponent = _playerDestroyPlayerView;
             AddGameObject(_playerDestroyPlayerCanvas.gameObject);
         }
-
-        public void ActivatorButtonDestroyPlayer (Boolean activeButtonTrueOrFalse)
-        {
-            DestroyPlayerViewComponent.gameObject.SetActive(activeButtonTrueOrFalse);
-        }
     }
 }
