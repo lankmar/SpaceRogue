@@ -26,7 +26,11 @@ namespace Gameplay.Camera
 
         private void FollowPlayer()
         {
-            playerPosition = _playerView ? _playerView.gameObject.transform.position : playerPosition;
+            try
+            {
+                playerPosition = _playerView.gameObject.transform.position;
+            }
+            catch { }
             _cameraView.gameObject.transform.position = new Vector3(playerPosition.x, playerPosition.y, playerPosition.z + CameraZAxisOffset);
         }
     }
