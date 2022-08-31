@@ -75,5 +75,10 @@ namespace Gameplay.Player
             AddController(frontalGunsController);
             return frontalGunsController;
         }
+
+        public void OnPlayerDestroyed()
+        {
+            PlayerDestroyed();
+        }
     }
 }

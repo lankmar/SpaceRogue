@@ -11,7 +11,7 @@ namespace Gameplay
 {
     public class GameController : BaseController
     {
-        private static CurrentState _currentState;
+        private CurrentState _currentState;
         private readonly PlayerController _playerController;
         private readonly SpaceController _spaceController;
         private readonly EnemyForcesController _enemyForcesController;
@@ -45,7 +45,7 @@ namespace Gameplay
             _gameUIController.AddDestroyPlayerMessage();
         }
 
-        public static void EditorStatusGameOnMenu() 
+        public void EditorStatusGameOnMenu() 
         {
             _currentState.CurrentGameState.Value = GameState.GameState.Menu;
         }
