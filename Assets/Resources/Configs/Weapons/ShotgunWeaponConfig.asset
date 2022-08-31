@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ShotgunWeaponConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 66bd83c0-4754-473a-80d3-5fb592d4dbc4
+  <Cooldown>k__BackingField: 1.5
   <ShotgunProjectile>k__BackingField: {fileID: 11400000, guid: 3a3a768c7b747ea4abac3f173360a451, type: 2}
-  <PelletAmount>k__BackingField: 3
-  <SprayAngle>k__BackingField: 20
+  <PelletAmount>k__BackingField: 7
+  <SprayAngle>k__BackingField: 66

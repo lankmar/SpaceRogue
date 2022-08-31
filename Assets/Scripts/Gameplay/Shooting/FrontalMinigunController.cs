@@ -9,6 +9,13 @@ namespace Gameplay.Shooting
     {
         private readonly MinigunWeaponConfig _weaponConfig;
 
+        internal bool IsOverheated => _overheatCooldown > 0.0f;
+        private float _overheatMeter;
+        private float _overheatCooldown;
+
+        private int _sprayAngle;
+        private int _sprayAngleIncrease;
+
         public FrontalMinigunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
             var minigunConfig = config.SpecificWeapon as MinigunWeaponConfig;
@@ -17,6 +24,12 @@ namespace Gameplay.Shooting
                 throw new System.Exception("wrong config type was provided");
             }
             _weaponConfig = minigunConfig;
+
+            _overheatCooldown = 0.0f;
+            _overheatMeter = 0.0f;
+
+            _sprayAngle = _weaponConfig.SprayAngle;
+            _sprayAngleIncrease = _weaponConfig.MaxSprayAngle - _sprayAngle / _weaponConfig.TimeToOverheat;
 
             EntryPoint.SubscribeToUpdate(CoolDown);
         }
@@ -28,12 +41,15 @@ namespace Gameplay.Shooting
 
         public override void CommenceFiring()
         {
-            if (IsOnCooldown)
+            if (IsOnCooldown || IsOverheated)
             {
+                RemoveHeat();
                 return;
             }
 
-            FireSingleProjectile(_weaponConfig.SprayAngle);
+            FireSingleProjectile(_sprayAngle);
+            Debug($"{_sprayAngle}");
+            AddHeat();
 
             CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
@@ -42,6 +58,31 @@ namespace Gameplay.Shooting
         {
             BasicCoolDown();
         }
+
+        private void AddHeat()
+        {
+            if (_overheatMeter < _weaponConfig.TimeToOverheat)
+            {
+                _overheatMeter += _weaponConfig.Cooldown;
+                _sprayAngle += _sprayAngleIncrease;
+                return;
+            }
+
+            _overheatCooldown = _weaponConfig.OverheatCoolDown;
+            _overheatMeter = 0.0f;
+        }
+
+        private void RemoveHeat()
+        {
+            if (_overheatCooldown <= Time.deltaTime)
+            {
+                _overheatCooldown = 0.0f;
+                _sprayAngle = _weaponConfig.SprayAngle;
+                return;
+            }
+            _overheatCooldown -= Time.deltaTime;
+        }
+
         private void FireSingleProjectile(int sprayAngle)
         {
             int angle = sprayAngle / 2;

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: MinigunWeaponConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: e844e25f-4a63-4c12-b72d-9f105b1be94d
+  <Cooldown>k__BackingField: 0.1
   <MinigunProjectile>k__BackingField: {fileID: 11400000, guid: b2a657a5c9ca54544a3d0cfd4070af1a, type: 2}
-  <SprayAngle>k__BackingField: 3
-  <SprayChange>k__BackingField: 10
-  <OverheatCoolDown>k__BackingField: 1
-  <TimeToOverheat>k__BackingField: 10
+  <SprayAngle>k__BackingField: 1
+  <MaxSprayAngle>k__BackingField: 10
+  <OverheatCoolDown>k__BackingField: 3
+  <TimeToOverheat>k__BackingField: 3
