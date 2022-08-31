@@ -1,10 +1,12 @@
+using Abstracts;
 using System;
+using UnityEngine;
 
 namespace UI.Abstracts
 {
-    public class DestroyPlayerView : AbstractDestroyPlayerView
+    public class DestroyPlayerView : MonoBehaviour, IButtonView
     {
-        public override void Init(Action actionDestroyPlayer)
+        public void Init(Action actionDestroyPlayer)
         { 
 
         }
