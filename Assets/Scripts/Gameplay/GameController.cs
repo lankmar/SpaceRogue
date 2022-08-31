@@ -6,24 +6,23 @@ using Gameplay.Player;
 using Gameplay.Space;
 using UI.Game;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Gameplay
 {
     public class GameController : BaseController
     {
-        private CurrentState _currentState;
+        private readonly CurrentState _currentState;
         private readonly PlayerController _playerController;
         private readonly SpaceController _spaceController;
         private readonly EnemyForcesController _enemyForcesController;
         private readonly CameraController _cameraController;
-        private GameUIController _gameUIController;
-        private readonly Canvas _mainUICanvas;
+        private readonly GameUIController _gameUIController;
 
         public GameController(CurrentState currentState, Canvas mainUICanvas)
         {
             _currentState = currentState;
-            _mainUICanvas = mainUICanvas;
-            _gameUIController = new GameUIController(_mainUICanvas);
+            _gameUIController = new GameUIController(mainUICanvas);
             AddController(_gameUIController);
             
             _playerController = new PlayerController();
@@ -40,9 +39,10 @@ namespace Gameplay
             AddController(_enemyForcesController);
         }
 
-        public void OnPlayerDestroyed()
+        private void OnPlayerDestroyed()
         {
             _gameUIController.AddDestroyPlayerMessage();
+            _gameUIController.DestroyPlayerViewComponent.gameObject.GetComponentInChildren<Button>().onClick.AddListener(EditorStatusGameOnMenu);
         }
 
         public void EditorStatusGameOnMenu() 

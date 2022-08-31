@@ -12,7 +12,7 @@ namespace UI.Game
     {
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
-        public static DestroyPlayerView DestroyPlayerViewComponent { get; private set; }
+        public DestroyPlayerView DestroyPlayerViewComponent { get; private set; }
 
         private readonly Canvas _mainCanvas;
 
@@ -61,18 +61,12 @@ namespace UI.Game
             _playerDestroyPlayerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyPlayerCanvasPath, _mainCanvas.transform);
             _playerDestroyPlayerView = _playerDestroyPlayerCanvas.GetComponent<DestroyPlayerView>();
             DestroyPlayerViewComponent = _playerDestroyPlayerView;
-            DestroyPlayerViewComponent.gameObject.GetComponentInChildren<Button>().onClick.AddListener(QuitGame);
             AddGameObject(_playerDestroyPlayerCanvas.gameObject);
         }
 
-        public static void ActivatorButtonDestroyPlayer (Boolean activeButtonTrueOrFalse)
+        public void ActivatorButtonDestroyPlayer (Boolean activeButtonTrueOrFalse)
         {
             DestroyPlayerViewComponent.gameObject.SetActive(activeButtonTrueOrFalse);
-        }
-
-        private void QuitGame()
-        {
-            GameController.EditorStatusGameOnMenu();
         }
     }
 }
