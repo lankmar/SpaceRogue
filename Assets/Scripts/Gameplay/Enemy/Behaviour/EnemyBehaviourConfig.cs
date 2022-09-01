@@ -9,5 +9,6 @@ namespace Gameplay.Enemy.Behaviour
         [field: SerializeField] public float PlayerDetectionRadius { get; private set; }
         [field: SerializeField] public float CallToArmsRadius { get; private set; }
         [field: SerializeField] public float ShootingDistance { get; private set; }
+        [field: SerializeField] public float TimeToPickNewAngle { get; private set; }
     }
 }
