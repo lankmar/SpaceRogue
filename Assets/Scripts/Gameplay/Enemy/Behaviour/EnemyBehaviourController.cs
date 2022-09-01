@@ -35,8 +35,8 @@ namespace Gameplay.Enemy.Behaviour
 
             _enemyCurrentState = new SubscribedProperty<EnemyState>(EnemyState.PassiveRoaming);
             _enemyCurrentState.Subscribe(OnEnemyStateChange);
-            OnEnemyStateChange(EnemyState.PassiveRoaming);
             _enemyConfig = config;
+            OnEnemyStateChange(EnemyState.PassiveRoaming);
         }
 
         protected override void OnDispose()
