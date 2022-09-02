@@ -42,10 +42,9 @@ namespace Gameplay
         private void OnPlayerDestroyed()
         {
             _gameUIController.AddDestroyPlayerMessage();
-            _gameUIController.DestroyPlayerViewComponent.GetComponentInChildren<Button>().onClick.AddListener(EditorStatusGameOnMenu);
         }
 
-        public void EditorStatusGameOnMenu() 
+        public void ExitToMenu() 
         {
             _currentState.CurrentGameState.Value = GameState.GameState.Menu;
         }
