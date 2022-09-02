@@ -29,7 +29,7 @@ namespace Gameplay
             AddController(_playerController);
             _playerController.PlayerDestroyed += OnPlayerDestroyed;
 
-            _cameraController = new CameraController(_playerController.View);
+            _cameraController = new CameraController(_playerController);
             AddController(_cameraController);
 
             _spaceController = new SpaceController();
@@ -42,7 +42,7 @@ namespace Gameplay
         private void OnPlayerDestroyed()
         {
             _gameUIController.AddDestroyPlayerMessage();
-            _gameUIController.DestroyPlayerViewComponent.gameObject.GetComponentInChildren<Button>().onClick.AddListener(EditorStatusGameOnMenu);
+            _gameUIController.DestroyPlayerViewComponent.GetComponentInChildren<Button>().onClick.AddListener(EditorStatusGameOnMenu);
         }
 
         public void EditorStatusGameOnMenu() 
