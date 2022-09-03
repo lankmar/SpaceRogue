@@ -13,8 +13,7 @@ namespace Gameplay.Shooting
         private float _overheatMeter;
         private float _overheatCooldown;
 
-        private int _sprayAngle;
-        private int _sprayAngleIncrease;
+        private float _currentSprayAngle;
 
         public FrontalMinigunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
@@ -28,8 +27,7 @@ namespace Gameplay.Shooting
             _overheatCooldown = 0.0f;
             _overheatMeter = 0.0f;
 
-            _sprayAngle = _weaponConfig.SprayAngle;
-            _sprayAngleIncrease = _weaponConfig.MaxSprayAngle - _sprayAngle / _weaponConfig.TimeToOverheat;
+            _currentSprayAngle = _weaponConfig.SprayAngle;
 
             EntryPoint.SubscribeToUpdate(CoolDown);
         }
@@ -41,22 +39,21 @@ namespace Gameplay.Shooting
 
         public override void CommenceFiring()
         {
-            if (IsOnCooldown || IsOverheated)
+            if (IsOverheated || IsOnCooldown)
             {
-                RemoveHeat();
                 return;
             }
 
-            FireSingleProjectile(_sprayAngle);
-            Debug($"{_sprayAngle}");
-            AddHeat();
+            FireSingleProjectile();
 
+            AddHeat();
             CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
 
         public override void CoolDown()
         {
             BasicCoolDown();
+            if (_overheatCooldown > 0.0f) RemoveHeat();
         }
 
         private void AddHeat()
@@ -64,31 +61,53 @@ namespace Gameplay.Shooting
             if (_overheatMeter < _weaponConfig.TimeToOverheat)
             {
                 _overheatMeter += _weaponConfig.Cooldown;
-                _sprayAngle += _sprayAngleIncrease;
+                IncreaseSpray();
                 return;
             }
 
+            TriggerOverheatAndReset();
+        }
+
+        private void TriggerOverheatAndReset()
+        {
             _overheatCooldown = _weaponConfig.OverheatCoolDown;
-            _overheatMeter = 0.0f;
+        }
+
+        private void IncreaseSpray()
+        {
+            if (_currentSprayAngle >= _weaponConfig.MaxSprayAngle) return;
+            var sprayIncrease = CountSprayIncrease();
+            _currentSprayAngle += sprayIncrease;
+        }
+
+        private float CountSprayIncrease()
+        {
+            return (_weaponConfig.MaxSprayAngle - _weaponConfig.SprayAngle) / (_weaponConfig.TimeToOverheat * (1 / _weaponConfig.Cooldown));
         }
 
         private void RemoveHeat()
         {
             if (_overheatCooldown <= Time.deltaTime)
             {
-                _overheatCooldown = 0.0f;
-                _sprayAngle = _weaponConfig.SprayAngle;
+                ResetWeapon();
                 return;
             }
             _overheatCooldown -= Time.deltaTime;
         }
 
-        private void FireSingleProjectile(int sprayAngle)
+        private void ResetWeapon()
         {
-            int angle = sprayAngle / 2;
+            _overheatCooldown = 0.0f;
+            _overheatMeter = 0.0f;
+            _currentSprayAngle = _weaponConfig.SprayAngle;
+        }
+
+        private void FireSingleProjectile()
+        {
+            float angle = _currentSprayAngle / 2;
             Random r = new Random();
 
-            int pelletAngle = RandomPicker.PickRandomBetweenTwoValues(-angle, angle, r);
+            float pelletAngle = RandomPicker.PickRandomBetweenTwoValues(-angle, angle, r);
             Vector3 pelletVector = (pelletAngle + 90).ToVector3();
             //TODO check 90 degrees turn
             var projectile = ProjectileFactory.CreateProjectile(pelletVector);

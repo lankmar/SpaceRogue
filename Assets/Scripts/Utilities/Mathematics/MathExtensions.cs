@@ -14,5 +14,12 @@ namespace Utilities.Mathematics
             float y = Mathf.Sin(radianAngle);
             return new Vector3(x, y, 0);
         }
+        public static Vector3 ToVector3(this float angle)
+        {
+            float radianAngle = angle * Mathf.PI / 180.0f;
+            float x = Mathf.Cos(radianAngle);
+            float y = Mathf.Sin(radianAngle);
+            return new Vector3(x, y, 0);
+        }
     }
 }
