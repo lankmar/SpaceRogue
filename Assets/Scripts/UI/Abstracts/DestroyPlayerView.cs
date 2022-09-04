@@ -1,16 +1,25 @@
-using Abstracts;
+using Gameplay;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace UI.Abstracts
 {
     [RequireComponent(typeof(Button))]
-    public class DestroyPlayerView : MonoBehaviour, IButtonView
+    public class DestroyPlayerView : ButtonView
     {
-        public void Init(Action actionDestroyPlayer)
-        { 
+        private Button _button;
+        public Action ClickAction;
 
+        public DestroyPlayerView() 
+        {
+            _button = GetComponent<Button>();
+        }
+
+        public override void Init(Action onClickAction)
+        {
+            _button.onClick.AddListener(new UnityAction(ClickAction));
         }
     }
 }

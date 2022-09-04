@@ -28,9 +28,12 @@ namespace UI.Game
         private readonly ResourcePath _playerSpeedometerCanvasPath = new("Prefabs/Canvas/Game/SpeedometerCanvas");
         private readonly ResourcePath _playerDestroyPlayerCanvasPath = new("Prefabs/Canvas/Game/DestroyPlayerCanvas");
 
-        public GameUIController(Canvas mainCanvas)
+        private Action _exitToMenu;
+
+        public GameUIController(Canvas mainCanvas, Action exitToMenu)
         {
             _mainCanvas = mainCanvas;
+            _exitToMenu = exitToMenu;
             
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
@@ -62,6 +65,7 @@ namespace UI.Game
         {
             _playerDestroyPlayerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyPlayerCanvasPath, _mainCanvas.transform);
             _playerDestroyPlayerView = _playerDestroyPlayerCanvas.GetComponent<DestroyPlayerView>();
+            _playerDestroyPlayerView.ClickAction = _exitToMenu;
             DestroyPlayerViewComponent = _playerDestroyPlayerView;
             AddGameObject(_playerDestroyPlayerCanvas.gameObject);
         }

@@ -22,7 +22,7 @@ namespace Gameplay
         public GameController(CurrentState currentState, Canvas mainUICanvas)
         {
             _currentState = currentState;
-            _gameUIController = new GameUIController(mainUICanvas);
+            _gameUIController = new GameUIController(mainUICanvas, ExitToMenu);
             AddController(_gameUIController);
             
             _playerController = new PlayerController();
