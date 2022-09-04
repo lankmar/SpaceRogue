@@ -31,8 +31,8 @@ namespace Gameplay.Player
         private readonly SubscribedProperty<float> _verticalInput = new();
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
 
-        private const byte MAX_COUNT_RANDOMIZE_POSITION_PLAYER = 10;
-        private const float MAX_RADIUS_CLEAR_FROM_PLAYER = 40f;
+        private const byte MaxCountOfPlayerSpawnTries = 10;
+        private const float PlayerSpawnClearanceRadius = 40.0f;
 
         public PlayerController()
         {
@@ -79,16 +79,16 @@ namespace Gameplay.Player
 
         private Vector3 GetPlayerSpawnPosition()
         {
-            Vector3 startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
+            Vector3 startPlayerPosition;
             int tryCount = 0;
             do
             {
-                startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
+                startPlayerPosition = RandomizePlayerStartPosition();
                 tryCount++;
-                
-            } while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, MAX_RADIUS_CLEAR_FROM_PLAYER) & tryCount <= MAX_COUNT_RANDOMIZE_POSITION_PLAYER);
+            } 
+            while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, PlayerSpawnClearanceRadius) && tryCount <= MaxCountOfPlayerSpawnTries);
             
-            if (tryCount > MAX_COUNT_RANDOMIZE_POSITION_PLAYER) 
+            if (tryCount > MaxCountOfPlayerSpawnTries) 
             {
                 //TODO Clear position for player spawn when too many tries happened
             }
@@ -96,9 +96,10 @@ namespace Gameplay.Player
             return startPlayerPosition;
         }
 
-        private Vector3 RandomizePositionAtMinus400ToPlus400()
+        private Vector3 RandomizePlayerStartPosition()
         {
-            System.Random random = new System.Random();
+            var random = new System.Random();
+            //TODO Change according to map boundaries
             return new Vector3(random.Next(-400, 400), random.Next(-400, 400), 0);
         }
     }
