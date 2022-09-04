@@ -30,6 +30,9 @@ namespace Gameplay.Player
         private readonly SubscribedProperty<float> _verticalInput = new();
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
 
+        private const byte MAX_COUNT_RANDOMIZE_POSITION_PLAYER = 10;
+        private const float MAX_RADIUS_CLEAR_FROM_PLAYER = 40f;
+
         public PlayerController()
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
@@ -79,17 +82,16 @@ namespace Gameplay.Player
             int tryCount = 0;
             do
             {
-                if (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, 40f))
-                {
-                    startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
-                    tryCount++;
-                }
-                else
-                {
-                    //TODO Clear position for player spawn when too many tries happened
-                    break;
-                }
-            } while (tryCount <= 10);
+                startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
+                tryCount++;
+                
+            } while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, MAX_RADIUS_CLEAR_FROM_PLAYER) & tryCount <= MAX_COUNT_RANDOMIZE_POSITION_PLAYER);
+            
+            if (tryCount > MAX_COUNT_RANDOMIZE_POSITION_PLAYER) 
+            {
+                //TODO Clear position for player spawn when too many tries happened
+            }
+
             return startPlayerPosition;
         }
 
