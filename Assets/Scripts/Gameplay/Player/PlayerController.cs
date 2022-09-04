@@ -13,6 +13,7 @@ using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
+using Utilities.Unity;
 
 namespace Gameplay.Player
 {
@@ -30,10 +31,13 @@ namespace Gameplay.Player
         private readonly SubscribedProperty<float> _verticalInput = new();
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
 
+        private const byte MAX_COUNT_RANDOMIZE_POSITION_PLAYER = 10;
+        private const float MAX_RADIUS_CLEAR_FROM_PLAYER = 40f;
+
         public PlayerController()
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
-            _view = LoadView<PlayerView>(_viewPath, Vector3.zero);
+            _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
 
             var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
@@ -71,6 +75,31 @@ namespace Gameplay.Player
             var frontalGunsController = new FrontalGunsController(_primaryFireInput, turretConfigs, view);
             AddController(frontalGunsController);
             return frontalGunsController;
+        }
+
+        private Vector3 GetPlayerSpawnPosition()
+        {
+            Vector3 startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
+            int tryCount = 0;
+            do
+            {
+                startPlayerPosition = RandomizePositionAtMinus400ToPlus400();
+                tryCount++;
+                
+            } while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, MAX_RADIUS_CLEAR_FROM_PLAYER) & tryCount <= MAX_COUNT_RANDOMIZE_POSITION_PLAYER);
+            
+            if (tryCount > MAX_COUNT_RANDOMIZE_POSITION_PLAYER) 
+            {
+                //TODO Clear position for player spawn when too many tries happened
+            }
+
+            return startPlayerPosition;
+        }
+
+        private Vector3 RandomizePositionAtMinus400ToPlus400()
+        {
+            System.Random random = new System.Random();
+            return new Vector3(random.Next(-400, 400), random.Next(-400, 400), 0);
         }
     }
 }
