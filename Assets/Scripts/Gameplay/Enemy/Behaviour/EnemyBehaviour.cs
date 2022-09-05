@@ -1,5 +1,7 @@
 using System;
 using Gameplay.Player;
+using Scriptables.Enemy;
+using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 
 namespace Gameplay.Enemy.Behaviour
@@ -8,6 +10,7 @@ namespace Gameplay.Enemy.Behaviour
     {
         protected readonly EnemyView View;
         protected readonly PlayerView PlayerView;
+        protected readonly EnemyBehaviourConfig Config;
         
         private readonly SubscribedProperty<EnemyState> _enemyState;
         private bool _isDisposed;
@@ -28,6 +31,7 @@ namespace Gameplay.Enemy.Behaviour
             _enemyState = enemyState;
             View = view;
             PlayerView = playerView;
+            Config = Resources.Load<EnemyConfig>("Configs/Enemy/EnemyConfig").Behaviour;
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
 

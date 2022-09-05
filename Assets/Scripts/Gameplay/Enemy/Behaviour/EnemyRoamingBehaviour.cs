@@ -29,11 +29,10 @@ namespace Gameplay.Enemy.Behaviour
             EnemyView view,
             PlayerView playerView, 
             MovementModel movementModel, 
-            EnemyInputController inputController,
-            EnemyConfig config) : base(enemyState, view, playerView)
+            EnemyInputController inputController) : base(enemyState, view, playerView)
         {
-            _playerDetectionRadius = config.Behaviour.PlayerDetectionRadius;
-            _timeToPickNewAngle = config.Behaviour.TimeToPickNewAngle;
+            _playerDetectionRadius = Config.PlayerDetectionRadius;
+            _timeToPickNewAngle = Config.TimeToPickNewAngle;
             _movementModel = movementModel;
             _inputController = inputController;
         }

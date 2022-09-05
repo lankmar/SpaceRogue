@@ -14,7 +14,6 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly MovementModel _movementModel;
         private readonly EnemyInputController _inputController;
-        private readonly EnemyView _enemyView;
         private readonly PlayerView _playerView;
         private readonly FrontalTurretController _frontalTurret;
         private readonly float _shootingDistance;
@@ -26,20 +25,18 @@ namespace Gameplay.Enemy.Behaviour
             PlayerView playerView, 
             MovementModel movementModel, 
             EnemyInputController inputController,
-            FrontalTurretController frontalTurret,
-            EnemyConfig config) : base(enemyState, view, playerView)
+            FrontalTurretController frontalTurret) : base(enemyState, view, playerView)
         {
             _movementModel = movementModel;
             _inputController = inputController;
             _frontalTurret = frontalTurret;
-            _enemyView = view;
             _playerView = playerView;
-            _shootingDistance = config.Behaviour.ShootingDistance;
+            _shootingDistance = Config.ShootingDistance;
         }
 
         protected override void OnUpdate()
         {
-            TurnToRandomDirection();
+            RotateTowardsPlayer();
             Move();
             Shooting();
         }
@@ -59,7 +56,7 @@ namespace Gameplay.Enemy.Behaviour
                 _inputController.Decelerate();
                 return;
             }
-            var quarterMaxSpeed = _movementModel.MaxSpeed / 2;
+            var quarterMaxSpeed = _movementModel.MaxSpeed;
             switch (CompareSpeeds(_movementModel.CurrentSpeed, quarterMaxSpeed))
             {
                 case -1: { _inputController.Accelerate(); return; }
@@ -75,9 +72,9 @@ namespace Gameplay.Enemy.Behaviour
             return 1;
         }
         
-        private void TurnToRandomDirection()
+        private void RotateTowardsPlayer()
         {
-            _targetDirection = _enemyView.transform.worldToLocalMatrix.MultiplyPoint(_playerView.transform.position).normalized;
+            _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(_playerView.transform.position).normalized;
             var currentDirection = View.transform.InverseTransformDirection(Vector3.up);
 
             if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))

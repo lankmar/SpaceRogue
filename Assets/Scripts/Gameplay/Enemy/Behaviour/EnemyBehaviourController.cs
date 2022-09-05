@@ -52,13 +52,13 @@ namespace Gameplay.Enemy.Behaviour
             switch (newState)
             {
                 case EnemyState.Idle:
-                    _currentBehaviour = new EnemyIdleBehaviour(_enemyCurrentState, _view, _playerView, _enemyConfig);
+                    _currentBehaviour = new EnemyIdleBehaviour(_enemyCurrentState, _view, _playerView);
                     break;
                 case EnemyState.PassiveRoaming:
-                    _currentBehaviour = new EnemyRoamingBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _enemyConfig);
+                    _currentBehaviour = new EnemyRoamingBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController);
                     break;
                 case EnemyState.InCombat:
-                    _currentBehaviour = new EnemyCombatBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _turretController, _enemyConfig);
+                    _currentBehaviour = new EnemyCombatBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _turretController);
                     break;
                 default: return;
             }
