@@ -12,7 +12,7 @@ namespace UI.Game
     {
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
-        public DestroyPlayerView DestroyPlayerViewComponent { get; private set; }
+        public DestroyPlayerMessageView DestroyPlayerViewComponent { get; private set; }
 
         private readonly Canvas _mainCanvas;
 
@@ -22,7 +22,7 @@ namespace UI.Game
 
         private PlayerStatusBarView _playerStatusBarView;
         private PlayerSpeedometerView _playerSpeedometerView;
-        private DestroyPlayerView _playerDestroyPlayerView;
+        private DestroyPlayerMessageView _playerDestroyPlayerView;
 
         private readonly ResourcePath _playerStatusBarCanvasPath = new("Prefabs/Canvas/Game/StatusBarCanvas");
         private readonly ResourcePath _playerSpeedometerCanvasPath = new("Prefabs/Canvas/Game/SpeedometerCanvas");
@@ -64,8 +64,8 @@ namespace UI.Game
         public void AddDestroyPlayerMessage()
         {
             _playerDestroyPlayerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyPlayerCanvasPath, _mainCanvas.transform);
-            _playerDestroyPlayerView = _playerDestroyPlayerCanvas.GetComponent<DestroyPlayerView>();
-            _playerDestroyPlayerView.ClickAction = _exitToMenu;
+            _playerDestroyPlayerView = _playerDestroyPlayerCanvas.GetComponent<DestroyPlayerMessageView>();
+            _playerDestroyPlayerView.DestroyPlayerButton.Init(_exitToMenu);
             DestroyPlayerViewComponent = _playerDestroyPlayerView;
             AddGameObject(_playerDestroyPlayerCanvas.gameObject);
         }

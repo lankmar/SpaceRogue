@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4465602262824187156}
   - component: {fileID: 4969006129283609889}
   - component: {fileID: 7667580802109007636}
-  - component: {fileID: 1669877286530921708}
+  - component: {fileID: 7431979098606139017}
   - component: {fileID: 9026776976838525842}
   m_Layer: 0
   m_Name: DestroyPlayerCanvas
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1669877286530921708
+--- !u!114 &7431979098606139017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,9 +113,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5816511103279595073}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df080e3f5ef1b77488fd54c2edf1e4f6, type: 3}
+  m_Script: {fileID: 11500000, guid: daa2d5bdc1721b8488bc0211e77d1c31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DestroyPlayerButton: {fileID: 3215549702474202367}
 --- !u!114 &9026776976838525842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,6 +458,7 @@ GameObject:
   - component: {fileID: 2504204473860334477}
   - component: {fileID: 8203489878189471907}
   - component: {fileID: 3196654476480183682}
+  - component: {fileID: 3215549702474202367}
   m_Layer: 0
   m_Name: DestroyPlayerButton
   m_TagString: Untagged
@@ -567,3 +569,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3215549702474202367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9167199104376560405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a031732a0c1294f468304a5571a7a604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
