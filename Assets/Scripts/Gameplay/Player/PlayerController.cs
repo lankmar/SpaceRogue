@@ -21,6 +21,7 @@ namespace Gameplay.Player
 
         private readonly ResourcePath _configPath = new("Configs/Player/PlayerConfig");
         private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
+        private readonly ResourcePath _crosshairPrefab = new("Prefabs/Stuff/Crosshair");
 
         private readonly PlayerConfig _config;
         private readonly PlayerView _view;
@@ -33,14 +34,23 @@ namespace Gameplay.Player
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, Vector3.zero);
+            var crosshairView = ResourceLoader.LoadPrefab(_crosshairPrefab);
 
             var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
+
+            var crosshair = Object.Instantiate(
+                crosshairView,
+                _view.transform.TransformDirection(Vector3.up * 6f * _view.transform.localScale.y),
+                _view.transform.rotation
+            );
+            crosshair.transform.parent = _view.transform;
 
             var inventoryController = AddInventoryController(_config.Inventory);
             var movementController = AddMovementController(inventoryController.Engine, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
             var healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig);
+            AddGameObject(crosshair);
         }
 
         private HealthController AddHealthController(HealthConfig healthConfig, ShieldConfig shieldConfig)
