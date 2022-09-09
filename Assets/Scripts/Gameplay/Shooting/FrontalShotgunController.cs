@@ -33,7 +33,7 @@ namespace Gameplay.Shooting
                 return;
             }
 
-            FireMultipleProjectiles(_weaponConfig.PelletAmount, _weaponConfig.SprayAngle);
+            FireMultipleProjectiles(_weaponConfig.PelletCount, _weaponConfig.SprayAngle);
 
             CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
