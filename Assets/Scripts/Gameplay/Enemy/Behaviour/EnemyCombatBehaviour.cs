@@ -14,7 +14,6 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly MovementModel _movementModel;
         private readonly EnemyInputController _inputController;
-        private readonly PlayerView _playerView;
         private readonly FrontalTurretController _frontalTurret;
         private readonly float _shootingDistance;
         private Vector3 _targetDirection;        
@@ -25,12 +24,12 @@ namespace Gameplay.Enemy.Behaviour
             PlayerView playerView, 
             MovementModel movementModel, 
             EnemyInputController inputController,
-            FrontalTurretController frontalTurret) : base(enemyState, view, playerView)
+            FrontalTurretController frontalTurret, 
+            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
         {
             _movementModel = movementModel;
             _inputController = inputController;
             _frontalTurret = frontalTurret;
-            _playerView = playerView;
             _shootingDistance = Config.ShootingDistance;
         }
 
@@ -43,7 +42,7 @@ namespace Gameplay.Enemy.Behaviour
 
         private void Shooting()
         {
-            var currentDirection = View.transform.InverseTransformDirection(Vector3.up);
+            var currentDirection = View.transform.TransformDirection(Vector3.up);
             if (!UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
             {
                 _frontalTurret.CommenceFiring();
@@ -51,13 +50,13 @@ namespace Gameplay.Enemy.Behaviour
         }
         private void Move()
         {
-            if (Vector3.Distance(_playerView.transform.position, View.transform.position) <= _shootingDistance)
+            if (Vector3.Distance(PlayerView.transform.position, View.transform.position) <= _shootingDistance)
             {
                 _inputController.Decelerate();
                 return;
             }
-            var quarterMaxSpeed = _movementModel.MaxSpeed;
-            switch (CompareSpeeds(_movementModel.CurrentSpeed, quarterMaxSpeed))
+            var MaxSpeed = _movementModel.MaxSpeed;
+            switch (CompareSpeeds(_movementModel.CurrentSpeed, MaxSpeed))
             {
                 case -1: { _inputController.Accelerate(); return; }
                 case 0: { _inputController.HoldSpeed(); return; }
@@ -74,8 +73,8 @@ namespace Gameplay.Enemy.Behaviour
         
         private void RotateTowardsPlayer()
         {
-            _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(_playerView.transform.position).normalized;
-            var currentDirection = View.transform.InverseTransformDirection(Vector3.up);
+            _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(PlayerView.transform.position).normalized;
+            var currentDirection = View.transform.TransformDirection(Vector3.up);
 
             if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
             {

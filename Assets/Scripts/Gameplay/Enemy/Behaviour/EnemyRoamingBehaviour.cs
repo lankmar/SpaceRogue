@@ -22,14 +22,14 @@ namespace Gameplay.Enemy.Behaviour
         private readonly float _playerDetectionRadius;
         private readonly float _timeToPickNewAngle;
         private float _timeBeforeUpdate;
-        private bool _flagPicker;
         
         public EnemyRoamingBehaviour(
             SubscribedProperty<EnemyState> enemyState,
             EnemyView view,
             PlayerView playerView, 
             MovementModel movementModel, 
-            EnemyInputController inputController) : base(enemyState, view, playerView)
+            EnemyInputController inputController,
+            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
         {
             _playerDetectionRadius = Config.PlayerDetectionRadius;
             _timeToPickNewAngle = Config.TimeToPickNewAngle;
@@ -39,12 +39,8 @@ namespace Gameplay.Enemy.Behaviour
         
         protected override void OnUpdate()
         {
-            if (!_flagPicker)
-            {
-                PickRandomAngle(); 
-            }
             TimeToUpdateMethod();
-            ChangerState();
+            DetectPlayer();
             MoveAtLowSpeed();
             TurnToRandomDirection();
         }
@@ -56,7 +52,6 @@ namespace Gameplay.Enemy.Behaviour
 
         private void TimeToUpdateMethod()
         {
-            _flagPicker =  true;
             if (_timeBeforeUpdate <= _timeToPickNewAngle)
             {
                 _timeBeforeUpdate += Time.deltaTime;
@@ -64,7 +59,7 @@ namespace Gameplay.Enemy.Behaviour
             else
             {
                 _timeBeforeUpdate = 0;
-                _flagPicker = false;
+                PickRandomAngle();
             }
         }
         private void MoveAtLowSpeed()
@@ -112,7 +107,7 @@ namespace Gameplay.Enemy.Behaviour
             }
         }
 
-        private void ChangerState()
+        private void DetectPlayer()
         {
             if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < _playerDetectionRadius)
             {

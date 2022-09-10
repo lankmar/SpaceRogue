@@ -10,7 +10,8 @@ namespace Gameplay.Enemy.Behaviour
         private readonly float _playerDetectionRadius;
         public EnemyIdleBehaviour(SubscribedProperty<EnemyState> enemyState,
             EnemyView view,
-            PlayerView playerView) : base(enemyState, view, playerView)
+            PlayerView playerView,
+            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
         {
             _playerDetectionRadius = Config.PlayerDetectionRadius;
         }

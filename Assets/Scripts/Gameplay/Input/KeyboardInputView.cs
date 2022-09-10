@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utilities.Unity;
 
 namespace Gameplay.Input
 {
@@ -28,6 +29,21 @@ namespace Gameplay.Input
         private void CheckHorizontalInput()
         {
             float horizontalOffset = UnityEngine.Input.GetAxis(Horizontal);
+            
+            var mousePosition = UnityEngine.Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
+            
+            mousePosition = transform.worldToLocalMatrix.MultiplyPoint(mousePosition).normalized;
+            
+            var direction = transform.TransformDirection(Vector3.up);
+            
+            horizontalOffset = 0;
+            
+            if (!UnityHelper.Approximately(mousePosition, direction, 0.1f))
+            {
+                horizontalOffset = mousePosition.x <= 0 ? -1 : 1;
+            }
+            Debug.LogWarning($"{mousePosition}   {direction}");
+            Debug.Log(horizontalOffset);
             float inputValue = CalculateInputValue(horizontalOffset, horizontalAxisInputMultiplier);
             OnHorizontalInput(inputValue);
         }
