@@ -1,9 +1,6 @@
 using Abstracts;
-using Gameplay;
 using System;
-using UI.Abstracts;
 using UnityEngine;
-using UnityEngine.UI;
 using Utilities.ResourceManagement;
 
 namespace UI.Game
@@ -64,7 +61,7 @@ namespace UI.Game
         {
             _playerDestroyedCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyedCanvasPath, _mainCanvas.transform);
             _playerDestroyedMessageView = _playerDestroyedCanvas.GetComponent<DestroyPlayerMessageView>();
-            _playerDestroyedMessageView.DestroyPlayerButton.Init(_exitToMenu);
+            _playerDestroyedMessageView.Init(_exitToMenu);
             AddGameObject(_playerDestroyedCanvas.gameObject);
         }
     }

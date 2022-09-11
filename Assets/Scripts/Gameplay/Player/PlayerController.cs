@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Abstracts;
 using Gameplay.Health;
 using Gameplay.Input;
@@ -9,6 +7,8 @@ using Gameplay.Player.Movement;
 using Scriptables;
 using Scriptables.Health;
 using Scriptables.Modules;
+using System;
+using System.Collections.Generic;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;

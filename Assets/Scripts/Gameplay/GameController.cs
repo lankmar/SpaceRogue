@@ -1,12 +1,11 @@
 using Abstracts;
-using Gameplay.Enemy;
 using Gameplay.Camera;
+using Gameplay.Enemy;
 using Gameplay.GameState;
 using Gameplay.Player;
 using Gameplay.Space;
 using UI.Game;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Gameplay
 {
