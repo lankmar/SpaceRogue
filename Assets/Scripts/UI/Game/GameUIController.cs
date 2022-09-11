@@ -12,21 +12,20 @@ namespace UI.Game
     {
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
-        public DestroyPlayerMessageView DestroyPlayerViewComponent { get; private set; }
 
         private readonly Canvas _mainCanvas;
 
         private Canvas _playerStatusBarCanvas;
         private Canvas _playerSpeedometerCanvas;
-        private Canvas _playerDestroyPlayerCanvas;
+        private Canvas _playerDestroyedCanvas;
 
         private PlayerStatusBarView _playerStatusBarView;
         private PlayerSpeedometerView _playerSpeedometerView;
-        private DestroyPlayerMessageView _playerDestroyPlayerView;
+        private DestroyPlayerMessageView _playerDestroyedMessageView;
 
         private readonly ResourcePath _playerStatusBarCanvasPath = new("Prefabs/Canvas/Game/StatusBarCanvas");
         private readonly ResourcePath _playerSpeedometerCanvasPath = new("Prefabs/Canvas/Game/SpeedometerCanvas");
-        private readonly ResourcePath _playerDestroyPlayerCanvasPath = new("Prefabs/Canvas/Game/DestroyPlayerCanvas");
+        private readonly ResourcePath _playerDestroyedCanvasPath = new("Prefabs/Canvas/Game/DestroyPlayerCanvas");
 
         private Action _exitToMenu;
 
@@ -63,11 +62,10 @@ namespace UI.Game
             
         public void AddDestroyPlayerMessage()
         {
-            _playerDestroyPlayerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyPlayerCanvasPath, _mainCanvas.transform);
-            _playerDestroyPlayerView = _playerDestroyPlayerCanvas.GetComponent<DestroyPlayerMessageView>();
-            _playerDestroyPlayerView.DestroyPlayerButton.Init(_exitToMenu);
-            DestroyPlayerViewComponent = _playerDestroyPlayerView;
-            AddGameObject(_playerDestroyPlayerCanvas.gameObject);
+            _playerDestroyedCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyedCanvasPath, _mainCanvas.transform);
+            _playerDestroyedMessageView = _playerDestroyedCanvas.GetComponent<DestroyPlayerMessageView>();
+            _playerDestroyedMessageView.DestroyPlayerButton.Init(_exitToMenu);
+            AddGameObject(_playerDestroyedCanvas.gameObject);
         }
     }
 }
