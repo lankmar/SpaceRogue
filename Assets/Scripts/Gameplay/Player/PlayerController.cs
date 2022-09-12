@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Abstracts;
 using Gameplay.Health;
 using Gameplay.Input;
@@ -9,11 +8,12 @@ using Gameplay.Player.Movement;
 using Scriptables;
 using Scriptables.Health;
 using Scriptables.Modules;
+using System;
+using System.Collections.Generic;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
-using Utilities.Unity;
 
 namespace Gameplay.Player
 {
@@ -33,6 +33,8 @@ namespace Gameplay.Player
 
         private const byte MaxCountOfPlayerSpawnTries = 10;
         private const float PlayerSpawnClearanceRadius = 40.0f;
+        
+        public event Action PlayerDestroyed = () => { };
 
         public PlayerController()
         {
@@ -52,6 +54,7 @@ namespace Gameplay.Player
         {
             var healthController = new HealthController(healthConfig, shieldConfig, GameUIController.PlayerStatusBarView, _view);
             healthController.SubscribeToOnDestroy(Dispose);
+            healthController.SubscribeToOnDestroy(OnPlayerDestroyed);
             AddController(healthController);
             return healthController;
         }
@@ -101,6 +104,11 @@ namespace Gameplay.Player
             var random = new System.Random();
             //TODO Change according to map boundaries
             return new Vector3(random.Next(-400, 400), random.Next(-400, 400), 0);
+        }
+        
+        public void OnPlayerDestroyed()
+        {
+            PlayerDestroyed();
         }
     }
 }
