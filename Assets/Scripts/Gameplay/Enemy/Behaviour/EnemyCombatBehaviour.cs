@@ -12,7 +12,6 @@ namespace Gameplay.Enemy.Behaviour
 {
     public class EnemyCombatBehaviour : EnemyBehaviour
     {
-        private readonly MovementModel _movementModel;
         private readonly EnemyInputController _inputController;
         private readonly FrontalTurretController _frontalTurret;
         private Vector3 _targetDirection;        
@@ -20,13 +19,11 @@ namespace Gameplay.Enemy.Behaviour
         public EnemyCombatBehaviour(
             SubscribedProperty<EnemyState> enemyState, 
             EnemyView view,
-            PlayerView playerView, 
-            MovementModel movementModel, 
+            PlayerView playerView,
             EnemyInputController inputController,
-            FrontalTurretController frontalTurret, 
+            FrontalTurretController frontalTurret,
             EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
         {
-            _movementModel = movementModel;
             _inputController = inputController;
             _frontalTurret = frontalTurret;
         }
