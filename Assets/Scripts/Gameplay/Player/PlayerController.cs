@@ -14,6 +14,7 @@ using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
+using Utilities.Unity;
 
 namespace Gameplay.Player
 {
@@ -61,7 +62,7 @@ namespace Gameplay.Player
 
         private PlayerInventoryController AddInventoryController(PlayerInventoryConfig config)
         {
-            var inventoryController = new PlayerInventoryController(_config.Inventory);
+            var inventoryController = new PlayerInventoryController(config);
             AddController(inventoryController);
             return inventoryController;
         }
