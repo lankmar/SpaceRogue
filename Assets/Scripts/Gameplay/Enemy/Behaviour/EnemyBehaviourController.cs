@@ -18,12 +18,12 @@ namespace Gameplay.Enemy.Behaviour
         private readonly FrontalTurretController _turretController;
         private readonly EnemyView _view;
         private readonly PlayerView _playerView;
-        private readonly EnemyConfig _enemyConfig;
+        private readonly EnemyBehaviourConfig _enemyConfig;
         
         private EnemyBehaviour _currentBehaviour;
 
         public EnemyBehaviourController(MovementModel movementModel, EnemyView view,
-            FrontalTurretController turretController, PlayerView playerView, EnemyConfig config)
+            FrontalTurretController turretController, PlayerView playerView, EnemyBehaviourConfig config)
         {
             _view = view;
             _movementModel = movementModel;
@@ -52,13 +52,13 @@ namespace Gameplay.Enemy.Behaviour
             switch (newState)
             {
                 case EnemyState.Idle:
-                    _currentBehaviour = new EnemyIdleBehaviour(_enemyCurrentState, _view, _playerView, _enemyConfig.Behaviour);
+                    _currentBehaviour = new EnemyIdleBehaviour(_enemyCurrentState, _view, _playerView, _enemyConfig);
                     break;
                 case EnemyState.PassiveRoaming:
-                    _currentBehaviour = new EnemyRoamingBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _enemyConfig.Behaviour);
+                    _currentBehaviour = new EnemyRoamingBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _enemyConfig);
                     break;
                 case EnemyState.InCombat:
-                    _currentBehaviour = new EnemyCombatBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _turretController, _enemyConfig.Behaviour);
+                    _currentBehaviour = new EnemyCombatBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _turretController, _enemyConfig);
                     break;
                 default: return;
             }

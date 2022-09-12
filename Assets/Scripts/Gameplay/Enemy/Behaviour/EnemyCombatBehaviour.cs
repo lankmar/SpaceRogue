@@ -15,7 +15,6 @@ namespace Gameplay.Enemy.Behaviour
         private readonly MovementModel _movementModel;
         private readonly EnemyInputController _inputController;
         private readonly FrontalTurretController _frontalTurret;
-        private readonly float _shootingDistance;
         private Vector3 _targetDirection;        
 
         public EnemyCombatBehaviour(
@@ -30,7 +29,6 @@ namespace Gameplay.Enemy.Behaviour
             _movementModel = movementModel;
             _inputController = inputController;
             _frontalTurret = frontalTurret;
-            _shootingDistance = Config.ShootingDistance;
         }
 
         protected override void OnUpdate()
@@ -43,34 +41,23 @@ namespace Gameplay.Enemy.Behaviour
         private void Shooting()
         {
             var currentDirection = View.transform.TransformDirection(Vector3.up);
-            if (!UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
+            if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
             {
                 _frontalTurret.CommenceFiring();
             }
         }
         private void Move()
         {
-            if (Vector3.Distance(PlayerView.transform.position, View.transform.position) <= _shootingDistance)
+            if (Vector3.Distance(PlayerView.transform.position, View.transform.position) <= Config.ShootingDistance)
             {
                 _inputController.Decelerate();
-                return;
             }
-            var MaxSpeed = _movementModel.MaxSpeed;
-            switch (CompareSpeeds(_movementModel.CurrentSpeed, MaxSpeed))
+            else
             {
-                case -1: { _inputController.Accelerate(); return; }
-                case 0: { _inputController.HoldSpeed(); return; }
-                case 1: { _inputController.Decelerate(); return; }
+                _inputController.Accelerate();
             }
         }
-        
-        private int CompareSpeeds(float currentSpeed, float targetSpeed)
-        {
-            if (UnityHelper.Approximately(currentSpeed, targetSpeed, 0.1f)) return 0;
-            if (currentSpeed < targetSpeed) return -1;
-            return 1;
-        }
-        
+
         private void RotateTowardsPlayer()
         {
             _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(PlayerView.transform.position).normalized;

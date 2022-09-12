@@ -7,13 +7,11 @@ namespace Gameplay.Enemy.Behaviour
 {
     public class EnemyIdleBehaviour : EnemyBehaviour
     {
-        private readonly float _playerDetectionRadius;
         public EnemyIdleBehaviour(SubscribedProperty<EnemyState> enemyState,
             EnemyView view,
             PlayerView playerView,
             EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
         {
-            _playerDetectionRadius = Config.PlayerDetectionRadius;
         }
 
         protected override void OnUpdate()
@@ -23,7 +21,7 @@ namespace Gameplay.Enemy.Behaviour
         
         private void DetectPlayer()
         {
-            if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < _playerDetectionRadius)
+            if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
             {
                 EnterCombat();
             }
