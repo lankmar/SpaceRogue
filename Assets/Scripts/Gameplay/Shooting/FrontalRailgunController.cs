@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace Gameplay.Shooting
 {
-    public class FrontalBlasterController : FrontalTurretController
+    public class FrontalRailgunController : FrontalTurretController
     {
-        private readonly BlasterWeaponConfig _weaponConfig;
+        private readonly RailgunWeaponConfig _weaponConfig;
 
-        public FrontalBlasterController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
+        public FrontalRailgunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
-            var blasterConfig = config.SpecificWeapon as BlasterWeaponConfig;
-            if (blasterConfig is null)
+            var railgunConfig = config.SpecificWeapon as RailgunWeaponConfig;
+            if (railgunConfig is null)
             {
                 throw new System.Exception("wrong config type was provided");
             }
-            _weaponConfig = blasterConfig;
+            _weaponConfig = railgunConfig;
 
             EntryPoint.SubscribeToUpdate(CoolDown);
         }
@@ -41,5 +41,5 @@ namespace Gameplay.Shooting
         {
             BasicCoolDown();
         }
-    }
+    }   
 }
