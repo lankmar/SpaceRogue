@@ -5,8 +5,17 @@ namespace Gameplay.Shooting
 {
     public class FrontalBlasterController : FrontalTurretController
     {
+        private readonly BlasterWeaponConfig _weaponConfig;
+
         public FrontalBlasterController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
+            var blasterConfig = config.SpecificWeapon as BlasterWeaponConfig;
+            if (blasterConfig is null)
+            {
+                throw new System.Exception("wrong config type was provided");
+            }
+            _weaponConfig = blasterConfig;
+
             EntryPoint.SubscribeToUpdate(CoolDown);
         }
         
@@ -25,7 +34,7 @@ namespace Gameplay.Shooting
             var projectile = ProjectileFactory.CreateProjectile();
             AddController(projectile);
 
-            CooldownTimer = Config.Cooldown;
+            CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
 
         public override void CoolDown()
