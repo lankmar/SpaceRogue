@@ -1,17 +1,20 @@
-using System.Collections.Generic;
 using Abstracts;
 using Gameplay.Health;
 using Gameplay.Input;
+using Gameplay.Movement;
 using Gameplay.Player.FrontalGuns;
 using Gameplay.Player.Inventory;
 using Gameplay.Player.Movement;
 using Scriptables;
 using Scriptables.Health;
 using Scriptables.Modules;
+using System;
+using System.Collections.Generic;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
+using Utilities.Unity;
 
 namespace Gameplay.Player
 {
@@ -30,24 +33,29 @@ namespace Gameplay.Player
         private readonly SubscribedProperty<float> _verticalInput = new();
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
 
+        private const byte MaxCountOfPlayerSpawnTries = 10;
+        private const float PlayerSpawnClearanceRadius = 40.0f;
+
+        public event Action PlayerDestroyed = () => { };
+
         public PlayerController()
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
-            _view = LoadView<PlayerView>(_viewPath, Vector3.zero);
+            _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
             var crosshairView = ResourceLoader.LoadPrefab(_crosshairPrefab);
 
             var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
 
-            var crosshair = Object.Instantiate(
+            var crosshair = GameObject.Instantiate(
                 crosshairView,
-                _view.transform.TransformDirection(Vector3.up * 6f * _view.transform.localScale.y),
+                _view.transform.position + _view.transform.TransformDirection(Vector3.up * 6f * _view.transform.localScale.y),
                 _view.transform.rotation
             );
             crosshair.transform.parent = _view.transform;
 
             var inventoryController = AddInventoryController(_config.Inventory);
-            var movementController = AddMovementController(inventoryController.Engine, _view);
+            var movementController = AddMovementController(_config.Movement, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
             var healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig);
             AddGameObject(crosshair);
@@ -57,18 +65,19 @@ namespace Gameplay.Player
         {
             var healthController = new HealthController(healthConfig, shieldConfig, GameUIController.PlayerStatusBarView, _view);
             healthController.SubscribeToOnDestroy(Dispose);
+            healthController.SubscribeToOnDestroy(OnPlayerDestroyed);
             AddController(healthController);
             return healthController;
         }
 
         private PlayerInventoryController AddInventoryController(PlayerInventoryConfig config)
         {
-            var inventoryController = new PlayerInventoryController(_config.Inventory);
+            var inventoryController = new PlayerInventoryController(config);
             AddController(inventoryController);
             return inventoryController;
         }
 
-        private PlayerMovementController AddMovementController(EngineModuleConfig movementConfig, PlayerView view)
+        private PlayerMovementController AddMovementController(MovementConfig movementConfig, PlayerView view)
         {
             var movementController = new PlayerMovementController(_horizontalInput, _verticalInput, movementConfig, view);
             AddController(movementController);
@@ -80,6 +89,37 @@ namespace Gameplay.Player
             var frontalGunsController = new FrontalGunsController(_primaryFireInput, turretConfigs, view);
             AddController(frontalGunsController);
             return frontalGunsController;
+        }
+
+        private Vector3 GetPlayerSpawnPosition()
+        {
+            Vector3 startPlayerPosition;
+            int tryCount = 0;
+            do
+            {
+                startPlayerPosition = RandomizePlayerStartPosition();
+                tryCount++;
+            }
+            while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, PlayerSpawnClearanceRadius) && tryCount <= MaxCountOfPlayerSpawnTries);
+
+            if (tryCount > MaxCountOfPlayerSpawnTries)
+            {
+                //TODO Clear position for player spawn when too many tries happened
+            }
+
+            return startPlayerPosition;
+        }
+
+        private Vector3 RandomizePlayerStartPosition()
+        {
+            var random = new System.Random();
+            //TODO Change according to map boundaries
+            return new Vector3(random.Next(-400, 400), random.Next(-400, 400), 0);
+        }
+
+        public void OnPlayerDestroyed()
+        {
+            PlayerDestroyed();
         }
     }
 }
