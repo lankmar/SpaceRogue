@@ -26,12 +26,12 @@ namespace Gameplay.Enemy.Behaviour
             EntryPoint.UnsubscribeFromUpdate(OnUpdate);
         }
 
-        protected EnemyBehaviour(SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerView playerView, EnemyBehaviourConfig config)
+        protected EnemyBehaviour(SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerView playerView)
         {
             _enemyState = enemyState;
             View = view;
             PlayerView = playerView;
-            Config = config;
+            Config = Resources.Load<EnemyConfig>("Configs/Enemy/EnemyConfig").Behaviour;
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
 
