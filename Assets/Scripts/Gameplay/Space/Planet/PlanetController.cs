@@ -19,12 +19,14 @@ namespace Gameplay.Space.Planet
             _starView = starView;
             _currentSpeed = speed;
             _isMovingRetrograde = isMovingRetrograde;
-            
+            _view.CollisionEnter += Dispose;
+
             EntryPoint.SubscribeToUpdate(Move);
         }
 
         protected override void OnDispose()
         {
+            _view.CollisionEnter -= Dispose;
             EntryPoint.UnsubscribeFromUpdate(Move);
         }
 
