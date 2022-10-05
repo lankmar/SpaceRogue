@@ -14,7 +14,7 @@ namespace Gameplay.Shooting
         protected readonly TurretModuleConfig Config;
         protected readonly ProjectileFactory ProjectileFactory;
 
-        private readonly ResourcePath _gunPointPrefab = new("Prefabs/Stuff/GunPoint");
+        private readonly ResourcePath _gunPointPrefab = new(Constants.Prefabs.Stuff.GunPoint);
         
 
         public FrontalTurretController(TurretModuleConfig config, Transform gunPointParentTransform)

@@ -10,7 +10,7 @@ namespace Gameplay.Enemy
 {
     public class EnemyForcesController : BaseController
     {
-        private readonly ResourcePath _groupSpawnConfigPath = new("Configs/Enemy/EnemySpawnConfig");
+        private readonly ResourcePath _groupSpawnConfigPath = new(Constants.Configs.Enemy.EnemySpawnConfig);
         private readonly EnemyFactory _enemyFactory;
         private readonly PlayerView _playerView;
 
