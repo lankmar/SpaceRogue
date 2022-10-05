@@ -1,52 +1,74 @@
+using System.IO;
+
 static class Constants
 {
     public record Configs
     {
+        private static readonly string CONFIGS = nameof(Configs);
+
         public record Player
         {
-            public const string PlayerConfig = "Configs/Player/PlayerConfig";
+            private static readonly string PLAYER = Path.Combine(CONFIGS, nameof(Player));
+
+            public static readonly string PlayerConfig = Path.Combine(PLAYER, nameof(PlayerConfig));
         }
 
         public record Enemy
         {
-            public const string EnemySpawnConfig = "Configs/Enemy/EnemySpawnConfig";
+            private static readonly string ENEMY = Path.Combine(CONFIGS, nameof(Enemy));
+
+            public static readonly string EnemySpawnConfig = Path.Combine(ENEMY, nameof(EnemySpawnConfig));
         }
 
         public record Space
         {
-            public const string SpaceConfig = "Configs/Space/SpaceConfig";
-            public const string DefaultStarSpawn = "Configs/Space/DefaultStarSpawn";
-            public const string DefaultPlanetSpawn = "Configs/Space/DefaultPlanetSpawn";
+            private static readonly string SPACE = Path.Combine(CONFIGS, nameof(Space));
+
+            public static readonly string SpaceConfig = Path.Combine(SPACE, nameof(SpaceConfig));
+            public static readonly string DefaultStarSpawn = Path.Combine(SPACE, nameof(DefaultStarSpawn));
+            public static readonly string DefaultPlanetSpawn = Path.Combine(SPACE, nameof(DefaultPlanetSpawn));
         }
     }
 
     public record Prefabs
     {
+        private static readonly string PREFABS = nameof(Prefabs);
+
         public record Input
         {
-            public const string KeyboardInput = "Prefabs/Input/KeyboardInput";
+            private static readonly string INPUT = Path.Combine(PREFABS, nameof(Input));
+
+            public static readonly string KeyboardInput = Path.Combine(INPUT, nameof(KeyboardInput));
         }
 
         public record Gameplay
         {
-            public const string Player = "Prefabs/Gameplay/Player";
+            private static readonly string GAMEPLAY = Path.Combine(PREFABS, nameof(Gameplay));
+
+            public static readonly string Player = Path.Combine(GAMEPLAY, nameof(Player));
         }
 
         public record Stuff
         {
-            public const string GunPoint = "Prefabs/Stuff/GunPoint";
+            private static readonly string STUFF = Path.Combine(PREFABS, nameof(Stuff));
+
+            public static readonly string GunPoint = Path.Combine(STUFF, nameof(GunPoint));
         }
 
         public record Canvas
         {
-            public const string UICamera = "Prefabs/Canvas/UICamera";
-            public const string MainCanvas = "Prefabs/Canvas/MainCanvas";
+            private static readonly string CANVAS = Path.Combine(PREFABS, nameof(Canvas));
+
+            public static readonly string UICamera = Path.Combine(CANVAS, nameof(UICamera));
+            public static readonly string MainCanvas = Path.Combine(CANVAS, nameof(MainCanvas));
 
             public record Game
             {
-                public const string StatusBarCanvas = "Prefabs/Canvas/Game/StatusBarCanvas";
-                public const string SpeedometerCanvas = "Prefabs/Canvas/Game/SpeedometerCanvas";
-                public const string DestroyPlayerCanvas = "Prefabs/Canvas/Game/DestroyPlayerCanvas";
+                private static readonly string GAME = Path.Combine(CANVAS, nameof(Game));
+
+                public static readonly string StatusBarCanvas = Path.Combine(GAME, nameof(StatusBarCanvas));
+                public static readonly string SpeedometerCanvas = Path.Combine(GAME, nameof(SpeedometerCanvas));
+                public static readonly string DestroyPlayerCanvas = Path.Combine(GAME, nameof(DestroyPlayerCanvas));
             }
         }
     }
