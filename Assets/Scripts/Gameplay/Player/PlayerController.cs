@@ -42,23 +42,15 @@ namespace Gameplay.Player
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
-            var crosshairView = ResourceLoader.LoadPrefab(_crosshairPrefab);
 
             var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
-
-            var crosshair = GameObject.Instantiate(
-                crosshairView,
-                _view.transform.position + _view.transform.TransformDirection(Vector3.up * 6f * _view.transform.localScale.y),
-                _view.transform.rotation
-            );
-            crosshair.transform.parent = _view.transform;
 
             var inventoryController = AddInventoryController(_config.Inventory);
             var movementController = AddMovementController(_config.Movement, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
             var healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig);
-            AddGameObject(crosshair);
+            AddCrosshair();
         }
 
         private HealthController AddHealthController(HealthConfig healthConfig, ShieldConfig shieldConfig)
@@ -115,6 +107,19 @@ namespace Gameplay.Player
             var random = new System.Random();
             //TODO Change according to map boundaries
             return new Vector3(random.Next(-400, 400), random.Next(-400, 400), 0);
+        }
+
+        private void AddCrosshair()
+        {
+            var crosshairView = ResourceLoader.LoadPrefab(_crosshairPrefab);
+            var viewTransform = _view.transform;
+            var crosshair = UnityEngine.Object.Instantiate(
+                crosshairView,
+                viewTransform.position + _view.transform.TransformDirection(Vector3.up * (viewTransform.localScale.y + 20f)),
+                viewTransform.rotation
+            );
+            crosshair.transform.parent = _view.transform;
+            AddGameObject(crosshair);
         }
 
         public void OnPlayerDestroyed()
