@@ -30,7 +30,7 @@ namespace Gameplay.Enemy
             AddController(_turret);
             
             var movementModel = new MovementModel(_config.Movement);
-            _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerView);
+            _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerView, _config.Behaviour);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(_config.Health, _config.Shield);

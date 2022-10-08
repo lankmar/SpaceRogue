@@ -1,7 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using Gameplay.Enemy.Movement;
 using Gameplay.Movement;
 using Gameplay.Player;
+using Scriptables.Enemy;
 using UnityEngine;
 using Utilities.Mathematics;
 using Utilities.Reactive.SubscriptionProperty;
@@ -14,34 +16,48 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly MovementModel _movementModel;
         private readonly EnemyInputController _inputController;
-
-        private readonly Random _random;
+        
         private Vector3 _targetDirection;
-
-        private float _rotationTimer;
-
-        private const float RotationDelay = 2.0f;
+        
+        private float _timeBeforeUpdate;
         
         public EnemyRoamingBehaviour(
             SubscribedProperty<EnemyState> enemyState,
             EnemyView view,
             PlayerView playerView, 
             MovementModel movementModel, 
-            EnemyInputController inputController) : base(enemyState, view, playerView)
+            EnemyInputController inputController,
+            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
         {
             _movementModel = movementModel;
             _inputController = inputController;
-            _random = new Random();
-            _targetDirection = RandomPicker.PickRandomAngle(180, new Random());
-            _rotationTimer = RotationDelay;
         }
         
         protected override void OnUpdate()
         {
+            TickDownTimer();
+            DetectPlayer();
             MoveAtLowSpeed();
             TurnToRandomDirection();
         }
 
+        private void PickRandomAngle()
+        {
+            _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(RandomPicker.PickRandomAngle(180, new Random())).normalized;
+        }
+
+        private void TickDownTimer()
+        {
+            if (_timeBeforeUpdate <= Config.TimeToPickNewAngle)
+            {
+                _timeBeforeUpdate += Time.deltaTime;
+            }
+            else
+            {
+                _timeBeforeUpdate = 0;
+                PickRandomAngle();
+            }
+        }
         private void MoveAtLowSpeed()
         {
             var quarterMaxSpeed = _movementModel.MaxSpeed / 4;
@@ -70,15 +86,14 @@ namespace Gameplay.Enemy.Behaviour
             }
             else
             {
-                HandleTurn(currentDirection);
+                HandleTurn();
             }
             
-            TickDownTimer();
         }
 
-        private void HandleTurn(Vector3 currentDirection)
+        private void HandleTurn()
         {
-            if ((currentDirection - _targetDirection).x < 0)
+            if (_targetDirection.x <= 0)
             {
                 _inputController.TurnLeft();
             }
@@ -88,19 +103,13 @@ namespace Gameplay.Enemy.Behaviour
             }
         }
 
-        private void TickDownTimer()
+        private void DetectPlayer()
         {
-            if (_rotationTimer <= 0.0f)
+            if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
             {
-                _rotationTimer = RotationDelay;
-                _targetDirection = RandomPicker.PickRandomAngle(360, new Random());
-            }
-            else
-            {
-                _rotationTimer -= Time.deltaTime;
+                EnterCombat();
             }
         }
-
         private void EnterCombat()
         {
             ChangeState(EnemyState.InCombat);
