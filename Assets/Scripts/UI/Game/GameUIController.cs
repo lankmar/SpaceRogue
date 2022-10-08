@@ -20,9 +20,9 @@ namespace UI.Game
         private PlayerSpeedometerView _playerSpeedometerView;
         private DestroyPlayerMessageView _playerDestroyedMessageView;
 
-        private readonly ResourcePath _playerStatusBarCanvasPath = new("Prefabs/Canvas/Game/StatusBarCanvas");
-        private readonly ResourcePath _playerSpeedometerCanvasPath = new("Prefabs/Canvas/Game/SpeedometerCanvas");
-        private readonly ResourcePath _playerDestroyedCanvasPath = new("Prefabs/Canvas/Game/DestroyPlayerCanvas");
+        private readonly ResourcePath _playerStatusBarCanvasPath = new(Constants.Prefabs.Canvas.Game.StatusBarCanvas);
+        private readonly ResourcePath _playerSpeedometerCanvasPath = new(Constants.Prefabs.Canvas.Game.SpeedometerCanvas);
+        private readonly ResourcePath _playerDestroyedCanvasPath = new(Constants.Prefabs.Canvas.Game.DestroyPlayerCanvas);
 
         private Action _exitToMenu;
 
