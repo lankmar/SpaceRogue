@@ -22,8 +22,8 @@ namespace Gameplay.Player
     {
         public PlayerView View => _view;
 
-        private readonly ResourcePath _configPath = new("Configs/Player/PlayerConfig");
-        private readonly ResourcePath _viewPath = new("Prefabs/Gameplay/Player");
+        private readonly ResourcePath _configPath = new(Constants.Configs.Player.PlayerConfig);
+        private readonly ResourcePath _viewPath = new(Constants.Prefabs.Gameplay.Player);
 
         private readonly PlayerConfig _config;
         private readonly PlayerView _view;
