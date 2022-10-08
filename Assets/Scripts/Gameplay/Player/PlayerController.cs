@@ -24,7 +24,7 @@ namespace Gameplay.Player
 
         private readonly ResourcePath _configPath = new(Constants.Configs.Player.PlayerConfig);
         private readonly ResourcePath _viewPath = new(Constants.Prefabs.Gameplay.Player);
-        private readonly ResourcePath _crosshairPrefab = new("Prefabs/Stuff/Crosshair");
+        private readonly ResourcePath _crosshairPrefabPath = new(Constants.Prefabs.Stuff.Crosshair);
 
         private readonly PlayerConfig _config;
         private readonly PlayerView _view;
@@ -111,7 +111,7 @@ namespace Gameplay.Player
 
         private void AddCrosshair()
         {
-            var crosshairView = ResourceLoader.LoadPrefab(_crosshairPrefab);
+            var crosshairView = ResourceLoader.LoadPrefab(_crosshairPrefabPath);
             var viewTransform = _view.transform;
             var crosshair = UnityEngine.Object.Instantiate(
                 crosshairView,

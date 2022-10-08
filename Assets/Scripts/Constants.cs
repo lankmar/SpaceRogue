@@ -1,6 +1,6 @@
 using System.IO;
 
-static class Constants
+public static class Constants
 {
     public record Configs
     {
@@ -53,6 +53,7 @@ static class Constants
             private static readonly string STUFF = Path.Combine(PREFABS, nameof(Stuff));
 
             public static readonly string GunPoint = Path.Combine(STUFF, nameof(GunPoint));
+            public static readonly string Crosshair = Path.Combine(STUFF, nameof(Crosshair));
         }
 
         public record Canvas
