@@ -1,6 +1,7 @@
 using Abstracts;
 using Gameplay.Damage;
 using Gameplay.Space.Star;
+using Scriptables.Space;
 using UnityEngine;
 
 namespace Gameplay.Space.Planet
@@ -13,11 +14,11 @@ namespace Gameplay.Space.Planet
         
         private readonly StarView _starView;
 
-        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde)
+        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, PlanetSpawnConfig planetSpawnConfig)
         {
             _view = view;
 
-            var damageModel = new DamageModel(50);
+            var damageModel = new DamageModel(planetSpawnConfig.planetDamage);
             view.Init(damageModel);
 
             AddGameObject(view.gameObject);

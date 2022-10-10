@@ -7,5 +7,7 @@ namespace Scriptables.Space
     public class PlanetSpawnConfig : ScriptableObject
     {
         [field: SerializeField] public List<WeightConfig<PlanetConfig>> WeightConfigs { get; private set; }
+
+        [field: SerializeField] public float planetDamage { get; private set; }
     }
 }
