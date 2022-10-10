@@ -28,14 +28,14 @@ namespace Gameplay.Space.Planet
             EntryPoint.UnsubscribeFromUpdate(Move);
         }
 
-        private void Move()
+        private void Move(float deltaTime)
         {
             if (_starView is not null)
             {
                 _view.transform.RotateAround(
                     _starView.transform.position,
                     _isMovingRetrograde ? Vector3.forward : Vector3.back,
-                    _currentSpeed * Time.deltaTime
+                    _currentSpeed * deltaTime
                 );
             }
         }

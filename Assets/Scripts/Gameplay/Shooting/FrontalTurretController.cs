@@ -38,9 +38,9 @@ namespace Gameplay.Shooting
 
         public abstract void CommenceFiring();
 
-        public abstract void CoolDown();
+        public abstract void CoolDown(float deltaTime);
 
-        protected void BasicCoolDown()
+        protected void BasicCoolDown(float deltaTime)
         {
             switch (CooldownTimer)
             {
@@ -50,7 +50,7 @@ namespace Gameplay.Shooting
                     CooldownTimer = 0;
                     return;
                 case > 0:
-                    CooldownTimer -= Time.deltaTime;
+                    CooldownTimer -= deltaTime;
                     return;
             }
         }

@@ -38,9 +38,9 @@ namespace Gameplay.Shooting
             CooldownTimer = Config.SpecificWeapon.Cooldown;
         }
 
-        public override void CoolDown()
+        public override void CoolDown(float deltaTime)
         {
-            BasicCoolDown();
+            BasicCoolDown(deltaTime);
         }
 
         private void FireMultipleProjectiles(int count, int sprayAngle)

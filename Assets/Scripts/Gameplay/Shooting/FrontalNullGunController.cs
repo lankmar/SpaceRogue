@@ -14,7 +14,7 @@ namespace Gameplay.Shooting
             UnityEngine.Debug.Log("Null-gun has fired!");
         }
 
-        public override void CoolDown()
+        public override void CoolDown(float deltaTime)
         {
             UnityEngine.Debug.Log("Null-gun is cooling down");
         }
