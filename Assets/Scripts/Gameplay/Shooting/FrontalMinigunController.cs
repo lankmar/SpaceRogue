@@ -1,3 +1,4 @@
+using Gameplay.Mechanics.Meter;
 using Scriptables.Modules;
 using UnityEngine;
 using Utilities.Mathematics;
@@ -8,69 +9,41 @@ namespace Gameplay.Shooting
     public class FrontalMinigunController : FrontalTurretController
     {
         private readonly MinigunWeaponConfig _weaponConfig;
-
-        internal bool IsOverheated => _overheatCooldown > 0.0f;
-        private float _overheatMeter;
-        private float _overheatCooldown;
-
+        
+        private readonly MeterWithCooldown _overheatMeter;
+        
         private float _currentSprayAngle;
 
         public FrontalMinigunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
             var minigunConfig = config.SpecificWeapon as MinigunWeaponConfig;
-            if (minigunConfig is null)
-            {
-                throw new System.Exception("wrong config type was provided");
-            }
-            _weaponConfig = minigunConfig;
+            _weaponConfig = minigunConfig ? minigunConfig : throw new System.Exception("wrong config type was provided");
 
-            _overheatCooldown = 0.0f;
-            _overheatMeter = 0.0f;
-
+            _overheatMeter = new MeterWithCooldown(0.0f, _weaponConfig.TimeToOverheat, _weaponConfig.OverheatCoolDown);
+            _overheatMeter.OnCooldownEnd += ResetSpray;
             _currentSprayAngle = _weaponConfig.SprayAngle;
-
-            EntryPoint.SubscribeToUpdate(CoolDown);
         }
-        
+
         protected override void OnDispose()
         {
-            EntryPoint.UnsubscribeFromUpdate(CoolDown);
+            _overheatMeter.OnCooldownEnd -= ResetSpray;
+            _overheatMeter.Dispose();
+            base.OnDispose();
         }
 
         public override void CommenceFiring()
         {
-            if (IsOverheated || IsOnCooldown)
-            {
-                return;
-            }
+            if (_overheatMeter.IsOnCooldown || IsOnCooldown) return;
 
             FireSingleProjectile();
-
             AddHeat();
-            CooldownTimer = Config.SpecificWeapon.Cooldown;
-        }
-
-        public override void CoolDown(float deltaTime)
-        {
-            BasicCoolDown(deltaTime);
-            if (_overheatCooldown > 0.0f) RemoveHeat();
+            CooldownTimer.Start();
         }
 
         private void AddHeat()
         {
-            if (_overheatMeter < _weaponConfig.TimeToOverheat)
-            {
-                _overheatMeter += _weaponConfig.Cooldown;
-                IncreaseSpray();
-                return;
-            }
-
-            TriggerOverheatAndReset();
-        }
-
-        private void TriggerOverheatAndReset()
-        {
-            _overheatCooldown = _weaponConfig.OverheatCoolDown;
+            _overheatMeter.Fill(_weaponConfig.Cooldown);
+            IncreaseSpray();
         }
 
         private void IncreaseSpray()
@@ -85,20 +58,8 @@ namespace Gameplay.Shooting
             return (_weaponConfig.MaxSprayAngle - _weaponConfig.SprayAngle) / (_weaponConfig.TimeToOverheat * (1 / _weaponConfig.Cooldown));
         }
 
-        private void RemoveHeat()
+        private void ResetSpray()
         {
-            if (_overheatCooldown <= Time.deltaTime)
-            {
-                ResetWeapon();
-                return;
-            }
-            _overheatCooldown -= Time.deltaTime;
-        }
-
-        private void ResetWeapon()
-        {
-            _overheatCooldown = 0.0f;
-            _overheatMeter = 0.0f;
             _currentSprayAngle = _weaponConfig.SprayAngle;
         }
 

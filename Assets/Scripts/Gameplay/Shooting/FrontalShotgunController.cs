@@ -12,18 +12,9 @@ namespace Gameplay.Shooting
         public FrontalShotgunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
             var shotgunConfig = config.SpecificWeapon as ShotgunWeaponConfig;
-            if (shotgunConfig is null)
-            {
-                throw new System.Exception("wrong config type was provided");
-            }
-            _weaponConfig = shotgunConfig;
-
-            EntryPoint.SubscribeToUpdate(CoolDown);
-        }
-        
-        protected override void OnDispose()
-        {
-            EntryPoint.UnsubscribeFromUpdate(CoolDown);
+            _weaponConfig = shotgunConfig 
+                ? shotgunConfig 
+                : throw new System.Exception("Wrong config type was provided");
         }
 
         public override void CommenceFiring()
@@ -35,12 +26,7 @@ namespace Gameplay.Shooting
 
             FireMultipleProjectiles(_weaponConfig.PelletCount, _weaponConfig.SprayAngle);
 
-            CooldownTimer = Config.SpecificWeapon.Cooldown;
-        }
-
-        public override void CoolDown(float deltaTime)
-        {
-            BasicCoolDown(deltaTime);
+            CooldownTimer.Start();
         }
 
         private void FireMultipleProjectiles(int count, int sprayAngle)

@@ -10,18 +10,9 @@ namespace Gameplay.Shooting
         public FrontalRailgunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {
             var railgunConfig = config.SpecificWeapon as RailgunWeaponConfig;
-            if (railgunConfig is null)
-            {
-                throw new System.Exception("wrong config type was provided");
-            }
-            _weaponConfig = railgunConfig;
-
-            EntryPoint.SubscribeToUpdate(CoolDown);
-        }
-        
-        protected override void OnDispose()
-        {
-            EntryPoint.UnsubscribeFromUpdate(CoolDown);
+            _weaponConfig = railgunConfig 
+                ? railgunConfig 
+                : throw new System.Exception("wrong config type was provided");
         }
 
         public override void CommenceFiring()
@@ -34,12 +25,7 @@ namespace Gameplay.Shooting
             var projectile = ProjectileFactory.CreateProjectile();
             AddController(projectile);
 
-            CooldownTimer = Config.SpecificWeapon.Cooldown;
-        }
-
-        public override void CoolDown(float deltaTime)
-        {
-            BasicCoolDown(deltaTime);
+            CooldownTimer.Start();
         }
     }   
 }
