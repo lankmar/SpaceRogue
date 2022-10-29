@@ -11,7 +11,11 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly EnemyInputController _inputController;
         private readonly FrontalTurretController _frontalTurret;
-        private Vector3 _targetDirection;        
+        private Vector3 _targetDirection;
+        private Vector3 _currentDirection;
+        private float _distance;
+        private float _angle;
+        private bool _inZone;
 
         public EnemyCombatBehaviour(
             SubscribedProperty<EnemyState> enemyState, 
@@ -29,25 +33,55 @@ namespace Gameplay.Enemy.Behaviour
         {
             if (IsPlayerDead)
             {
-                return;
+                ExitCombat();
             }
 
+            _currentDirection = View.transform.TransformDirection(Vector3.up);
+            var direction = PlayerView.transform.position - View.transform.position;
+            _targetDirection = direction.normalized;
+            _distance = direction.magnitude;
+            _angle = Vector2.SignedAngle(_targetDirection, View.transform.up);
+
+            CheckDetectionZone();
             RotateTowardsPlayer();
             Move();
             Shooting();
         }
 
+        private void CheckDetectionZone()
+        {
+            if (_distance > Config.PlayerDetectionRadius)
+            {
+                _inZone = false;
+                ExitCombat();
+            }
+            else
+            {
+                _inZone = true;
+            }
+        }
+
         private void Shooting()
         {
-            var currentDirection = View.transform.TransformDirection(Vector3.up);
-            if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
+            if (!_inZone)
+            {
+                return;
+            }
+
+            if (Mathf.Abs(_angle) <= 22.5f)
             {
                 _frontalTurret.CommenceFiring();
             }
         }
+
         private void Move()
         {
-            if (Vector3.Distance(PlayerView.transform.position, View.transform.position) <= Config.ShootingDistance)
+            if (UnityHelper.Approximately(_distance, Config.ShootingDistance, 0.05f))
+            {
+                return;
+            }
+
+            if (_distance < Config.ShootingDistance)
             {
                 _inputController.Decelerate();
             }
@@ -59,10 +93,7 @@ namespace Gameplay.Enemy.Behaviour
 
         private void RotateTowardsPlayer()
         {
-            _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(PlayerView.transform.position).normalized;
-            var currentDirection = View.transform.TransformDirection(Vector3.up);
-
-            if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
+            if (_targetDirection == _currentDirection)
             {
                 _inputController.StopTurning();
             }
@@ -70,12 +101,11 @@ namespace Gameplay.Enemy.Behaviour
             {
                 HandleTurn();
             }
-            
         }
 
         private void HandleTurn()
         {
-            if (_targetDirection.x <= 0)
+            if (_angle <= 0)
             {
                 _inputController.TurnLeft();
             }
@@ -83,6 +113,11 @@ namespace Gameplay.Enemy.Behaviour
             {
                 _inputController.TurnRight();
             }
+        }
+
+        private void ExitCombat()
+        {
+            ChangeState(EnemyState.PassiveRoaming);
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Gameplay.Enemy.Movement
         private readonly SubscribedProperty<float> _horizontalInput;
         private readonly SubscribedProperty<float> _verticalInput;
 
-        private readonly PlayerSpeedometerView _speedometerView;
         private readonly MovementModel _model;
         private readonly UnitView _view;
         
@@ -48,9 +47,7 @@ namespace Gameplay.Enemy.Movement
             float currentSpeed = _model.CurrentSpeed;
             if (currentSpeed != 0)
             {
-                var transform = _view.transform;
-                var forwardDirection = transform.TransformDirection(Vector3.up);
-                transform.position += forwardDirection * currentSpeed * Time.deltaTime;
+                _view.transform.Translate(currentSpeed * Time.deltaTime * Vector3.up);
             }
 
             if (newInputValue == 0 && currentSpeed < _model.StoppingSpeed && currentSpeed > -_model.StoppingSpeed)
