@@ -1,7 +1,5 @@
 using System;
 using Gameplay.Player;
-using Scriptables.Enemy;
-using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 namespace Gameplay.Enemy.Behaviour
 {
@@ -10,22 +8,31 @@ namespace Gameplay.Enemy.Behaviour
         protected readonly EnemyView View;
         protected readonly PlayerView PlayerView;
         protected readonly EnemyBehaviourConfig Config;
-        
+
+        protected bool IsPlayerDead;
+
+        private readonly PlayerController _playerController;
+
         private readonly SubscribedProperty<EnemyState> _enemyState;
         private bool _isDisposed;
+
         public void Dispose()
         {
             if (_isDisposed)
                 return;
             _isDisposed = true;
             OnDispose();
+            _playerController.PlayerDestroyed -= OnPlayerDestroyed;
             EntryPoint.UnsubscribeFromUpdate(OnUpdate);
         }
-        protected EnemyBehaviour(SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerView playerView, EnemyBehaviourConfig config)
+
+        protected EnemyBehaviour(SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerController playerController, EnemyBehaviourConfig config)
         {
             _enemyState = enemyState;
             View = view;
-            PlayerView = playerView;
+            _playerController = playerController;
+            _playerController.PlayerDestroyed += OnPlayerDestroyed;
+            PlayerView = _playerController.View;
             Config = config;
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
@@ -37,5 +44,10 @@ namespace Gameplay.Enemy.Behaviour
         
         protected abstract void OnUpdate();
         protected virtual void OnDispose() { }
+
+        private void OnPlayerDestroyed()
+        {
+            IsPlayerDead = true;
+        }
     }
 }

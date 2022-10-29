@@ -34,7 +34,7 @@ namespace Gameplay
             _spaceController = new SpaceController();
             AddController(_spaceController);
 
-            _enemyForcesController = new EnemyForcesController(_playerController.View);
+            _enemyForcesController = new EnemyForcesController(_playerController);
             AddController(_enemyForcesController);
         }
 

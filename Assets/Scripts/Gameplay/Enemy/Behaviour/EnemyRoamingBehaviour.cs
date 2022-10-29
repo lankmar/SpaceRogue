@@ -1,9 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using Gameplay.Enemy.Movement;
 using Gameplay.Movement;
 using Gameplay.Player;
-using Scriptables.Enemy;
 using UnityEngine;
 using Utilities.Mathematics;
 using Utilities.Reactive.SubscriptionProperty;
@@ -24,10 +21,10 @@ namespace Gameplay.Enemy.Behaviour
         public EnemyRoamingBehaviour(
             SubscribedProperty<EnemyState> enemyState,
             EnemyView view,
-            PlayerView playerView, 
+            PlayerController playerController, 
             MovementModel movementModel, 
             EnemyInputController inputController,
-            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
+            EnemyBehaviourConfig config) : base(enemyState, view, playerController, config)
         {
             _movementModel = movementModel;
             _inputController = inputController;
@@ -105,6 +102,11 @@ namespace Gameplay.Enemy.Behaviour
 
         private void DetectPlayer()
         {
+            if (IsPlayerDead)
+            {
+                return;
+            }
+
             if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
             {
                 EnterCombat();

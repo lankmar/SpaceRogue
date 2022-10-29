@@ -1,9 +1,6 @@
 using Gameplay.Enemy.Movement;
-using Gameplay.Movement;
 using Gameplay.Player;
 using Gameplay.Shooting;
-using Scriptables.Enemy;
-using UnityEditor;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.Unity;
@@ -19,10 +16,10 @@ namespace Gameplay.Enemy.Behaviour
         public EnemyCombatBehaviour(
             SubscribedProperty<EnemyState> enemyState, 
             EnemyView view,
-            PlayerView playerView,
+            PlayerController playerController,
             EnemyInputController inputController,
             FrontalTurretController frontalTurret,
-            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
+            EnemyBehaviourConfig config) : base(enemyState, view, playerController, config)
         {
             _inputController = inputController;
             _frontalTurret = frontalTurret;
@@ -30,6 +27,11 @@ namespace Gameplay.Enemy.Behaviour
 
         protected override void OnUpdate()
         {
+            if (IsPlayerDead)
+            {
+                return;
+            }
+
             RotateTowardsPlayer();
             Move();
             Shooting();
