@@ -18,8 +18,8 @@ MonoBehaviour:
     maximumBackwardSpeed: 8
     accelerationTime: 1
     stoppingSpeed: 6
-    startingTurnSpeed: 3
+    startingTurnSpeed: 0.1
     maximumTurnSpeed: 5
-    turnAccelerationTime: 2
+    turnAccelerationTime: 0.1
   <HealthConfig>k__BackingField: {fileID: 11400000, guid: b1d5019f03ef14c4c831a0d223b6921a, type: 2}
   <ShieldConfig>k__BackingField: {fileID: 11400000, guid: 1d988e8c3053fff458704ce6418fdedc, type: 2}

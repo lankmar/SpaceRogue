@@ -16,6 +16,7 @@ namespace Gameplay.Input
             EntryPoint.SubscribeToUpdate(CheckHorizontalInput);
             EntryPoint.SubscribeToUpdate(CheckVerticalInput);
             EntryPoint.SubscribeToUpdate(CheckFiringInput);
+            EntryPoint.SubscribeToUpdate(CheckMousePositionInput);
         }
 
         private void OnDestroy()
@@ -23,6 +24,7 @@ namespace Gameplay.Input
             EntryPoint.UnsubscribeFromUpdate(CheckHorizontalInput);
             EntryPoint.UnsubscribeFromUpdate(CheckVerticalInput);
             EntryPoint.UnsubscribeFromUpdate(CheckFiringInput);
+            EntryPoint.UnsubscribeFromUpdate(CheckMousePositionInput);
         }
 
         private void CheckHorizontalInput()
@@ -43,6 +45,12 @@ namespace Gameplay.Input
         {
             bool value = UnityEngine.Input.GetKey(PrimaryFire);
             OnPrimaryFireInput(value);
+        }
+
+        private void CheckMousePositionInput()
+        {
+            Vector3 value = UnityEngine.Input.mousePosition;
+            OnMousePositionInput(value);
         }
 
         private static float CalculateInputValue(float axisOffset, float inputMultiplier)
