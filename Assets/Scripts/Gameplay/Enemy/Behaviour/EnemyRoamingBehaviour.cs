@@ -33,9 +33,16 @@ namespace Gameplay.Enemy.Behaviour
         protected override void OnUpdate()
         {
             TickDownTimer();
-            DetectPlayer();
             MoveAtLowSpeed();
             TurnToRandomDirection();
+        }
+
+        protected override void DetectPlayer()
+        {
+            if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
+            {
+                EnterCombat();
+            }
         }
 
         private void PickRandomAngle()
@@ -55,6 +62,7 @@ namespace Gameplay.Enemy.Behaviour
                 PickRandomAngle();
             }
         }
+
         private void MoveAtLowSpeed()
         {
             var quarterMaxSpeed = _movementModel.MaxSpeed / 4;
@@ -100,18 +108,6 @@ namespace Gameplay.Enemy.Behaviour
             }
         }
 
-        private void DetectPlayer()
-        {
-            if (IsPlayerDead)
-            {
-                return;
-            }
-
-            if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
-            {
-                EnterCombat();
-            }
-        }
         private void EnterCombat()
         {
             ChangeState(EnemyState.InCombat);

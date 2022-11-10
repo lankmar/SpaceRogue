@@ -9,8 +9,6 @@ namespace Gameplay.Enemy.Behaviour
         protected readonly PlayerView PlayerView;
         protected readonly EnemyBehaviourConfig Config;
 
-        protected bool IsPlayerDead;
-
         private readonly PlayerController _playerController;
 
         private readonly SubscribedProperty<EnemyState> _enemyState;
@@ -23,6 +21,7 @@ namespace Gameplay.Enemy.Behaviour
             _isDisposed = true;
             OnDispose();
             _playerController.PlayerDestroyed -= OnPlayerDestroyed;
+            EntryPoint.UnsubscribeFromUpdate(DetectPlayer);
             EntryPoint.UnsubscribeFromUpdate(OnUpdate);
         }
 
@@ -34,6 +33,7 @@ namespace Gameplay.Enemy.Behaviour
             _playerController.PlayerDestroyed += OnPlayerDestroyed;
             PlayerView = _playerController.View;
             Config = config;
+            EntryPoint.SubscribeToUpdate(DetectPlayer);
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
 
@@ -45,9 +45,16 @@ namespace Gameplay.Enemy.Behaviour
         protected abstract void OnUpdate();
         protected virtual void OnDispose() { }
 
+        protected abstract void DetectPlayer();
+
         private void OnPlayerDestroyed()
         {
-            IsPlayerDead = true;
+            EntryPoint.UnsubscribeFromUpdate(DetectPlayer);
+            
+            if(_enemyState.Value == EnemyState.InCombat)
+            {
+                ChangeState(EnemyState.PassiveRoaming);
+            }
         }
     }
 }

@@ -47,7 +47,9 @@ namespace Gameplay.Enemy.Movement
             float currentSpeed = _model.CurrentSpeed;
             if (currentSpeed != 0)
             {
-                _view.transform.Translate(currentSpeed * Time.deltaTime * Vector3.up);
+                var transform = _view.transform;
+                var forwardDirection = transform.TransformDirection(Vector3.up);
+                transform.position += currentSpeed * Time.deltaTime * forwardDirection;
             }
 
             if (newInputValue == 0 && currentSpeed < _model.StoppingSpeed && currentSpeed > -_model.StoppingSpeed)

@@ -13,23 +13,16 @@ namespace Gameplay.Enemy.Behaviour
         {
         }
 
-        protected override void OnUpdate()
-        {
-            DetectPlayer();
-        }
-        
-        private void DetectPlayer()
-        {
-            if (IsPlayerDead)
-            {
-                return;
-            }
+        protected override void OnUpdate() { }
 
+        protected override void DetectPlayer()
+        {
             if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
             {
                 EnterCombat();
             }
         }
+
         private void EnterCombat()
         {
             ChangeState(EnemyState.InCombat);

@@ -11,10 +11,10 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly EnemyInputController _inputController;
         private readonly FrontalTurretController _frontalTurret;
+        private readonly float _firingAngle;
         private Vector3 _targetDirection;
         private Vector3 _currentDirection;
         private float _distance;
-        private float _angle;
         private bool _inZone;
 
         public EnemyCombatBehaviour(
@@ -27,28 +27,18 @@ namespace Gameplay.Enemy.Behaviour
         {
             _inputController = inputController;
             _frontalTurret = frontalTurret;
+            _firingAngle = config.FiringAngle;
         }
 
         protected override void OnUpdate()
         {
-            if (IsPlayerDead)
-            {
-                ExitCombat();
-            }
-
-            _currentDirection = View.transform.TransformDirection(Vector3.up);
-            var direction = PlayerView.transform.position - View.transform.position;
-            _targetDirection = direction.normalized;
-            _distance = direction.magnitude;
-            _angle = Vector2.SignedAngle(_targetDirection, View.transform.up);
-
-            CheckDetectionZone();
+            GetDirectionsAndDistance();
             RotateTowardsPlayer();
             Move();
             Shooting();
         }
 
-        private void CheckDetectionZone()
+        protected override void DetectPlayer()
         {
             if (_distance > Config.PlayerDetectionRadius)
             {
@@ -61,6 +51,14 @@ namespace Gameplay.Enemy.Behaviour
             }
         }
 
+        private void GetDirectionsAndDistance()
+        {
+            _currentDirection = View.transform.TransformDirection(Vector3.up);
+            var direction = PlayerView.transform.position - View.transform.position;
+            _targetDirection = direction.normalized;
+            _distance = direction.magnitude;
+        }
+
         private void Shooting()
         {
             if (!_inZone)
@@ -68,7 +66,7 @@ namespace Gameplay.Enemy.Behaviour
                 return;
             }
 
-            if (Mathf.Abs(_angle) <= 22.5f)
+            if (UnityHelper.DirectionInsideAngle(_targetDirection, _currentDirection, _firingAngle))
             {
                 _frontalTurret.CommenceFiring();
             }
@@ -105,7 +103,7 @@ namespace Gameplay.Enemy.Behaviour
 
         private void HandleTurn()
         {
-            if (_angle <= 0)
+            if (UnityHelper.VectorAngleLessThanAngle(_targetDirection, _currentDirection, 0))
             {
                 _inputController.TurnLeft();
             }
