@@ -3,44 +3,42 @@ using Gameplay.Movement;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
+using Utilities.Unity;
 
 namespace Gameplay.Player.Movement
 {
     public class PlayerMovementController : BaseController
     {
-        private readonly SubscribedProperty<float> _horizontalInput;
-        private readonly SubscribedProperty<float> _verticalInput;
         private readonly SubscribedProperty<Vector3> _mousePositionInput;
+        private readonly SubscribedProperty<float> _verticalInput;
 
         private readonly PlayerSpeedometerView _speedometerView;
         private readonly MovementModel _model;
         private readonly PlayerView _view;
 
+        private Vector3 _currentDirection;
+
         public PlayerMovementController(
-            SubscribedProperty<float> horizontalInput,
-            SubscribedProperty<float> verticalInput,
             SubscribedProperty<Vector3> mousePositionInput,
+            SubscribedProperty<float> verticalInput,
             MovementConfig config,
             PlayerView view)
         {
-            _horizontalInput = horizontalInput;
-            _verticalInput = verticalInput;
             _mousePositionInput = mousePositionInput;
+            _verticalInput = verticalInput;
             _view = view;
             _model = new MovementModel(config);
             _speedometerView = GameUIController.PlayerSpeedometerView;
             _speedometerView.Init(GetSpeedometerTextValue(0.0f, _model.MaxSpeed));
 
-            _horizontalInput.Subscribe(HandleHorizontalInput);
-            _verticalInput.Subscribe(HandleVerticalInput);
             _mousePositionInput.Subscribe(HandleHorizontalMouseInput);
+            _verticalInput.Subscribe(HandleVerticalInput);
         }
 
         protected override void OnDispose()
         {
-            _horizontalInput.Unsubscribe(HandleHorizontalInput);
-            _verticalInput.Unsubscribe(HandleVerticalInput);
             _mousePositionInput.Unsubscribe(HandleHorizontalMouseInput);
+            _verticalInput.Unsubscribe(HandleVerticalInput);
         }
 
 
@@ -66,34 +64,31 @@ namespace Gameplay.Player.Movement
             }
         }
 
-        private void HandleHorizontalInput(float newInputValue)
-        {
-            switch (newInputValue)
-            {
-                case 0:
-                    _model.StopTurning();
-                    break;
-                case < 0:
-                    _model.Turn(true);
-                    _view.transform.Rotate(Vector3.forward, _model.CurrentTurnRate * newInputValue);
-                    break;
-                case > 0:
-                    _model.Turn(false);
-                    _view.transform.Rotate(Vector3.back, _model.CurrentTurnRate * newInputValue);
-                    break;
-            }
-        }
-
         private void HandleHorizontalMouseInput(Vector3 newMousePositionInput)
         {
             var mousePosition = UnityEngine.Camera.main.ScreenToWorldPoint(newMousePositionInput);
             mousePosition.z = 0;
-            var direction = mousePosition - _view.transform.position;
-            float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
             
-            _model.Turn(false);
-            var rotationAngle = Mathf.LerpAngle(-_view.transform.rotation.eulerAngles.z, angle, _model.CurrentTurnRate / 4);
-            _view.transform.rotation = Quaternion.AngleAxis(rotationAngle, Vector3.back);
+            var direction = (mousePosition - _view.transform.position).normalized;
+            _currentDirection = _view.transform.TransformDirection(Vector3.up);
+            float angle = Vector2.SignedAngle(direction, _currentDirection);
+
+            if (UnityHelper.Approximately(angle, 0, 0.2f))
+            {
+                _model.StopTurning();
+                return;
+            }
+
+            if (angle > 0)
+            {
+                _model.Turn(true);
+                _view.transform.Rotate(Vector3.forward, _model.CurrentTurnRate * _model.TurnRateMultiplier);
+            }
+            else
+            {
+                _model.Turn(false);
+                _view.transform.Rotate(Vector3.back, _model.CurrentTurnRate * -_model.TurnRateMultiplier);
+            }
         }
 
         private void UpdateSpeedometerValue(float currentSpeed, float maxSpeed)

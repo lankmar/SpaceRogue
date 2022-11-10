@@ -4,16 +4,13 @@ namespace Gameplay.Input
 {
     public class KeyboardInputView : BaseInputView
     {
-        [SerializeField] private float horizontalAxisInputMultiplier;
         [SerializeField] private float verticalAxisInputMultiplier;
 
-        private const string Horizontal = "Horizontal";
         private const string Vertical = "Vertical";
         private const KeyCode PrimaryFire = KeyCode.Mouse0;
 
         private void Start()
         {
-            EntryPoint.SubscribeToUpdate(CheckHorizontalInput);
             EntryPoint.SubscribeToUpdate(CheckVerticalInput);
             EntryPoint.SubscribeToUpdate(CheckFiringInput);
             EntryPoint.SubscribeToUpdate(CheckMousePositionInput);
@@ -21,17 +18,9 @@ namespace Gameplay.Input
 
         private void OnDestroy()
         {
-            EntryPoint.UnsubscribeFromUpdate(CheckHorizontalInput);
             EntryPoint.UnsubscribeFromUpdate(CheckVerticalInput);
             EntryPoint.UnsubscribeFromUpdate(CheckFiringInput);
             EntryPoint.UnsubscribeFromUpdate(CheckMousePositionInput);
-        }
-
-        private void CheckHorizontalInput()
-        {
-            float horizontalOffset = UnityEngine.Input.GetAxis(Horizontal);
-            float inputValue = CalculateInputValue(horizontalOffset, horizontalAxisInputMultiplier);
-            OnHorizontalInput(inputValue);
         }
 
         private void CheckVerticalInput()

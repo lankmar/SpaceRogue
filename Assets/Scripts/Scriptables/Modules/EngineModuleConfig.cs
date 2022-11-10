@@ -22,5 +22,7 @@ namespace Scriptables.Modules
         [SerializeField] public float maximumTurnSpeed = 0.1f;
         [Min(0.1f)]
         [SerializeField] public float turnAccelerationTime = 0.1f;
+        [Min(0.1f)]
+        [SerializeField] public float turnRateMultiplier = 0.1f;
     }
 }

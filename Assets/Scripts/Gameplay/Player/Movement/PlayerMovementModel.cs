@@ -9,6 +9,7 @@ namespace Gameplay.Player.Movement
         private readonly EngineModuleConfig _config;
         public float MaxSpeed => _config.maximumSpeed;
         public float StoppingSpeed => _config.stoppingSpeed;
+        public float TurnRateMultiplier => _config.turnRateMultiplier;
 
         public float CurrentSpeed { get; private set; }
         public float CurrentTurnRate { get; private set; }
