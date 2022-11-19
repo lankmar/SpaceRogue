@@ -13,15 +13,15 @@ namespace Gameplay.Input
 
         private void Start()
         {
-            EntryPoint.SubscribeToUpdate(CheckHorizontalInput);
-            EntryPoint.SubscribeToUpdate(CheckVerticalInput);
+            EntryPoint.SubscribeToFixedUpdate(CheckHorizontalInput);
+            EntryPoint.SubscribeToFixedUpdate(CheckVerticalInput);
             EntryPoint.SubscribeToUpdate(CheckFiringInput);
         }
 
         private void OnDestroy()
         {
-            EntryPoint.UnsubscribeFromUpdate(CheckHorizontalInput);
-            EntryPoint.UnsubscribeFromUpdate(CheckVerticalInput);
+            EntryPoint.UnsubscribeFromFixedUpdate(CheckHorizontalInput);
+            EntryPoint.UnsubscribeFromFixedUpdate(CheckVerticalInput);
             EntryPoint.UnsubscribeFromUpdate(CheckFiringInput);
         }
 
