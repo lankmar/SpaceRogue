@@ -17,13 +17,13 @@ namespace Gameplay.Enemy.Behaviour
         private readonly MovementModel _movementModel;
         private readonly FrontalTurretController _turretController;
         private readonly EnemyView _view;
-        private readonly PlayerView _playerView;
+        private readonly PlayerController _playerController;
         private readonly EnemyBehaviourConfig _enemyConfig;
         
         private EnemyBehaviour _currentBehaviour;
 
         public EnemyBehaviourController(MovementModel movementModel, EnemyView view,
-            FrontalTurretController turretController, PlayerView playerView, EnemyBehaviourConfig config)
+            FrontalTurretController turretController, PlayerController playerController, EnemyBehaviourConfig config)
         {
             _view = view;
             _movementModel = movementModel;
@@ -31,7 +31,7 @@ namespace Gameplay.Enemy.Behaviour
             _movementController = AddMovementController();
 
             _turretController = turretController;
-            _playerView = playerView;
+            _playerController = playerController;
 
             _enemyCurrentState = new SubscribedProperty<EnemyState>(EnemyState.PassiveRoaming);
             _enemyCurrentState.Subscribe(OnEnemyStateChange);
@@ -52,13 +52,13 @@ namespace Gameplay.Enemy.Behaviour
             switch (newState)
             {
                 case EnemyState.Idle:
-                    _currentBehaviour = new EnemyIdleBehaviour(_enemyCurrentState, _view, _playerView, _enemyConfig);
+                    _currentBehaviour = new EnemyIdleBehaviour(_enemyCurrentState, _view, _playerController, _enemyConfig);
                     break;
                 case EnemyState.PassiveRoaming:
-                    _currentBehaviour = new EnemyRoamingBehaviour(_enemyCurrentState, _view, _playerView, _movementModel, _inputController, _enemyConfig);
+                    _currentBehaviour = new EnemyRoamingBehaviour(_enemyCurrentState, _view, _playerController, _movementModel, _inputController, _enemyConfig);
                     break;
                 case EnemyState.InCombat:
-                    _currentBehaviour = new EnemyCombatBehaviour(_enemyCurrentState, _view, _playerView, _inputController, _turretController, _enemyConfig);
+                    _currentBehaviour = new EnemyCombatBehaviour(_enemyCurrentState, _view, _playerController, _inputController, _turretController, _enemyConfig);
                     break;
                 default: return;
             }
