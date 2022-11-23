@@ -1,9 +1,6 @@
 using Gameplay.Enemy.Movement;
-using Gameplay.Movement;
 using Gameplay.Player;
 using Gameplay.Shooting;
-using Scriptables.Enemy;
-using UnityEditor;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.Unity;
@@ -14,38 +11,75 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly EnemyInputController _inputController;
         private readonly FrontalTurretController _frontalTurret;
-        private Vector3 _targetDirection;        
+        private readonly float _firingAngle;
+        private Vector3 _targetDirection;
+        private Vector3 _currentDirection;
+        private float _distance;
+        private bool _inZone;
 
         public EnemyCombatBehaviour(
             SubscribedProperty<EnemyState> enemyState, 
             EnemyView view,
-            PlayerView playerView,
+            PlayerController playerController,
             EnemyInputController inputController,
             FrontalTurretController frontalTurret,
-            EnemyBehaviourConfig config) : base(enemyState, view, playerView, config)
+            EnemyBehaviourConfig config) : base(enemyState, view, playerController, config)
         {
             _inputController = inputController;
             _frontalTurret = frontalTurret;
+            _firingAngle = config.FiringAngle;
         }
 
         protected override void OnUpdate()
         {
+            GetDirectionsAndDistance();
             RotateTowardsPlayer();
             Move();
             Shooting();
         }
 
+        protected override void DetectPlayer()
+        {
+            if (_distance > Config.PlayerDetectionRadius)
+            {
+                _inZone = false;
+                ExitCombat();
+            }
+            else
+            {
+                _inZone = true;
+            }
+        }
+
+        private void GetDirectionsAndDistance()
+        {
+            _currentDirection = View.transform.TransformDirection(Vector3.up);
+            var direction = PlayerView.transform.position - View.transform.position;
+            _targetDirection = direction.normalized;
+            _distance = direction.magnitude;
+        }
+
         private void Shooting()
         {
-            var currentDirection = View.transform.TransformDirection(Vector3.up);
-            if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
+            if (!_inZone)
+            {
+                return;
+            }
+
+            if (UnityHelper.DirectionInsideAngle(_targetDirection, _currentDirection, _firingAngle))
             {
                 _frontalTurret.CommenceFiring();
             }
         }
+
         private void Move()
         {
-            if (Vector3.Distance(PlayerView.transform.position, View.transform.position) <= Config.ShootingDistance)
+            if (UnityHelper.Approximately(_distance, Config.ShootingDistance, 0.05f))
+            {
+                return;
+            }
+
+            if (_distance < Config.ShootingDistance)
             {
                 _inputController.Decelerate();
             }
@@ -57,10 +91,7 @@ namespace Gameplay.Enemy.Behaviour
 
         private void RotateTowardsPlayer()
         {
-            _targetDirection = View.transform.worldToLocalMatrix.MultiplyPoint(PlayerView.transform.position).normalized;
-            var currentDirection = View.transform.TransformDirection(Vector3.up);
-
-            if (UnityHelper.Approximately(_targetDirection, currentDirection, 0.1f))
+            if (_targetDirection == _currentDirection)
             {
                 _inputController.StopTurning();
             }
@@ -68,12 +99,11 @@ namespace Gameplay.Enemy.Behaviour
             {
                 HandleTurn();
             }
-            
         }
 
         private void HandleTurn()
         {
-            if (_targetDirection.x <= 0)
+            if (UnityHelper.VectorAngleLessThanAngle(_targetDirection, _currentDirection, 0))
             {
                 _inputController.TurnLeft();
             }
@@ -81,6 +111,11 @@ namespace Gameplay.Enemy.Behaviour
             {
                 _inputController.TurnRight();
             }
+        }
+
+        private void ExitCombat()
+        {
+            ChangeState(EnemyState.PassiveRoaming);
         }
     }
 }
