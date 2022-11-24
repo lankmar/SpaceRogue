@@ -28,6 +28,13 @@ public static class Constants
             public static readonly string DefaultStarSpawn = Path.Combine(SPACE, nameof(DefaultStarSpawn));
             public static readonly string DefaultPlanetSpawn = Path.Combine(SPACE, nameof(DefaultPlanetSpawn));
         }
+
+        public record Background
+        {
+            private static readonly string BACKGROUND = Path.Combine(CONFIGS, nameof(Background));
+
+            public static readonly string BackgroundConfig = Path.Combine(BACKGROUND, nameof(BackgroundConfig));
+        }
     }
 
     public record Prefabs
@@ -54,6 +61,7 @@ public static class Constants
 
             public static readonly string GunPoint = Path.Combine(STUFF, nameof(GunPoint));
             public static readonly string Crosshair = Path.Combine(STUFF, nameof(Crosshair));
+            public static readonly string Background = Path.Combine(STUFF, nameof(Background));
         }
 
         public record Canvas
