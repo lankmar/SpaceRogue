@@ -41,6 +41,11 @@ namespace Gameplay.Background
             EntryPoint.SubscribeToLateUpdate(PlayAllEffects);
         }
 
+        protected override void OnDispose()
+        {
+            EntryPoint.UnsubscribeFromLateUpdate(PlayAllEffects);
+        }
+
         private void PlayAllEffects()
         {
             _backParalax.Play();
