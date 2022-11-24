@@ -84,11 +84,10 @@ namespace Gameplay.Player.Movement
             _currentDirection = _view.transform.TransformDirection(Vector3.up);
             float angle = Vector2.SignedAngle(direction, _currentDirection);
 
-            Quaternion newRotation = Quaternion.identity;
+            Quaternion newRotation;
             if (UnityHelper.Approximately(angle, 0, 0.2f))
             {
                 _model.StopTurning();
-                newRotation = _view.transform.rotation;
                 return;
             }
 
