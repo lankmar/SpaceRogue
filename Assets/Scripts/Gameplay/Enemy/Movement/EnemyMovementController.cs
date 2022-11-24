@@ -11,11 +11,11 @@ namespace Gameplay.Enemy.Movement
         private readonly SubscribedProperty<float> _horizontalInput;
         private readonly SubscribedProperty<float> _verticalInput;
 
-        private readonly PlayerSpeedometerView _speedometerView;
         private readonly MovementModel _model;
         private readonly UnitView _view;
-        
-        
+        private readonly Rigidbody2D _rigidbody;
+
+
         public EnemyMovementController(
             SubscribedProperty<float> horizontalInput, 
             SubscribedProperty<float> verticalInput,
@@ -26,6 +26,7 @@ namespace Gameplay.Enemy.Movement
             _verticalInput = verticalInput;
             _view = view;
             _model = model;
+            _rigidbody = _view.GetComponent<Rigidbody2D>();
 
             _horizontalInput.Subscribe(HandleHorizontalInput);
             _verticalInput.Subscribe(HandleVerticalInput);
@@ -46,11 +47,19 @@ namespace Gameplay.Enemy.Movement
             }
             
             float currentSpeed = _model.CurrentSpeed;
+            float maxSpeed = _model.MaxSpeed;
+            
             if (currentSpeed != 0)
             {
                 var transform = _view.transform;
                 var forwardDirection = transform.TransformDirection(Vector3.up);
-                transform.position += forwardDirection * currentSpeed * Time.deltaTime;
+                _rigidbody.AddForce(forwardDirection.normalized * currentSpeed, ForceMode2D.Force);
+            }
+            
+            if (_rigidbody.velocity.sqrMagnitude > maxSpeed * maxSpeed)
+            {
+                Vector3 velocity = _rigidbody.velocity.normalized * maxSpeed;
+                _rigidbody.velocity = velocity;
             }
 
             if (newInputValue == 0 && currentSpeed < _model.StoppingSpeed && currentSpeed > -_model.StoppingSpeed)
@@ -61,20 +70,23 @@ namespace Gameplay.Enemy.Movement
         
         private void HandleHorizontalInput(float newInputValue)
         {
+            Quaternion newRotation = Quaternion.identity;
             switch (newInputValue)
             {
                 case 0:
                     _model.StopTurning();
+                    newRotation = _view.transform.rotation;
                     break;
                 case < 0:
                     _model.Turn(true);
-                    _view.transform.Rotate(Vector3.forward, _model.CurrentTurnRate * newInputValue);
+                    newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate * newInputValue, Vector3.forward);
                     break;
                 case > 0:
                     _model.Turn(false);
-                    _view.transform.Rotate(Vector3.back, _model.CurrentTurnRate * newInputValue);
+                    newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate * newInputValue, Vector3.back);
                     break;
             }
+            _rigidbody.MoveRotation(newRotation);
         }
     }
 }

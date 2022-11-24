@@ -18,11 +18,11 @@ namespace Gameplay.Enemy
         private readonly EnemyMovementController _movementController;
         private readonly EnemyBehaviourController _behaviourController;
         private readonly HealthController _healthController;
-        private readonly PlayerView _playerView;
+        private readonly PlayerController _playerController;
 
-        public EnemyController(EnemyConfig config, EnemyView view, PlayerView playerView)
+        public EnemyController(EnemyConfig config, EnemyView view, PlayerController playerController)
         {
-            _playerView = playerView;
+            _playerController = playerController;
             _config = config;
             _view = view;
             AddGameObject(_view.gameObject);
@@ -30,7 +30,7 @@ namespace Gameplay.Enemy
             AddController(_turret);
             
             var movementModel = new MovementModel(_config.Movement);
-            _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerView, _config.Behaviour);
+            _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerController, _config.Behaviour);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(_config.Health, _config.Shield);
@@ -38,9 +38,9 @@ namespace Gameplay.Enemy
 
         private HealthController AddHealthController(HealthConfig healthConfig, ShieldConfig shieldConfig)
         {
-            var healthController = _config.Shield is null
-                ? new HealthController(_config.Health, _view)
-                : new HealthController(_config.Health, _config.Shield, _view);
+            var healthController = shieldConfig is null
+                ? new HealthController(healthConfig, _view)
+                : new HealthController(healthConfig, shieldConfig, _view);
             
             healthController.SubscribeToOnDestroy(Dispose);
             AddController(_healthController);

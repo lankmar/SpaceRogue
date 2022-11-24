@@ -15,9 +15,10 @@ namespace Gameplay.Player.Movement
         private readonly PlayerSpeedometerView _speedometerView;
         private readonly MovementModel _model;
         private readonly PlayerView _view;
-
-        private Vector3 _currentDirection;
-
+		private readonly Rigidbody2D _rigidbody;
+        
+		private Vector3 _currentDirection;
+		
         public PlayerMovementController(
             SubscribedProperty<Vector3> mousePositionInput,
             SubscribedProperty<float> verticalInput,
@@ -27,6 +28,7 @@ namespace Gameplay.Player.Movement
             _mousePositionInput = mousePositionInput;
             _verticalInput = verticalInput;
             _view = view;
+            _rigidbody = _view.GetComponent<Rigidbody2D>();
             _model = new MovementModel(config);
             _speedometerView = GameUIController.PlayerSpeedometerView;
             _speedometerView.Init(GetSpeedometerTextValue(0.0f, _model.MaxSpeed));
@@ -50,12 +52,21 @@ namespace Gameplay.Player.Movement
             }
 
             float currentSpeed = _model.CurrentSpeed;
-            UpdateSpeedometerValue(currentSpeed, _model.MaxSpeed);
+            float maxSpeed = _model.MaxSpeed;
+            UpdateSpeedometerValue(currentSpeed, maxSpeed);
+            
             if (currentSpeed != 0)
             {
                 var transform = _view.transform;
                 var forwardDirection = transform.TransformDirection(Vector3.up);
-                transform.position += currentSpeed * Time.deltaTime * forwardDirection;
+				
+                _rigidbody.AddForce(forwardDirection.normalized * currentSpeed, ForceMode2D.Force);
+            }
+            
+            if (_rigidbody.velocity.sqrMagnitude > maxSpeed * maxSpeed)
+            {
+                Vector3 velocity = _rigidbody.velocity.normalized * maxSpeed;
+                _rigidbody.velocity = velocity;
             }
 
             if (newInputValue == 0 && currentSpeed < _model.StoppingSpeed && currentSpeed > -_model.StoppingSpeed)
@@ -73,22 +84,25 @@ namespace Gameplay.Player.Movement
             _currentDirection = _view.transform.TransformDirection(Vector3.up);
             float angle = Vector2.SignedAngle(direction, _currentDirection);
 
+            Quaternion newRotation = Quaternion.identity;
             if (UnityHelper.Approximately(angle, 0, 0.2f))
             {
                 _model.StopTurning();
+                newRotation = _view.transform.rotation;
                 return;
             }
 
             if (angle > 0)
             {
                 _model.Turn(true);
-                _view.transform.Rotate(Vector3.forward, _model.CurrentTurnRate);
+                newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate, Vector3.forward);
             }
             else
             {
                 _model.Turn(false);
-                _view.transform.Rotate(Vector3.back, -_model.CurrentTurnRate);
+                newRotation = _view.transform.rotation * Quaternion.AngleAxis(-_model.CurrentTurnRate, Vector3.back);
             }
+            _rigidbody.MoveRotation(newRotation);
         }
 
         private void UpdateSpeedometerValue(float currentSpeed, float maxSpeed)
