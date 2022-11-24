@@ -82,12 +82,12 @@ namespace Gameplay.Player.Movement
             if (angle > 0)
             {
                 _model.Turn(true);
-                _view.transform.Rotate(Vector3.forward, _model.CurrentTurnRate * _model.TurnRateMultiplier);
+                _view.transform.Rotate(Vector3.forward, _model.CurrentTurnRate);
             }
             else
             {
                 _model.Turn(false);
-                _view.transform.Rotate(Vector3.back, _model.CurrentTurnRate * -_model.TurnRateMultiplier);
+                _view.transform.Rotate(Vector3.back, -_model.CurrentTurnRate);
             }
         }
 
