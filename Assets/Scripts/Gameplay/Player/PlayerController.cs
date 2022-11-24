@@ -29,7 +29,7 @@ namespace Gameplay.Player
         private readonly PlayerConfig _config;
         private readonly PlayerView _view;
 
-        private readonly SubscribedProperty<float> _horizontalInput = new();
+        private readonly SubscribedProperty<Vector3> _mousePositionInput = new();
         private readonly SubscribedProperty<float> _verticalInput = new();
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
 
@@ -43,7 +43,7 @@ namespace Gameplay.Player
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
 
-            var inputController = new InputController(_horizontalInput, _verticalInput, _primaryFireInput);
+            var inputController = new InputController(_mousePositionInput, _verticalInput, _primaryFireInput);
             AddController(inputController);
 
             var inventoryController = AddInventoryController(_config.Inventory);
@@ -71,7 +71,7 @@ namespace Gameplay.Player
 
         private PlayerMovementController AddMovementController(MovementConfig movementConfig, PlayerView view)
         {
-            var movementController = new PlayerMovementController(_horizontalInput, _verticalInput, movementConfig, view);
+            var movementController = new PlayerMovementController(_mousePositionInput, _verticalInput, movementConfig, view);
             AddController(movementController);
             return movementController;
         }

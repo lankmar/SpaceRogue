@@ -3,26 +3,29 @@ using Gameplay.Movement;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
+using Utilities.Unity;
 
 namespace Gameplay.Player.Movement
 {
     public class PlayerMovementController : BaseController
     {
-        private readonly SubscribedProperty<float> _horizontalInput;
+        private readonly SubscribedProperty<Vector3> _mousePositionInput;
         private readonly SubscribedProperty<float> _verticalInput;
 
         private readonly PlayerSpeedometerView _speedometerView;
         private readonly MovementModel _model;
         private readonly PlayerView _view;
-        private readonly Rigidbody2D _rigidbody;
+		private readonly Rigidbody2D _rigidbody;
         
+		private Vector3 _currentDirection;
+		
         public PlayerMovementController(
-            SubscribedProperty<float> horizontalInput, 
+            SubscribedProperty<Vector3> mousePositionInput,
             SubscribedProperty<float> verticalInput,
             MovementConfig config,
             PlayerView view)
         {
-            _horizontalInput = horizontalInput;
+            _mousePositionInput = mousePositionInput;
             _verticalInput = verticalInput;
             _view = view;
             _rigidbody = _view.GetComponent<Rigidbody2D>();
@@ -30,24 +33,24 @@ namespace Gameplay.Player.Movement
             _speedometerView = GameUIController.PlayerSpeedometerView;
             _speedometerView.Init(GetSpeedometerTextValue(0.0f, _model.MaxSpeed));
 
-            _horizontalInput.Subscribe(HandleHorizontalInput);
+            _mousePositionInput.Subscribe(HandleHorizontalMouseInput);
             _verticalInput.Subscribe(HandleVerticalInput);
         }
 
         protected override void OnDispose()
         {
-            _horizontalInput.Unsubscribe(HandleHorizontalInput);
+            _mousePositionInput.Unsubscribe(HandleHorizontalMouseInput);
             _verticalInput.Unsubscribe(HandleVerticalInput);
         }
 
-        
+
         private void HandleVerticalInput(float newInputValue)
         {
             if (newInputValue != 0)
             {
                 _model.Accelerate(newInputValue > 0);
             }
-            
+
             float currentSpeed = _model.CurrentSpeed;
             float maxSpeed = _model.MaxSpeed;
             UpdateSpeedometerValue(currentSpeed, maxSpeed);
@@ -56,6 +59,7 @@ namespace Gameplay.Player.Movement
             {
                 var transform = _view.transform;
                 var forwardDirection = transform.TransformDirection(Vector3.up);
+				
                 _rigidbody.AddForce(forwardDirection.normalized * currentSpeed, ForceMode2D.Force);
             }
             
@@ -70,24 +74,32 @@ namespace Gameplay.Player.Movement
                 _model.StopMoving();
             }
         }
-        
-        private void HandleHorizontalInput(float newInputValue)
+
+        private void HandleHorizontalMouseInput(Vector3 newMousePositionInput)
         {
-            Quaternion newRotation = Quaternion.identity;
-            switch (newInputValue)
+            var mousePosition = UnityEngine.Camera.main.ScreenToWorldPoint(newMousePositionInput);
+            mousePosition.z = 0;
+            
+            var direction = (mousePosition - _view.transform.position).normalized;
+            _currentDirection = _view.transform.TransformDirection(Vector3.up);
+            float angle = Vector2.SignedAngle(direction, _currentDirection);
+
+            Quaternion newRotation;
+            if (UnityHelper.Approximately(angle, 0, 0.2f))
             {
-                case 0:
-                    _model.StopTurning();
-                    newRotation = _view.transform.rotation;
-                    break;
-                case < 0:
-                    _model.Turn(true);
-                    newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate * newInputValue, Vector3.forward);
-                    break;
-                case > 0:
-                    _model.Turn(false);
-                    newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate * newInputValue, Vector3.back);
-                    break;
+                _model.StopTurning();
+                return;
+            }
+
+            if (angle > 0)
+            {
+                _model.Turn(true);
+                newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate, Vector3.forward);
+            }
+            else
+            {
+                _model.Turn(false);
+                newRotation = _view.transform.rotation * Quaternion.AngleAxis(-_model.CurrentTurnRate, Vector3.back);
             }
             _rigidbody.MoveRotation(newRotation);
         }
@@ -101,7 +113,7 @@ namespace Gameplay.Player.Movement
             currentSpeed switch
             {
                 < 0 => "R",
-                _ => $"SPD: {Mathf.RoundToInt(currentSpeed/maximumSpeed * 100)}"
+                _ => $"SPD: {Mathf.RoundToInt(currentSpeed / maximumSpeed * 100)}"
             };
     }
 }
