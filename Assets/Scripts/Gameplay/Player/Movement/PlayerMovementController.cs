@@ -88,6 +88,7 @@ namespace Gameplay.Player.Movement
             if (UnityHelper.Approximately(angle, 0, 0.2f))
             {
                 _model.StopTurning();
+                _rigidbody.angularVelocity = 0;
                 return;
             }
 
