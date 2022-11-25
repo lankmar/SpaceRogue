@@ -24,5 +24,7 @@ namespace Scriptables.Space
         [field: SerializeField, Min(0), Header("Star Settings")] public int StarCount { get; private set; } = 20;
         [field: SerializeField] public bool AutoRadius { get; private set; } = true;
         [field: SerializeField, Min(0)] public int ManualRadius { get; private set; } = 5;
+
+        [field: SerializeField, Min(0), Header("Star Settings")] public float ObstacleForce { get; private set; } = 1.5f;
     }
 }

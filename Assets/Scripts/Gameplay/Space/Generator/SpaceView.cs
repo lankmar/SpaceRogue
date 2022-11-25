@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Gameplay.Space.Obstacle;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 namespace Gameplay.Space.Generator
@@ -10,5 +11,7 @@ namespace Gameplay.Space.Generator
 
         [field: SerializeField, Header("Nebula")] public Tilemap NebulaTilemap { get; private set; }
         [field: SerializeField] public Tilemap NebulaMaskTilemap { get; private set; }
+
+        [field: SerializeField, Header("Obstacle")] public ObstacleView ObstacleView{ get; private set; }
     }
 }

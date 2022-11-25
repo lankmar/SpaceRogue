@@ -495,6 +495,7 @@ MonoBehaviour:
   <BorderMaskTilemap>k__BackingField: {fileID: 4254936405403106942}
   <NebulaTilemap>k__BackingField: {fileID: 4254936404302260524}
   <NebulaMaskTilemap>k__BackingField: {fileID: 4254936404337540773}
+  <ObstacleView>k__BackingField: {fileID: 115876158475015236}
 --- !u!1 &4254936405403106941
 GameObject:
   m_ObjectHideFlags: 0

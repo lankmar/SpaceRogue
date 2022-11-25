@@ -1,6 +1,7 @@
 using System.Linq;
 using Abstracts;
 using Gameplay.Space.Generator;
+using Gameplay.Space.Obstacle;
 using Gameplay.Space.Planet;
 using Scriptables.Space;
 using Utilities.ResourceManagement;
@@ -29,6 +30,7 @@ namespace Gameplay.Space
 
             var levelGenerator = new LevelGenerator(_view, config, starSpawnConfig);
             levelGenerator.Generate();
+            AddObstacleController(_view.ObstacleView, config.ObstacleForce);
 
             foreach (var starSpawnPoint in levelGenerator.GetStarSpawnPoints())
             {
@@ -45,6 +47,12 @@ namespace Gameplay.Space
             {
                 AddController(planet);
             }
+        }
+
+        private void AddObstacleController(ObstacleView obstacleView, float obstacleForce)
+        {
+            var obstacleController = new ObstacleController(obstacleView, obstacleForce);
+            AddController(obstacleController);
         }
     }
 }
