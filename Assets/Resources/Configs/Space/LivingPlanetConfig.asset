@@ -18,3 +18,5 @@ MonoBehaviour:
   <RetrogradeMovementChance>k__BackingField: 0.5
   <MinSize>k__BackingField: 5
   <MaxSize>k__BackingField: 8
+  <MinDamage>k__BackingField: 3
+  <MaxDamage>k__BackingField: 10

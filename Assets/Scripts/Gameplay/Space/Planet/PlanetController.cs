@@ -14,11 +14,11 @@ namespace Gameplay.Space.Planet
         
         private readonly StarView _starView;
 
-        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, PlanetSpawnConfig planetSpawnConfig)
+        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, float planetDamage)
         {
             _view = view;
 
-            var damageModel = new DamageModel(planetSpawnConfig.planetDamage);
+            var damageModel = new DamageModel(planetDamage);
             view.Init(damageModel);
 
             AddGameObject(view.gameObject);
