@@ -1,5 +1,7 @@
 using Abstracts;
+using Gameplay.Damage;
 using Gameplay.Space.Star;
+using Scriptables.Space;
 using UnityEngine;
 
 namespace Gameplay.Space.Planet
@@ -12,19 +14,25 @@ namespace Gameplay.Space.Planet
         
         private readonly StarView _starView;
 
-        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde)
+        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, float planetDamage)
         {
             _view = view;
+
+            var damageModel = new DamageModel(planetDamage);
+            view.Init(damageModel);
+
             AddGameObject(view.gameObject);
             _starView = starView;
             _currentSpeed = speed;
             _isMovingRetrograde = isMovingRetrograde;
-            
+            _view.CollisionEnter += Dispose;
+
             EntryPoint.SubscribeToUpdate(Move);
         }
 
         protected override void OnDispose()
         {
+            _view.CollisionEnter -= Dispose;
             EntryPoint.UnsubscribeFromUpdate(Move);
         }
 
