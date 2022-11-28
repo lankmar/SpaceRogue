@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Asteroid;
 using Gameplay.Camera;
 using Gameplay.Enemy;
 using Gameplay.GameState;
@@ -17,6 +18,7 @@ namespace Gameplay
         private readonly EnemyForcesController _enemyForcesController;
         private readonly CameraController _cameraController;
         private readonly GameUIController _gameUIController;
+        private readonly AsteroidsController _asteroidsController;
 
         public GameController(CurrentState currentState, Canvas mainUICanvas)
         {
@@ -36,6 +38,9 @@ namespace Gameplay
 
             _enemyForcesController = new EnemyForcesController(_playerController.View);
             AddController(_enemyForcesController);
+
+            _asteroidsController = new AsteroidsController(_playerController);
+            AddController(_asteroidsController);
         }
 
         private void OnPlayerDestroyed()
