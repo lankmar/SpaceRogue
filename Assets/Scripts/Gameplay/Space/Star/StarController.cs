@@ -7,13 +7,13 @@ namespace Gameplay.Space.Star
     {
         public StarView StarView { get; }
 
-        private const int fatalDamage = 9999;
+        private const int FatalDamage = 9999;
 
         public StarController(StarView starView)
         {
             StarView = starView;
 
-            var damageModel = new DamageModel(fatalDamage);
+            var damageModel = new DamageModel(FatalDamage);
             starView.Init(damageModel);
 
             AddGameObject(starView.gameObject);
