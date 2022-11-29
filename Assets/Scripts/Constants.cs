@@ -28,6 +28,14 @@ public static class Constants
             public static readonly string DefaultStarSpawn = Path.Combine(SPACE, nameof(DefaultStarSpawn));
             public static readonly string DefaultPlanetSpawn = Path.Combine(SPACE, nameof(DefaultPlanetSpawn));
         }
+
+        public record Asteroid
+        {
+            private static readonly string ASTEROID = Path.Combine(CONFIGS, nameof(Asteroid));
+
+            public static readonly string AsteroidSpawnConfig = Path.Combine(ASTEROID, nameof(AsteroidSpawnConfig));
+        }
+
     }
 
     public record Prefabs
