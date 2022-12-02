@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Abstracts;
 using Gameplay.Shooting;
 using Scriptables.Modules;
+using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 
@@ -14,6 +15,8 @@ namespace Gameplay.Player.FrontalGuns
         private readonly SubscribedProperty<bool> _changeWeaponInput;
         private readonly List<TurretModuleConfig> _turretConfigs;
         private readonly List<FrontalTurretController> _turretControllers;
+
+        private readonly PlayerWeaponView _playerWeaponView;
 
         private int _currentTurret;
 
@@ -29,7 +32,10 @@ namespace Gameplay.Player.FrontalGuns
             {
                 InitializeTurret(config, playerView.transform);
             }
-            
+
+            _playerWeaponView = GameUIController.PlayerWeaponView;
+            _playerWeaponView.Init(_turretConfigs[0].WeaponType.ToString());
+
             _primaryFireInput.Subscribe(HandleFiring);
             _changeWeaponInput.Subscribe(ChangeWeapon);
         }
@@ -53,6 +59,7 @@ namespace Gameplay.Player.FrontalGuns
             if (isChange)
             {
                 _currentTurret = (_currentTurret + 1) % _turretConfigs.Count;
+                _playerWeaponView.UpdateText(_turretConfigs[_currentTurret].WeaponType.ToString());
             }
         }
 

@@ -9,19 +9,23 @@ namespace UI.Game
     {
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
+        public static PlayerWeaponView PlayerWeaponView { get; private set; }
 
         private readonly Canvas _mainCanvas;
 
         private Canvas _playerStatusBarCanvas;
         private Canvas _playerSpeedometerCanvas;
+        private Canvas _playerWeaponCanvas;
         private Canvas _playerDestroyedCanvas;
 
         private PlayerStatusBarView _playerStatusBarView;
         private PlayerSpeedometerView _playerSpeedometerView;
+        private PlayerWeaponView _playerWeaponView;
         private DestroyPlayerMessageView _playerDestroyedMessageView;
 
         private readonly ResourcePath _playerStatusBarCanvasPath = new(Constants.Prefabs.Canvas.Game.StatusBarCanvas);
         private readonly ResourcePath _playerSpeedometerCanvasPath = new(Constants.Prefabs.Canvas.Game.SpeedometerCanvas);
+        private readonly ResourcePath _playerWeaponCanvasPath = new(Constants.Prefabs.Canvas.Game.WeaponCanvas);
         private readonly ResourcePath _playerDestroyedCanvasPath = new(Constants.Prefabs.Canvas.Game.DestroyPlayerCanvas);
 
         private Action _exitToMenu;
@@ -33,6 +37,7 @@ namespace UI.Game
             
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
+            AddPlayerWeapon();
         }
 
         private void AddPlayerStatusBar()
@@ -51,10 +56,19 @@ namespace UI.Game
             AddGameObject(_playerSpeedometerCanvas.gameObject);
         }
 
+        private void AddPlayerWeapon()
+        {
+            _playerWeaponCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerWeaponCanvasPath, _mainCanvas.transform);
+            _playerWeaponView = _playerWeaponCanvas.GetComponent<PlayerWeaponView>();
+            PlayerWeaponView = _playerWeaponView;
+            AddGameObject(_playerWeaponCanvas.gameObject);
+        }
+
         protected override void OnDispose()
         {
             PlayerStatusBarView = null;
             PlayerSpeedometerView = null;
+            PlayerWeaponView = null;
         }
             
         public void AddDestroyPlayerMessage()
