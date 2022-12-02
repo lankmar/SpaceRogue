@@ -13,10 +13,11 @@ namespace Gameplay.Input
         public InputController(
             SubscribedProperty<Vector3> mousePositionInput,
             SubscribedProperty<float> verticalInput,
-            SubscribedProperty<bool> primaryFireInput)
+            SubscribedProperty<bool> primaryFireInput,
+            SubscribedProperty<bool> changeWeaponInput)
         {
             _view = LoadView<BaseInputView>(_viewPrefabPath);
-            _view.Init(mousePositionInput, verticalInput, primaryFireInput);
+            _view.Init(mousePositionInput, verticalInput, primaryFireInput, changeWeaponInput);
         }
 
     }

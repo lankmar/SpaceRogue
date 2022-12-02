@@ -11,34 +11,48 @@ namespace Gameplay.Player.FrontalGuns
     public class FrontalGunsController : BaseController
     {
         private readonly SubscribedProperty<bool> _primaryFireInput;
+        private readonly SubscribedProperty<bool> _changeWeaponInput;
         private readonly List<TurretModuleConfig> _turretConfigs;
         private readonly List<FrontalTurretController> _turretControllers;
 
-        public FrontalGunsController(SubscribedProperty<bool> primaryFireInput, List<TurretModuleConfig> turretConfigs, PlayerView playerView)
+        private int _currentTurret;
+
+        public FrontalGunsController(SubscribedProperty<bool> primaryFireInput, SubscribedProperty<bool> changeWeaponInput, List<TurretModuleConfig> turretConfigs, PlayerView playerView)
         {
             _primaryFireInput = primaryFireInput;
+            _changeWeaponInput = changeWeaponInput;
             _turretConfigs = turretConfigs;
             
             _turretControllers = new List<FrontalTurretController>();
-
-            foreach (var config in turretConfigs)
+            
+            foreach (var config in _turretConfigs)
             {
                 InitializeTurret(config, playerView.transform);
             }
             
             _primaryFireInput.Subscribe(HandleFiring);
+            _changeWeaponInput.Subscribe(ChangeWeapon);
         }
 
         protected override void OnDispose()
         {
             _primaryFireInput.Unsubscribe(HandleFiring);
+            _changeWeaponInput.Unsubscribe(ChangeWeapon);
         }
 
         private void HandleFiring(bool isFiring)
         {
-            foreach (var turret in _turretControllers)
+            if (isFiring)
             {
-                if (isFiring) turret.CommenceFiring();
+                _turretControllers[_currentTurret].CommenceFiring(); 
+            }
+        }
+
+        private void ChangeWeapon(bool isChange)
+        {
+            if (isChange)
+            {
+                _currentTurret = (_currentTurret + 1) % _turretConfigs.Count;
             }
         }
 
