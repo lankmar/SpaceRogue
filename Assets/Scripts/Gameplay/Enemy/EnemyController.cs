@@ -5,8 +5,12 @@ using Gameplay.Health;
 using Gameplay.Movement;
 using Gameplay.Player;
 using Gameplay.Shooting;
+using Scriptables;
 using Scriptables.Enemy;
 using Scriptables.Health;
+using Scriptables.Modules;
+using System.Collections.Generic;
+using Utilities.Mathematics;
 
 namespace Gameplay.Enemy
 {
@@ -19,6 +23,7 @@ namespace Gameplay.Enemy
         private readonly EnemyBehaviourController _behaviourController;
         private readonly HealthController _healthController;
         private readonly PlayerController _playerController;
+        private readonly System.Random _random = new();
 
         public EnemyController(EnemyConfig config, EnemyView view, PlayerController playerController)
         {
@@ -26,7 +31,7 @@ namespace Gameplay.Enemy
             _config = config;
             _view = view;
             AddGameObject(_view.gameObject);
-            _turret = WeaponFactory.CreateFrontalTurret(_config.Weapon, _view.transform);
+            _turret = WeaponFactory.CreateFrontalTurret(PickTurret(_config.TurretConfigs, _random), _view.transform);
             AddController(_turret);
             
             var movementModel = new MovementModel(_config.Movement);
@@ -46,5 +51,8 @@ namespace Gameplay.Enemy
             AddController(_healthController);
             return healthController;
         }
+
+        private TurretModuleConfig PickTurret(List<WeightConfig<TurretModuleConfig>> weaponConfigs, System.Random random) =>
+            RandomPicker.PickOneElementByWeights(weaponConfigs, random);
     }
 }
