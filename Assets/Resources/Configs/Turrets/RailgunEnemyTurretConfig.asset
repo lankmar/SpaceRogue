@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf549a721f77445cb4fecf5822f7c818, type: 3}
   m_Name: RailgunEnemyTurretConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 501a5be9-9b3a-4f11-80b7-09684745de4b
+  <Id>k__BackingField: railgun-enemy-turret
   <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: b3a3102f9a8556841a6e36528bbc29a5, type: 2}
   <WeaponType>k__BackingField: 4
   <SpecificWeapon>k__BackingField: {fileID: 11400000, guid: 6090ce35a3fc555459abd49b9512336c, type: 2}

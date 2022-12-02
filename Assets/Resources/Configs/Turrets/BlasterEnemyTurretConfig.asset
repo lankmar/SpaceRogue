@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf549a721f77445cb4fecf5822f7c818, type: 3}
   m_Name: BlasterEnemyTurretConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: 501a5be9-9b3a-4f11-80b7-09684745de4b
+  <Id>k__BackingField: blaster-enemy-turret
   <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 40ca41f5caa4b1d419a68b4490c4c636, type: 2}
   <WeaponType>k__BackingField: 1
   <SpecificWeapon>k__BackingField: {fileID: 11400000, guid: f5294e08f8fa7b643b0589a59c6217d5, type: 2}
