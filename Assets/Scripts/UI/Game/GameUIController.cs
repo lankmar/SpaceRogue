@@ -5,13 +5,13 @@ using Utilities.ResourceManagement;
 
 namespace UI.Game
 {
-    public class GameUIController : BaseController
+    public sealed class GameUIController : BaseController
     {
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
         public static PlayerWeaponView PlayerWeaponView { get; private set; }
 
-        private readonly Canvas _mainCanvas;
+        private readonly MainCanvasView _mainCanvasView;
 
         private Canvas _playerStatusBarCanvas;
         private Canvas _playerSpeedometerCanvas;
@@ -32,7 +32,7 @@ namespace UI.Game
 
         public GameUIController(Canvas mainCanvas, Action exitToMenu)
         {
-            _mainCanvas = mainCanvas;
+            _mainCanvasView = mainCanvas.GetComponent<MainCanvasView>();
             _exitToMenu = exitToMenu;
             
             AddPlayerStatusBar();
@@ -42,7 +42,7 @@ namespace UI.Game
 
         private void AddPlayerStatusBar()
         {
-            _playerStatusBarCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerStatusBarCanvasPath, _mainCanvas.transform);
+            _playerStatusBarCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerStatusBarCanvasPath, _mainCanvasView.PlayerInfo);
             _playerStatusBarView = _playerStatusBarCanvas.GetComponent<PlayerStatusBarView>();
             PlayerStatusBarView = _playerStatusBarView;
             AddGameObject(_playerStatusBarCanvas.gameObject);
@@ -50,7 +50,7 @@ namespace UI.Game
 
         private void AddPlayerSpeedometer()
         {
-            _playerSpeedometerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerSpeedometerCanvasPath, _mainCanvas.transform);
+            _playerSpeedometerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerSpeedometerCanvasPath, _mainCanvasView.PlayerInfo);
             _playerSpeedometerView = _playerSpeedometerCanvas.GetComponent<PlayerSpeedometerView>();
             PlayerSpeedometerView = _playerSpeedometerView;
             AddGameObject(_playerSpeedometerCanvas.gameObject);
@@ -58,7 +58,7 @@ namespace UI.Game
 
         private void AddPlayerWeapon()
         {
-            _playerWeaponCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerWeaponCanvasPath, _mainCanvas.transform);
+            _playerWeaponCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerWeaponCanvasPath, _mainCanvasView.PlayerInfo);
             _playerWeaponView = _playerWeaponCanvas.GetComponent<PlayerWeaponView>();
             PlayerWeaponView = _playerWeaponView;
             AddGameObject(_playerWeaponCanvas.gameObject);
@@ -73,7 +73,7 @@ namespace UI.Game
             
         public void AddDestroyPlayerMessage()
         {
-            _playerDestroyedCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyedCanvasPath, _mainCanvas.transform);
+            _playerDestroyedCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyedCanvasPath, _mainCanvasView.transform);
             _playerDestroyedMessageView = _playerDestroyedCanvas.GetComponent<DestroyPlayerMessageView>();
             _playerDestroyedMessageView.Init(_exitToMenu);
             AddGameObject(_playerDestroyedCanvas.gameObject);
