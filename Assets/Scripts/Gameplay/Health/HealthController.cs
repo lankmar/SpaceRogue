@@ -6,7 +6,7 @@ using UI.Game;
 
 namespace Gameplay.Health
 {
-    public sealed class HealthController : BaseController
+    public class HealthController : BaseController
     {
         private readonly HealthStatusBarView _statusBarView;
         private readonly BaseHealthModel _healthModel;

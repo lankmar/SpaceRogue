@@ -10,6 +10,7 @@ namespace UI.Game
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
         public static PlayerWeaponView PlayerWeaponView { get; private set; }
+        public static Transform EnemyHealthBars { get; private set; }
 
         private readonly MainCanvasView _mainCanvasView;
 
@@ -34,7 +35,9 @@ namespace UI.Game
         {
             _mainCanvasView = mainCanvas.GetComponent<MainCanvasView>();
             _exitToMenu = exitToMenu;
-            
+
+            EnemyHealthBars = _mainCanvasView.EnemyHealthBars;
+
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
             AddPlayerWeapon();
@@ -69,6 +72,7 @@ namespace UI.Game
             PlayerStatusBarView = null;
             PlayerSpeedometerView = null;
             PlayerWeaponView = null;
+            EnemyHealthBars = null;
         }
             
         public void AddDestroyPlayerMessage()
