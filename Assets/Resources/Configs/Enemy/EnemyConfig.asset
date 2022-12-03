@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: d3c03399-bcfd-4225-a73a-e823d41bc00f
   <Prefab>k__BackingField: {fileID: 905853938731985664, guid: 2593983f73b1c19439375d9f5f3d0cc8, type: 3}
-  <Weapon>k__BackingField: {fileID: 11400000, guid: 39e86ece32dc17e4f9008929343ffd44, type: 2}
+  <TurretConfigs>k__BackingField:
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: 6d64cfec25d475a4ebb09a1020dc859a, type: 2}
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: 79c13859d2f9615499191bf83a92a9d9, type: 2}
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: a9c288dc56c699841a12bed49fffd3cc, type: 2}
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: 2119194d33f8cca4c8da01621327d8e0, type: 2}
   <Movement>k__BackingField:
     maximumSpeed: 20
     maximumBackwardSpeed: 8

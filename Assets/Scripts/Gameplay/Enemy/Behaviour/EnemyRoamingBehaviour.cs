@@ -39,6 +39,11 @@ namespace Gameplay.Enemy.Behaviour
 
         protected override void DetectPlayer()
         {
+            if (PlayerView == null)
+            {
+                return;
+            }
+
             if (Vector3.Distance(View.transform.position, PlayerView.transform.position) < Config.PlayerDetectionRadius)
             {
                 EnterCombat();
