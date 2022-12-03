@@ -1,0 +1,327 @@
+﻿using Scriptables.Space;
+using System.Collections.Generic;
+using System.Drawing;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+using Utilities.Mathematics;
+using Random = System.Random;
+
+namespace Gameplay.Space.Generator
+{
+    public abstract class SpaceGenerator
+    {
+        private const int DefaultMooreCount = 4;
+        private const int DefaultVonNeumannCount = 2;
+        private const float NoiseScale = 0.1f;
+
+        protected readonly TileBase _borderTileBase;
+        protected readonly TileBase _borderMaskTileBase;
+        protected readonly TileBase _nebulaTileBase;
+        protected readonly TileBase _nebulaMaskTileBase;
+
+        protected readonly int _widthMap;
+        protected readonly int _heightMap;
+        protected readonly int _outerBorder;
+        protected readonly int _innerBorder;
+        protected readonly SmoothMapType _smoothMapType;
+        protected readonly int _factorSmooth;
+        protected readonly RandomType _randomType;
+        protected readonly float _chance;
+
+        protected readonly int _starCount;
+        protected readonly int _radius;
+
+        protected readonly int[,] _borderMap;
+        protected readonly int[,] _nebulaMap;
+        protected readonly int[,] _starMap;
+
+        public SpaceGenerator(SpaceView spaceView, SpaceConfig spaceConfig, StarSpawnConfig starSpawnConfig)
+        {
+            _borderTileBase = spaceConfig.BorderTileBase;
+            _borderMaskTileBase = spaceConfig.BorderMaskTileBase;
+            _nebulaTileBase = spaceConfig.NebulaTileBase;
+            _nebulaMaskTileBase = spaceConfig.NebulaMaskTileBase;
+
+            _widthMap = spaceConfig.WidthMap;
+            _heightMap = spaceConfig.HeightMap;
+            _outerBorder = spaceConfig.OuterBorder;
+            _innerBorder = spaceConfig.InnerBorder;
+            _smoothMapType = spaceConfig.SmoothMapType;
+            _factorSmooth = spaceConfig.FactorSmooth;
+            _randomType = spaceConfig.RandomType;
+            _chance = spaceConfig.Chance;
+
+            _starCount = spaceConfig.StarCount;
+
+            if (spaceConfig.AutoRadius)
+            {
+                _radius = GetRadius(starSpawnConfig, spaceView.NebulaTilemap);
+            }
+            else
+            {
+                _radius = spaceConfig.ManualRadius;
+            }
+
+            _borderMap = new int[_widthMap + 2 * _outerBorder, _heightMap + 2 * _outerBorder];
+            _nebulaMap = new int[_widthMap, _heightMap];
+            _starMap = new int[_widthMap, _heightMap];
+        }
+
+        public void Generate()
+        {
+            FillBorder(_borderMap, _widthMap, _heightMap, _outerBorder);
+            FillNebula(_nebulaMap, _innerBorder, NoiseScale, _randomType, _smoothMapType);
+            StarSpawnPoints(_starMap, _nebulaMap, _starCount, _radius);
+            Draw();
+        }
+
+        protected abstract void Draw();
+
+        private int GetRadius(StarSpawnConfig starSpawnConfig, Tilemap tilemap)
+        {
+            var maxStarSize = default(float);
+            var maxOrbit = default(float);
+
+            foreach (var item in starSpawnConfig.WeightConfigs)
+            {
+                maxStarSize = Mathf.Max(maxStarSize, item.Config.MaxSize);
+                maxOrbit = Mathf.Max(maxOrbit, item.Config.MaxOrbit);
+            }
+
+            var radius = (maxStarSize / 2 + maxOrbit)
+                / Mathf.Max(tilemap.cellSize.x * tilemap.transform.localScale.x,
+                            tilemap.cellSize.y * tilemap.transform.localScale.y);
+            Debug.Log($"Radius: {Mathf.CeilToInt(radius)}");
+
+            return Mathf.CeilToInt(radius);
+        }
+
+        private void FillBorder(int[,] map, int widthMap, int heightMap, int outerBorder)
+        {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int y = 0; y < map.GetLength(1); y++)
+                {
+                    if (x <= outerBorder - 1
+                        || x >= widthMap + outerBorder
+                        || y <= outerBorder - 1
+                        || y >= heightMap + outerBorder)
+                    {
+                        map[x, y] = 1;
+                    }
+                }
+            }
+        }
+
+        private void FillNebula(int[,] map, int innerBorder, float noiseScale, RandomType randomType, SmoothMapType smoothMapType)
+        {
+            RandomFillLevel(randomType, map, innerBorder, noiseScale);
+            SmoothMap(smoothMapType, map, 1, false);
+        }
+
+        #region RandomFill
+        private void RandomFillLevel(RandomType randomType, int[,] map, int innerBorder, float noiseScale)
+        {
+            var pseudoRandom = new Random();
+
+            switch (randomType)
+            {
+                case RandomType.Random:
+                    StandardRandomMapFill(map, innerBorder, pseudoRandom);
+                    break;
+                case RandomType.PerlinNoise:
+                    PerlinNoiseMapFill(map, innerBorder, pseudoRandom, noiseScale);
+                    break;
+            }
+        }
+
+        private void StandardRandomMapFill(int[,] map, int innerBorder, Random pseudoRandom)
+        {
+            for (int x = innerBorder; x < map.GetLength(0) - innerBorder; x++)
+            {
+                for (int y = innerBorder; y < map.GetLength(1) - innerBorder; y++)
+                {
+                    map[x, y] = RandomPicker.TakeChance(_chance, pseudoRandom) ? 1 : 0;
+                }
+            }
+        }
+
+        private void PerlinNoiseMapFill(int[,] map, int innerBorder, Random pseudoRandom, float noiseScale)
+        {
+            var xOffset = pseudoRandom.Next(-map.GetLength(0) / 2, map.GetLength(0) / 2);
+            var yOffset = pseudoRandom.Next(-map.GetLength(1) / 2, map.GetLength(1) / 2);
+
+            for (int x = innerBorder; x < map.GetLength(0) - innerBorder; x++)
+            {
+                for (int y = innerBorder; y < map.GetLength(1) - innerBorder; y++)
+                {
+                    var noise = Mathf.PerlinNoise(x * noiseScale + xOffset, y * noiseScale + yOffset);
+                    _nebulaMap[x, y] = noise >= 0.99f - _chance ? 1 : 0;
+                }
+            }
+        }
+        #endregion
+
+        #region SmoothMap
+        private void SmoothMap(SmoothMapType smoothMapType, int[,] map, int radius, bool edgesAreWalls)
+        {
+            for (int i = 0; i < _factorSmooth; i++)
+            {
+                for (int x = 0; x < _widthMap; x++)
+                {
+                    for (int y = 0; y < _heightMap; y++)
+                    {
+                        var neighbourCount = GetSurroundingNeighbourCount(smoothMapType, map, x, y, radius, edgesAreWalls, out int defaultCount);
+
+                        if (neighbourCount > defaultCount)
+                        {
+                            _nebulaMap[x, y] = 1;
+                        }
+                        else if (neighbourCount < defaultCount)
+                        {
+                            _nebulaMap[x, y] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        private int GetSurroundingNeighbourCount(SmoothMapType smoothMapType, int[,] map, int gridX, int gridY, int radius, bool edgesAreWalls, out int defaultCount)
+        {
+            var count = default(int);
+            defaultCount = 0;
+
+            switch (smoothMapType)
+            {
+                case SmoothMapType.MooreNeighborhood:
+                    count = MooreNeighborhoodCount(map, gridX, gridY, radius, edgesAreWalls);
+                    defaultCount = DefaultMooreCount;
+                    break;
+                case SmoothMapType.VonNeumannNeighborhood:
+                    count = VonNeumannNeighborhoodCount(map, gridX, gridY, edgesAreWalls);
+                    defaultCount = DefaultVonNeumannCount;
+                    break;
+            }
+
+            return count;
+        }
+
+        private int MooreNeighborhoodCount(int[,] map, int gridX, int gridY, int radius, bool edgesAreWalls)
+        {
+            var neighbourCount = 0;
+
+            for (int neighbourX = gridX - radius; neighbourX <= gridX + radius; neighbourX++)
+            {
+                for (int neighbourY = gridY - radius; neighbourY <= gridY + radius; neighbourY++)
+                {
+                    if (neighbourX >= 0 && neighbourX < _widthMap && neighbourY >= 0 && neighbourY < _heightMap)
+                    {
+                        if (neighbourX != gridX || neighbourY != gridY)
+                        {
+                            neighbourCount += map[neighbourX, neighbourY];
+                        }
+                    }
+                    else if (edgesAreWalls)
+                    {
+                        neighbourCount++;
+                    }
+                }
+            }
+
+            return neighbourCount;
+        }
+
+        private int VonNeumannNeighborhoodCount(int[,] map, int gridX, int gridY, bool edgesAreWalls)
+        {
+            var neighbourCount = 0;
+
+            if (edgesAreWalls && (gridX - 1 == 0 || gridX + 1 == map.GetLength(0) || gridY - 1 == 0 || gridY + 1 == map.GetLength(1)))
+            {
+                neighbourCount++;
+            }
+
+            if (gridX - 1 > 0)
+            {
+                neighbourCount += map[gridX - 1, gridY];
+            }
+
+            if (gridY - 1 > 0)
+            {
+                neighbourCount += map[gridX, gridY - 1];
+            }
+
+            if (gridX + 1 < map.GetLength(0))
+            {
+                neighbourCount += map[gridX + 1, gridY];
+            }
+
+            if (gridY + 1 < map.GetLength(1))
+            {
+                neighbourCount += map[gridX, gridY + 1];
+            }
+
+            return neighbourCount;
+        } 
+        #endregion
+
+        #region StarSpawn
+        private void StarSpawnPoints(int[,] starMap, int[,] map, int starCount, int radius)
+        {
+            var pseudoRandom = new Random();
+            var availablePoints = CheckAvailablePoints(map, radius);
+            var count = 0;
+
+            while (count < starCount)
+            {
+                if (availablePoints.Count == 0)
+                {
+                    Debug.LogWarning($"Not enough space for all Stars | StarCount = {count}");
+                    break;
+                }
+
+                var i = pseudoRandom.Next(availablePoints.Count);
+                starMap[availablePoints[i].X, availablePoints[i].Y] = 1;
+                RemovePoints(ref availablePoints, availablePoints[i].X, availablePoints[i].Y, radius);
+                count++;
+            }
+        }
+
+        private List<Point> CheckAvailablePoints(int[,] map, int radius)
+        {
+            var points = new List<Point>();
+
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int y = 0; y < map.GetLength(1); y++)
+                {
+                    if (map[x, y] == 0)
+                    {
+                        if (MooreNeighborhoodCount(map, x, y, radius, true) == 0)
+                        {
+                            points.Add(new Point(x, y));
+                        }
+                    }
+                }
+            }
+
+            return points;
+        }
+
+        private void RemovePoints(ref List<Point> points, int gridX, int gridY, int radius)
+        {
+            for (int neighbourX = gridX - radius; neighbourX <= gridX + radius; neighbourX++)
+            {
+                for (int neighbourY = gridY - radius; neighbourY <= gridY + radius; neighbourY++)
+                {
+                    var item = new Point(neighbourX, neighbourY);
+
+                    if (points.Contains(item))
+                    {
+                        points.Remove(item);
+                    }
+                }
+            }
+        } 
+        #endregion
+    }
+}
