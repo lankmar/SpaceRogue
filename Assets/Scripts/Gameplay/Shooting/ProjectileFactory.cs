@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.Shooting
 {
-    public class ProjectileFactory
+    public sealed class ProjectileFactory
     {
         private readonly ProjectileConfig _config;
         private readonly ProjectileView _view;

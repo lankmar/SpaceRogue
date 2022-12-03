@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.Shooting
 {
-    public class FrontalNullGunController : FrontalTurretController
+    public sealed class FrontalNullGunController : FrontalTurretController
     {
         public FrontalNullGunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
         {

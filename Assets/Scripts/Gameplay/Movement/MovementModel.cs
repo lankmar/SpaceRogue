@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.Movement
 {
-    public class MovementModel
+    public sealed class MovementModel
     {
         private readonly MovementConfig _config;
         private float TurnSpeedDifference => _config.maximumTurnSpeed - _config.startingTurnSpeed;

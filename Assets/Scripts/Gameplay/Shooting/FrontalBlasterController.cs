@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.Shooting
 {
-    public class FrontalBlasterController : FrontalTurretController
+    public sealed class FrontalBlasterController : FrontalTurretController
     {
         private readonly BlasterWeaponConfig _weaponConfig;
 

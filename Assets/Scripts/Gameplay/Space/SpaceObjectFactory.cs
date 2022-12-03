@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace Gameplay.Space
 {
-    public class SpaceObjectFactory
+    public sealed class SpaceObjectFactory
     {
         private readonly StarSpawnConfig _starSpawnConfig;
         private readonly PlanetSpawnConfig _planetSpawnConfig;

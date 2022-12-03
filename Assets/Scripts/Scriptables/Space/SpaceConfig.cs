@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 namespace Scriptables.Space
 {
     [CreateAssetMenu(fileName = nameof(SpaceConfig), menuName = "Configs/Space/" + nameof(SpaceConfig))]
-    public class SpaceConfig : ScriptableObject
+    public sealed class SpaceConfig : ScriptableObject
     {
         [field: SerializeField, Header("TileBase")] public TileBase BorderTileBase { get; private set; }
         [field: SerializeField] public TileBase BorderMaskTileBase { get; private set; }

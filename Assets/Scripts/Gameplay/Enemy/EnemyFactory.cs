@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gameplay.Enemy
 {
-    public class EnemyFactory
+    public sealed class EnemyFactory
     {
         private readonly EnemyConfig _config;
         

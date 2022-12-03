@@ -8,7 +8,7 @@ using Utilities.Unity;
 
 namespace Gameplay.Enemy
 {
-    public class EnemyForcesController : BaseController
+    public sealed class EnemyForcesController : BaseController
     {
         private readonly ResourcePath _groupSpawnConfigPath = new(Constants.Configs.Enemy.EnemySpawnConfig);
         private readonly EnemyFactory _enemyFactory;

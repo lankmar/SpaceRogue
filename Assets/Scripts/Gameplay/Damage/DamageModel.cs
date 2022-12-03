@@ -1,6 +1,6 @@
 namespace Gameplay.Damage
 {
-    public class DamageModel
+    public sealed class DamageModel
     {
         public float DamageAmount { get; }
 

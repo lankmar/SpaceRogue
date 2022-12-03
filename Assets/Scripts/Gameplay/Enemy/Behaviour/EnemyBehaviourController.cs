@@ -3,13 +3,11 @@ using Gameplay.Enemy.Movement;
 using Gameplay.Movement;
 using Gameplay.Player;
 using Gameplay.Shooting;
-using Scriptables.Enemy;
-using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 
 namespace Gameplay.Enemy.Behaviour
 {
-    public class EnemyBehaviourController : BaseController
+    public sealed class EnemyBehaviourController : BaseController
     {
         private readonly SubscribedProperty<EnemyState> _enemyCurrentState;
         private readonly EnemyInputController _inputController;

@@ -6,7 +6,7 @@ using Random = System.Random;
 
 namespace Gameplay.Shooting
 {
-    public class FrontalMinigunController : FrontalTurretController
+    public sealed class FrontalMinigunController : FrontalTurretController
     {
         private readonly MinigunWeaponConfig _weaponConfig;
         

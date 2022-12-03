@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Gameplay.Shooting
 {
-    public class ProjectileController : BaseController
+    public sealed class ProjectileController : BaseController
     {
         private readonly ProjectileConfig _config;
         private readonly ProjectileView _view;

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public class GameController : BaseController
+    public sealed class GameController : BaseController
     {
         private readonly CurrentState _currentState;
         private readonly GameUIController _gameUIController;
