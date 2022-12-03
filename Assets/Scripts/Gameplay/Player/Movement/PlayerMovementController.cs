@@ -7,7 +7,7 @@ using Utilities.Unity;
 
 namespace Gameplay.Player.Movement
 {
-    public class PlayerMovementController : BaseController
+    public sealed class PlayerMovementController : BaseController
     {
         private readonly SubscribedProperty<Vector3> _mousePositionInput;
         private readonly SubscribedProperty<float> _verticalInput;

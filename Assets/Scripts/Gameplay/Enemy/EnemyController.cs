@@ -14,7 +14,7 @@ using Utilities.Mathematics;
 
 namespace Gameplay.Enemy
 {
-    public class EnemyController : BaseController
+    public sealed class EnemyController : BaseController
     {
         private readonly EnemyView _view;
         private readonly EnemyConfig _config;

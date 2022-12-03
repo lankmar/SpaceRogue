@@ -1,5 +1,4 @@
 using Gameplay.Damage;
-using Gameplay.Health;
 using Gameplay.Space.Star;
 using System;
 using UnityEngine;
@@ -7,7 +6,7 @@ using UnityEngine;
 namespace Gameplay.Space.Planet
 {
     [RequireComponent(typeof(CircleCollider2D))]
-    public class PlanetView : MonoBehaviour, IDamagingView
+    public sealed class PlanetView : MonoBehaviour, IDamagingView
     {
         public event Action CollisionEnter = () => { };
 

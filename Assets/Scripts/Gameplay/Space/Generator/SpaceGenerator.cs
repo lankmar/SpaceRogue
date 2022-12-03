@@ -98,6 +98,11 @@ namespace Gameplay.Space.Generator
 
         private void FillBorder(int[,] map, int widthMap, int heightMap, int outerBorder)
         {
+            if (map == null)
+            {
+                return;
+            }
+
             for (int x = 0; x < map.GetLength(0); x++)
             {
                 for (int y = 0; y < map.GetLength(1); y++)
@@ -115,6 +120,11 @@ namespace Gameplay.Space.Generator
 
         private void FillNebula(int[,] map, int innerBorder, float noiseScale, RandomType randomType, SmoothMapType smoothMapType)
         {
+            if (map == null)
+            {
+                return;
+            }
+
             RandomFillLevel(randomType, map, innerBorder, noiseScale);
             SmoothMap(smoothMapType, map, 1, false);
         }
@@ -267,6 +277,16 @@ namespace Gameplay.Space.Generator
         #region StarSpawn
         private void StarSpawnPoints(int[,] starMap, int[,] map, int starCount, int radius)
         {
+            if (starMap == null)
+            {
+                return;
+            }
+
+            if (map == null)
+            {
+                return;
+            }
+
             var pseudoRandom = new Random();
             var availablePoints = CheckAvailablePoints(map, radius);
             var count = 0;

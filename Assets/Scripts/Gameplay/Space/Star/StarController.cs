@@ -3,7 +3,7 @@ using Gameplay.Damage;
 
 namespace Gameplay.Space.Star
 {
-    public class StarController : BaseController
+    public sealed class StarController : BaseController
     {
         public StarView StarView { get; }
 

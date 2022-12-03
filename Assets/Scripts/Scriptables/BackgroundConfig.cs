@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Scriptables
 {
     [CreateAssetMenu(fileName = nameof(BackgroundConfig), menuName = "Configs/Background/" + nameof(BackgroundConfig))]
-    public class BackgroundConfig : ScriptableObject
+    public sealed class BackgroundConfig : ScriptableObject
     {
         [field: SerializeField] public float BackCoefficient { get; private set; }
         [field: SerializeField] public float MidCoefficient { get; private set; }

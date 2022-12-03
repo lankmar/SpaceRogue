@@ -1,12 +1,11 @@
 using Abstracts;
 using Gameplay.Damage;
 using Gameplay.Space.Star;
-using Scriptables.Space;
 using UnityEngine;
 
 namespace Gameplay.Space.Planet
 {
-    public class PlanetController : BaseController
+    public sealed class PlanetController : BaseController
     {
         private readonly PlanetView _view;
         private readonly float _currentSpeed;

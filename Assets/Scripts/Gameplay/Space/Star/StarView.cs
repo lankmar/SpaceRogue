@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Gameplay.Space.Star
 {
     [RequireComponent(typeof(CircleCollider2D))]
-    public class StarView : MonoBehaviour, IDamagingView
+    public sealed class StarView : MonoBehaviour, IDamagingView
     {
         public DamageModel DamageModel { get; private set; }
 

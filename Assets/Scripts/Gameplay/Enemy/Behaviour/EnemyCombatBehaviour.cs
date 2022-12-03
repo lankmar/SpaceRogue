@@ -7,7 +7,7 @@ using Utilities.Unity;
 
 namespace Gameplay.Enemy.Behaviour
 {
-    public class EnemyCombatBehaviour : EnemyBehaviour
+    public sealed class EnemyCombatBehaviour : EnemyBehaviour
     {
         private readonly EnemyInputController _inputController;
         private readonly FrontalTurretController _frontalTurret;

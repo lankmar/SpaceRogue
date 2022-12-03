@@ -9,7 +9,7 @@ using Random = System.Random;
 
 namespace Gameplay.Enemy.Behaviour
 {
-    public class EnemyRoamingBehaviour : EnemyBehaviour
+    public sealed class EnemyRoamingBehaviour : EnemyBehaviour
     {
         private readonly MovementModel _movementModel;
         private readonly EnemyInputController _inputController;

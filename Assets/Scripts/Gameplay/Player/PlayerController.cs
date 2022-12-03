@@ -18,7 +18,7 @@ using Utilities.Unity;
 
 namespace Gameplay.Player
 {
-    public class PlayerController : BaseController
+    public sealed class PlayerController : BaseController
     {
         public PlayerView View => _view;
 

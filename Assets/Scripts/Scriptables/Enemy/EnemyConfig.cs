@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Scriptables.Enemy
 {
     [CreateAssetMenu(fileName = nameof(EnemyConfig), menuName = "Configs/Enemy/" + nameof(EnemyConfig))]
-    public class EnemyConfig : ScriptableObject, IIdentityItem<string>
+    public sealed class EnemyConfig : ScriptableObject, IIdentityItem<string>
     {
         [field: SerializeField] public string Id { get; private set; } = Guid.NewGuid().ToString();
         [field: SerializeField] public EnemyView Prefab { get; private set; }

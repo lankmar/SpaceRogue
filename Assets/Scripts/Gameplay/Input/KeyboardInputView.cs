@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay.Input
 {
-    public class KeyboardInputView : BaseInputView
+    public sealed class KeyboardInputView : BaseInputView
     {
         [SerializeField] private float verticalAxisInputMultiplier;
 

@@ -5,7 +5,7 @@ using Utilities.ResourceManagement;
 
 namespace Gameplay.Input
 {
-    public class InputController : BaseController
+    public sealed class InputController : BaseController
     {
         private readonly ResourcePath _viewPrefabPath = new(Constants.Prefabs.Input.KeyboardInput);
         private readonly BaseInputView _view;

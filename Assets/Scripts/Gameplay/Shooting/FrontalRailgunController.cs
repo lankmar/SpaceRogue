@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Gameplay.Shooting
 {
-    public class FrontalRailgunController : FrontalTurretController
+    public sealed class FrontalRailgunController : FrontalTurretController
     {
         private readonly RailgunWeaponConfig _weaponConfig;
 

@@ -9,7 +9,7 @@ using Utilities.Reactive.SubscriptionProperty;
 
 namespace Gameplay.Player.FrontalGuns
 {
-    public class FrontalGunsController : BaseController
+    public sealed class FrontalGunsController : BaseController
     {
         private readonly SubscribedProperty<bool> _primaryFireInput;
         private readonly SubscribedProperty<bool> _changeWeaponInput;
