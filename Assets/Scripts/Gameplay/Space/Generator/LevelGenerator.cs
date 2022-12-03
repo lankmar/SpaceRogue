@@ -32,7 +32,7 @@ namespace Gameplay.Space.Generator
         {
             if (_starMap == null)
             {
-                return default;
+                return new();
             }
 
             var starSpawnPoints = new List<Vector3>();
