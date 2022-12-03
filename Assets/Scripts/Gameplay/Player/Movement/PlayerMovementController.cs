@@ -15,10 +15,11 @@ namespace Gameplay.Player.Movement
         private readonly PlayerSpeedometerView _speedometerView;
         private readonly MovementModel _model;
         private readonly PlayerView _view;
-		private readonly Rigidbody2D _rigidbody;
+        private readonly Rigidbody2D _rigidbody;
         
-		private Vector3 _currentDirection;
-		
+        private Vector3 _currentDirection;
+        private float _lastTurnRate;
+        
         public PlayerMovementController(
             SubscribedProperty<Vector3> mousePositionInput,
             SubscribedProperty<float> verticalInput,
@@ -59,7 +60,7 @@ namespace Gameplay.Player.Movement
             {
                 var transform = _view.transform;
                 var forwardDirection = transform.TransformDirection(Vector3.up);
-				
+                
                 _rigidbody.AddForce(forwardDirection.normalized * currentSpeed, ForceMode2D.Force);
             }
             
@@ -79,15 +80,27 @@ namespace Gameplay.Player.Movement
         {
             var mousePosition = UnityEngine.Camera.main.ScreenToWorldPoint(newMousePositionInput);
             mousePosition.z = 0;
-            
-            var direction = (mousePosition - _view.transform.position).normalized;
-            _currentDirection = _view.transform.TransformDirection(Vector3.up);
+
+            var transform = _view.transform;
+            var direction = (mousePosition - transform.position).normalized;
+            _currentDirection = transform.TransformDirection(Vector3.up);
             float angle = Vector2.SignedAngle(direction, _currentDirection);
 
             Quaternion newRotation;
-            if (UnityHelper.Approximately(angle, 0, 0.2f))
+            if (UnityHelper.Approximately(angle, 0, Mathf.Abs(_lastTurnRate)))
             {
                 _model.StopTurning();
+                _lastTurnRate = _model.StartingTurnSpeed / 2;
+
+                if (angle > 0)
+                {
+                    newRotation = GetNewRotation(transform, -angle, Vector3.forward);
+                }
+                else
+                {
+                    newRotation = GetNewRotation(transform, angle, Vector3.back);
+                }
+                _rigidbody.MoveRotation(newRotation);
                 _rigidbody.angularVelocity = 0;
                 return;
             }
@@ -95,14 +108,21 @@ namespace Gameplay.Player.Movement
             if (angle > 0)
             {
                 _model.Turn(true);
-                newRotation = _view.transform.rotation * Quaternion.AngleAxis(_model.CurrentTurnRate, Vector3.forward);
+                newRotation = GetNewRotation(transform, _model.CurrentTurnRate, Vector3.forward);
             }
             else
             {
                 _model.Turn(false);
-                newRotation = _view.transform.rotation * Quaternion.AngleAxis(-_model.CurrentTurnRate, Vector3.back);
+                newRotation = GetNewRotation(transform, -_model.CurrentTurnRate, Vector3.back);
             }
+
+            _lastTurnRate = _model.CurrentTurnRate;
             _rigidbody.MoveRotation(newRotation);
+        }
+
+        private Quaternion GetNewRotation(Transform transform, float angle, Vector3 axis)
+        {
+            return transform.rotation * Quaternion.AngleAxis(angle, axis);
         }
 
         private void UpdateSpeedometerValue(float currentSpeed, float maxSpeed)
