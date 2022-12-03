@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf549a721f77445cb4fecf5822f7c818, type: 3}
-  m_Name: BaseTurret01
+  m_Name: RailgunTurret
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: base-turret-01
-  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 3a3a768c7b747ea4abac3f173360a451, type: 2}
-  <WeaponType>k__BackingField: 0
-  <SpecificWeapon>k__BackingField: {fileID: 11400000, guid: 74cda2afc8f8bfc44b70705c87c7fb8d, type: 2}
+  <Id>k__BackingField: railgun-turret
+  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 575afc6c802ac6540a8a60059efd0be9, type: 2}
+  <WeaponType>k__BackingField: 4
+  <SpecificWeapon>k__BackingField: {fileID: 11400000, guid: 6090ce35a3fc555459abd49b9512336c, type: 2}

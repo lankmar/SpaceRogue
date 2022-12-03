@@ -32,6 +32,7 @@ namespace Gameplay.Player
         private readonly SubscribedProperty<Vector3> _mousePositionInput = new();
         private readonly SubscribedProperty<float> _verticalInput = new();
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
+        private readonly SubscribedProperty<bool> _changeWeaponInput = new ();
 
         private const byte MaxCountOfPlayerSpawnTries = 10;
         private const float PlayerSpawnClearanceRadius = 40.0f;
@@ -43,7 +44,7 @@ namespace Gameplay.Player
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
 
-            var inputController = new InputController(_mousePositionInput, _verticalInput, _primaryFireInput);
+            var inputController = new InputController(_mousePositionInput, _verticalInput, _primaryFireInput, _changeWeaponInput);
             AddController(inputController);
 
             var inventoryController = AddInventoryController(_config.Inventory);
@@ -78,7 +79,7 @@ namespace Gameplay.Player
 
         private FrontalGunsController AddFrontalGunsController(List<TurretModuleConfig> turretConfigs, PlayerView view)
         {
-            var frontalGunsController = new FrontalGunsController(_primaryFireInput, turretConfigs, view);
+            var frontalGunsController = new FrontalGunsController(_primaryFireInput, _changeWeaponInput, turretConfigs, view);
             AddController(frontalGunsController);
             return frontalGunsController;
         }
