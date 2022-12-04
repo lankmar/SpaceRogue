@@ -20,6 +20,5 @@ namespace Scriptables.Enemy
         [field: SerializeField] public EnemyBehaviourConfig Behaviour { get; private set; }
         [field: SerializeField] public HealthConfig Health { get; private set; }
         [field: SerializeField] public ShieldConfig Shield { get; private set; }
-        [field: SerializeField] public float HealthBarOffset { get; private set; } = 5;
     }
 }

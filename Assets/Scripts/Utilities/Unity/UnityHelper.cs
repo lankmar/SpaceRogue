@@ -27,9 +27,9 @@ namespace Utilities.Unity
             return Mathf.Abs(Vector2.SignedAngle(targetDirection, currentDirection)) <= angle / 2;
         }
 
-        public static bool IsObjectVisible(this Camera @this, Bounds bounds)
+        public static bool IsObjectVisible(this Camera camera, Bounds bounds)
         {
-            return GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(@this), bounds);
+            return GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera), bounds);
         }
     }
 }

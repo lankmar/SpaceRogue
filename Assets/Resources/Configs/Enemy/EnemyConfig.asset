@@ -39,4 +39,3 @@ MonoBehaviour:
     <FiringAngle>k__BackingField: 45
   <Health>k__BackingField: {fileID: 11400000, guid: 49f84a7d58c4fda41b8070e90008d49e, type: 2}
   <Shield>k__BackingField: {fileID: 11400000, guid: f8fe6336e84b9b745bdac165b4b70e04, type: 2}
-  <HealthBarOffset>k__BackingField: 5

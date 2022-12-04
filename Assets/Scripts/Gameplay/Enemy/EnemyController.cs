@@ -22,7 +22,6 @@ namespace Gameplay.Enemy
         private readonly EnemyConfig _config;
         private readonly FrontalTurretController _turret;
         private readonly EnemyBehaviourController _behaviourController;
-        private readonly EnemyHealthController _enemyHealthController;
         private readonly PlayerController _playerController;
         private readonly System.Random _random = new();
 
@@ -44,20 +43,23 @@ namespace Gameplay.Enemy
             _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerController, _config.Behaviour);
             AddController(_behaviourController);
 
-            _enemyHealthController = AddEnemyHealthController(_config.Health, _config.Shield);
+            AddEnemyHealthUIController(_config.Health, _config.Shield);
         }
 
-        private EnemyHealthController AddEnemyHealthController(HealthConfig healthConfig, ShieldConfig shieldConfig)
+        private EnemyHealthUIController AddEnemyHealthUIController(HealthConfig healthConfig, ShieldConfig shieldConfig)
         {
-            var enemyHealthController = shieldConfig is null
-                ? new EnemyHealthController(healthConfig, 
-                AddHealthStatusBarView(GameUIController.EnemyHealthBars), _view, _config.HealthBarOffset)
-                : new EnemyHealthController(healthConfig, shieldConfig, 
-                AddHealthShieldStatusBarView(GameUIController.EnemyHealthBars), _view, _config.HealthBarOffset);
+            var healthController = shieldConfig is null
+                ? new HealthController(healthConfig, 
+                AddHealthStatusBarView(GameUIController.EnemyHealthBars), _view)
+                : new HealthController(healthConfig, shieldConfig, 
+                AddHealthShieldStatusBarView(GameUIController.EnemyHealthBars), _view);
             
-            enemyHealthController.SubscribeToOnDestroy(Dispose);
-            AddController(_enemyHealthController);
-            return enemyHealthController;
+            healthController.SubscribeToOnDestroy(Dispose);
+            AddController(healthController);
+
+            var enemyHealthUIController = new EnemyHealthUIController(healthController, _view);
+            AddController(enemyHealthUIController);
+            return enemyHealthUIController;
         }
 
         private HealthStatusBarView AddHealthStatusBarView(Transform transform)
