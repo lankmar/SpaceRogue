@@ -14,6 +14,8 @@ namespace Gameplay.Health
         
         private Action _onDestroy;
 
+        public HealthStatusBarView StatusBarView => _statusBarView;
+
         public HealthController(HealthConfig healthConfig, ShieldConfig shieldConfig, HealthShieldStatusBarView statusBarView, IDamageableView damageable)
         {
             var healthModel = new HealthWithShieldModel(healthConfig, shieldConfig);
@@ -48,7 +50,8 @@ namespace Gameplay.Health
         {
             var healthModel = new HealthOnlyModel(healthConfig);
             statusBarView.HealthBar.Init(0.0f, healthModel.MaximumHealth.Value, healthModel.CurrentHealth.Value);
-            
+            _statusBarView = statusBarView;
+
             damageable.DamageTaken += TakeDamage;
             _damageable = damageable;
             
