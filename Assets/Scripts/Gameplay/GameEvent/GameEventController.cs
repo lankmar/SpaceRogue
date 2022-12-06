@@ -9,8 +9,8 @@ namespace Gameplay.GameEvent
     public abstract class GameEventController : BaseController
     {
         protected readonly GameEventConfig _config;
+        protected readonly Random _random = new();
         protected Timer _timer;
-        private readonly Random _random = new();
 
         public GameEventController(GameEventConfig config)
         {

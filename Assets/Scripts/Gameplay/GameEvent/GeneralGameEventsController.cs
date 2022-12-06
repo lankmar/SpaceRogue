@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Player;
 using Scriptables.GameEvent;
 using System;
 using Utilities.ResourceManagement;
@@ -10,28 +11,28 @@ namespace Gameplay.GameEvent
         private readonly ResourcePath _configPath = new(Constants.Configs.GameEvent.GeneralGameEventConfig);
         private readonly GeneralGameEventConfig _config;        
 
-        public GeneralGameEventsController()
+        public GeneralGameEventsController(PlayerController playerController)
         {
             _config = ResourceLoader.LoadObject<GeneralGameEventConfig>(_configPath);
 
             foreach (var gameEvent in _config.GameEvents)
             {
-                InitializeGameEvent(gameEvent);
+                InitializeGameEvent(gameEvent, playerController);
             }
         }
 
-        private void InitializeGameEvent(GameEventConfig gameEvent)
+        private void InitializeGameEvent(GameEventConfig gameEvent, PlayerController playerController)
         {
-            var gameEventController = CreateGameEvent(gameEvent);
+            var gameEventController = CreateGameEvent(gameEvent, playerController);
             AddController(gameEventController);
         }
 
-        private GameEventController CreateGameEvent(GameEventConfig gameEvent)
+        private GameEventController CreateGameEvent(GameEventConfig gameEvent, PlayerController playerController)
         {
             return gameEvent.GameEventType switch
             {
                 GameEventType.Empty => new EmptyGameEventController(gameEvent),
-                GameEventType.Comet => new CometGameEventController(gameEvent),
+                GameEventType.Comet => new CometGameEventController(gameEvent, playerController),
                 GameEventType.Supernova => new SupernovaGameEventController(gameEvent),
                 GameEventType.Caravan => new CaravanGameEventController(gameEvent),
                 GameEventType.CaravanTrap => new CaravanTrapGameEventController(gameEvent),

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GameEventType>k__BackingField: 4
   <IsRecurring>k__BackingField: 0
-  <TimerValue>k__BackingField: 0
+  <TimerValue>k__BackingField: 0.1
   <Chance>k__BackingField: 1

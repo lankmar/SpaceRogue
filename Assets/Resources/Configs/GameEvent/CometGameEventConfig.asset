@@ -13,6 +13,16 @@ MonoBehaviour:
   m_Name: CometGameEventConfig
   m_EditorClassIdentifier: 
   <GameEventType>k__BackingField: 1
-  <IsRecurring>k__BackingField: 0
-  <TimerValue>k__BackingField: 0
+  <IsRecurring>k__BackingField: 1
+  <TimerValue>k__BackingField: 3
   <Chance>k__BackingField: 1
+  <CometConfig>k__BackingField:
+    <CometView>k__BackingField: {fileID: 3960004671309980407, guid: 9d1f376890a27604499a6434701bcd41, type: 3}
+    <CometCount>k__BackingField: 2
+    <CheckRadius>k__BackingField: 10
+    <Size>k__BackingField: 2
+    <Damage>k__BackingField: 10
+    <LifeTime>k__BackingField: 10
+    <Offset>k__BackingField: 10
+    <MinSpeed>k__BackingField: 10
+    <MaxSpeed>k__BackingField: 50

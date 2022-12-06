@@ -45,7 +45,7 @@ namespace Gameplay
             _enemyForcesController = new(_playerController);
             AddController(_enemyForcesController);
 
-            _generalGameEventsController = new();
+            _generalGameEventsController = new(_playerController);
             AddController(_generalGameEventsController);
         }
 
