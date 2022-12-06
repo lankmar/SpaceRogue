@@ -35,6 +35,13 @@ public static class Constants
 
             public static readonly string BackgroundConfig = Path.Combine(BACKGROUND, nameof(BackgroundConfig));
         }
+        
+        public record GameEvent
+        {
+            private static readonly string GAMEEVENT = Path.Combine(CONFIGS, nameof(GameEvent));
+
+            public static readonly string GeneralGameEventConfig = Path.Combine(GAMEEVENT, nameof(GeneralGameEventConfig));
+        }
     }
 
     public record Prefabs
