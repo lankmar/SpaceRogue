@@ -13,7 +13,11 @@ namespace Gameplay.Space.Generator
         private readonly Tilemap _starTilemap;
         private readonly TileBase _starTileBase;
 
-        public DebugLevelGenerator(DebugLevelGeneratorView debugLevelGeneratorView) : base(debugLevelGeneratorView.SpaceView, debugLevelGeneratorView.SpaceConfig, debugLevelGeneratorView.StarSpawnConfig)
+        public DebugLevelGenerator(DebugLevelGeneratorView debugLevelGeneratorView) 
+            : base(debugLevelGeneratorView.SpaceView,
+                   debugLevelGeneratorView.SpaceConfig,
+                   debugLevelGeneratorView.StarSpawnConfig,
+                   debugLevelGeneratorView.EnemySpawnConfig)
         {
             _borderTilemap = debugLevelGeneratorView.SpaceView.BorderTilemap;
             _borderMaskTilemap = debugLevelGeneratorView.SpaceView.BorderMaskTilemap;

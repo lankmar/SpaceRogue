@@ -1,4 +1,5 @@
-﻿using Scriptables.Space;
+﻿using Scriptables.Enemy;
+using Scriptables.Space;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
@@ -29,7 +30,10 @@ namespace Gameplay.Space.Generator
         protected readonly float _chance;
 
         protected readonly int _starCount;
-        protected readonly int _radius;
+        protected readonly int _starRadius;
+
+        private readonly int _enemyCount;
+        private readonly int _enemyRadius;
 
         protected readonly int[,] _borderMap;
         protected readonly int[,] _nebulaMap;
@@ -37,7 +41,10 @@ namespace Gameplay.Space.Generator
 
         private List<Point> _availablePoints;
 
-        public SpaceGenerator(SpaceView spaceView, SpaceConfig spaceConfig, StarSpawnConfig starSpawnConfig)
+        public SpaceGenerator(SpaceView spaceView,
+                              SpaceConfig spaceConfig,
+                              StarSpawnConfig starSpawnConfig,
+                              EnemySpawnConfig enemySpawnConfig)
         {
             _borderTileBase = spaceConfig.BorderTileBase;
             _borderMaskTileBase = spaceConfig.BorderMaskTileBase;
@@ -57,12 +64,15 @@ namespace Gameplay.Space.Generator
 
             if (spaceConfig.AutoRadius)
             {
-                _radius = GetRadius(starSpawnConfig, spaceView.NebulaTilemap);
+                _starRadius = GetStarRadius(starSpawnConfig, spaceView.NebulaTilemap);
             }
             else
             {
-                _radius = spaceConfig.ManualRadius;
+                _starRadius = spaceConfig.ManualRadius;
             }
+
+            _enemyCount = enemySpawnConfig.EnemyGroupsSpawnPoints.Count;
+            _enemyRadius = GetEnemyRadius(enemySpawnConfig, spaceView.NebulaMaskTilemap);
 
             _borderMap = new int[_widthMap + 2 * _outerBorder, _heightMap + 2 * _outerBorder];
             _nebulaMap = new int[_widthMap, _heightMap];
@@ -73,14 +83,15 @@ namespace Gameplay.Space.Generator
         {
             FillBorder(_borderMap, _widthMap, _heightMap, _outerBorder);
             FillNebula(_nebulaMap, _innerBorder, NoiseScale, _randomType, _smoothMapType);
-            StarSpawnPoints(_spaceObjectsMap, _nebulaMap, _starCount, _radius);
-            PlayerSpawnPosition(_spaceObjectsMap, _nebulaMap);
+            StarSpawnPoints(_spaceObjectsMap, _nebulaMap, _starCount, _starRadius);
+            PlayerSpawnPoint(_spaceObjectsMap);
+            EnemiesSpawnPoints(_spaceObjectsMap, _enemyCount, _enemyRadius);
             Draw();
         }
 
         protected abstract void Draw();
 
-        private int GetRadius(StarSpawnConfig starSpawnConfig, Tilemap tilemap)
+        private int GetStarRadius(StarSpawnConfig starSpawnConfig, Tilemap tilemap)
         {
             var maxStarSize = default(float);
             var maxOrbit = default(float);
@@ -95,6 +106,23 @@ namespace Gameplay.Space.Generator
                 / Mathf.Max(tilemap.cellSize.x * tilemap.transform.localScale.x,
                             tilemap.cellSize.y * tilemap.transform.localScale.y);
             Debug.Log($"Radius: {Mathf.CeilToInt(radius)}");
+
+            return Mathf.CeilToInt(radius);
+        }
+
+        private int GetEnemyRadius(EnemySpawnConfig enemySpawnConfig, Tilemap tilemap)
+        {
+            var maxCount = default(int);
+
+            foreach (var item in enemySpawnConfig.EnemyGroupsSpawnPoints)
+            {
+                maxCount = Mathf.Max(maxCount, item.GroupCount);
+            }
+
+            var radius = maxCount
+                / Mathf.Max(tilemap.cellSize.x * tilemap.transform.localScale.x,
+                            tilemap.cellSize.y * tilemap.transform.localScale.y);
+            Debug.Log($"EnemyRadius: {Mathf.CeilToInt(radius)}");
 
             return Mathf.CeilToInt(radius);
         }
@@ -277,7 +305,7 @@ namespace Gameplay.Space.Generator
         } 
         #endregion
 
-        #region StarSpawn
+        #region SpaceObjectSpawn
         private void StarSpawnPoints(int[,] spaceObjectsMap, int[,] map, int starCount, int radius)
         {
             if (spaceObjectsMap == null)
@@ -295,8 +323,25 @@ namespace Gameplay.Space.Generator
             TrySetCellOnMap(spaceObjectsMap, starCount, radius, pseudoRandom, CellType.Star);
         }
 
+        private void PlayerSpawnPoint(int[,] spaceObjectsMap)
+        {
+            var pseudoRandom = new Random();
+            TrySetCellOnMap(spaceObjectsMap, 1, 0, pseudoRandom, CellType.Player);
+        }
+
+        private void EnemiesSpawnPoints(int[,] spaceObjectsMap, int enemiesCount, int radius)
+        {
+            var pseudoRandom = new Random();
+            TrySetCellOnMap(spaceObjectsMap, enemiesCount, radius, pseudoRandom, CellType.Enemy);
+        }
+
         private void TrySetCellOnMap(int[,] map, int cellCount, int radius, Random pseudoRandom, CellType cellType)
         {
+            if(_availablePoints == null)
+            {
+                return;
+            }
+
             var count = 0;
 
             while (count < cellCount)
@@ -351,11 +396,5 @@ namespace Gameplay.Space.Generator
             }
         } 
         #endregion
-
-        private void PlayerSpawnPosition(int[,] spaceObjectsMap, int[,] map)
-        {
-            var pseudoRandom = new Random();
-            TrySetCellOnMap(spaceObjectsMap, 1, 0, pseudoRandom, CellType.Player);
-        }
     }
 }

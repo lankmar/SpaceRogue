@@ -258,6 +258,7 @@ MonoBehaviour:
   <SpaceView>k__BackingField: {fileID: 2878290772899355157}
   <SpaceConfig>k__BackingField: {fileID: 11400000, guid: 913a035bb58839842adeca8f1ca6d29a, type: 2}
   <StarSpawnConfig>k__BackingField: {fileID: 11400000, guid: 11d0fd4111ce69a4abd917f1d52f4186, type: 2}
+  <EnemySpawnConfig>k__BackingField: {fileID: 11400000, guid: 8836c87df1bb56d47bb069702f419b64, type: 2}
   <StarTilemap>k__BackingField: {fileID: 8849867149066916526}
   <StarTileBase>k__BackingField: {fileID: 11400000, guid: 7db138e90a873334587535db4265d862, type: 2}
 --- !u!1 &7789438869363387555

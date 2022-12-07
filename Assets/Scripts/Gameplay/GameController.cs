@@ -33,14 +33,14 @@ namespace Gameplay
             _spaceController = new();
             AddController(_spaceController);
 
-            _playerController = new(_spaceController.GetRandomPlayerPosition());
+            _playerController = new(_spaceController.GetPlayerSpawnPoint());
             AddController(_playerController);
             _playerController.PlayerDestroyed += OnPlayerDestroyed;
 
             _cameraController = new(_playerController);
             AddController(_cameraController);
 
-            _enemyForcesController = new(_playerController);
+            _enemyForcesController = new(_playerController, _spaceController.GetEnemySpawnPoints());
             AddController(_enemyForcesController);
         }
 
