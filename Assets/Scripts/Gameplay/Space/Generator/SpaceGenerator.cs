@@ -33,7 +33,9 @@ namespace Gameplay.Space.Generator
 
         protected readonly int[,] _borderMap;
         protected readonly int[,] _nebulaMap;
-        protected readonly int[,] _starMap;
+        protected readonly int[,] _spaceObjectsMap;
+
+        private List<Point> _availablePoints;
 
         public SpaceGenerator(SpaceView spaceView, SpaceConfig spaceConfig, StarSpawnConfig starSpawnConfig)
         {
@@ -64,14 +66,15 @@ namespace Gameplay.Space.Generator
 
             _borderMap = new int[_widthMap + 2 * _outerBorder, _heightMap + 2 * _outerBorder];
             _nebulaMap = new int[_widthMap, _heightMap];
-            _starMap = new int[_widthMap, _heightMap];
+            _spaceObjectsMap = new int[_widthMap, _heightMap];
         }
 
         public void Generate()
         {
             FillBorder(_borderMap, _widthMap, _heightMap, _outerBorder);
             FillNebula(_nebulaMap, _innerBorder, NoiseScale, _randomType, _smoothMapType);
-            StarSpawnPoints(_starMap, _nebulaMap, _starCount, _radius);
+            StarSpawnPoints(_spaceObjectsMap, _nebulaMap, _starCount, _radius);
+            PlayerSpawnPosition(_spaceObjectsMap, _nebulaMap);
             Draw();
         }
 
@@ -112,7 +115,7 @@ namespace Gameplay.Space.Generator
                         || y <= outerBorder - 1
                         || y >= heightMap + outerBorder)
                     {
-                        map[x, y] = 1;
+                        map[x, y] = (int)CellType.Border;
                     }
                 }
             }
@@ -151,7 +154,7 @@ namespace Gameplay.Space.Generator
             {
                 for (int y = innerBorder; y < map.GetLength(1) - innerBorder; y++)
                 {
-                    map[x, y] = RandomPicker.TakeChance(_chance, pseudoRandom) ? 1 : 0;
+                    map[x, y] = RandomPicker.TakeChance(_chance, pseudoRandom) ? (int)CellType.Obstacle : (int)CellType.None;
                 }
             }
         }
@@ -166,7 +169,7 @@ namespace Gameplay.Space.Generator
                 for (int y = innerBorder; y < map.GetLength(1) - innerBorder; y++)
                 {
                     var noise = Mathf.PerlinNoise(x * noiseScale + xOffset, y * noiseScale + yOffset);
-                    _nebulaMap[x, y] = noise >= 0.99f - _chance ? 1 : 0;
+                    _nebulaMap[x, y] = noise >= 0.99f - _chance ? (int)CellType.Obstacle : (int)CellType.None;
                 }
             }
         }
@@ -185,11 +188,11 @@ namespace Gameplay.Space.Generator
 
                         if (neighbourCount > defaultCount)
                         {
-                            _nebulaMap[x, y] = 1;
+                            _nebulaMap[x, y] = (int)CellType.Obstacle;
                         }
                         else if (neighbourCount < defaultCount)
                         {
-                            _nebulaMap[x, y] = 0;
+                            _nebulaMap[x, y] = (int)CellType.None;
                         }
                     }
                 }
@@ -228,7 +231,7 @@ namespace Gameplay.Space.Generator
                     {
                         if (neighbourX != gridX || neighbourY != gridY)
                         {
-                            neighbourCount += map[neighbourX, neighbourY];
+                            neighbourCount += map[neighbourX, neighbourY] > 0 ? 1 : 0;
                         }
                     }
                     else if (edgesAreWalls)
@@ -252,22 +255,22 @@ namespace Gameplay.Space.Generator
 
             if (gridX - 1 > 0)
             {
-                neighbourCount += map[gridX - 1, gridY];
+                neighbourCount += map[gridX - 1, gridY] > 0 ? 1 : 0;
             }
 
             if (gridY - 1 > 0)
             {
-                neighbourCount += map[gridX, gridY - 1];
+                neighbourCount += map[gridX, gridY - 1] > 0 ? 1 : 0;
             }
 
             if (gridX + 1 < map.GetLength(0))
             {
-                neighbourCount += map[gridX + 1, gridY];
+                neighbourCount += map[gridX + 1, gridY] > 0 ? 1 : 0;
             }
 
             if (gridY + 1 < map.GetLength(1))
             {
-                neighbourCount += map[gridX, gridY + 1];
+                neighbourCount += map[gridX, gridY + 1] > 0 ? 1 : 0;
             }
 
             return neighbourCount;
@@ -275,9 +278,9 @@ namespace Gameplay.Space.Generator
         #endregion
 
         #region StarSpawn
-        private void StarSpawnPoints(int[,] starMap, int[,] map, int starCount, int radius)
+        private void StarSpawnPoints(int[,] spaceObjectsMap, int[,] map, int starCount, int radius)
         {
-            if (starMap == null)
+            if (spaceObjectsMap == null)
             {
                 return;
             }
@@ -288,20 +291,25 @@ namespace Gameplay.Space.Generator
             }
 
             var pseudoRandom = new Random();
-            var availablePoints = CheckAvailablePoints(map, radius);
+            _availablePoints = CheckAvailablePoints(map, radius);
+            TrySetCellOnMap(spaceObjectsMap, starCount, radius, pseudoRandom, CellType.Star);
+        }
+
+        private void TrySetCellOnMap(int[,] map, int cellCount, int radius, Random pseudoRandom, CellType cellType)
+        {
             var count = 0;
 
-            while (count < starCount)
+            while (count < cellCount)
             {
-                if (availablePoints.Count == 0)
+                if (_availablePoints.Count == 0)
                 {
-                    Debug.LogWarning($"Not enough space for all Stars | StarCount = {count}");
+                    Debug.LogWarning($"Not enough space for all \"{cellType}\" | Count = {count}");
                     break;
                 }
 
-                var i = pseudoRandom.Next(availablePoints.Count);
-                starMap[availablePoints[i].X, availablePoints[i].Y] = 1;
-                RemovePoints(ref availablePoints, availablePoints[i].X, availablePoints[i].Y, radius);
+                var i = pseudoRandom.Next(_availablePoints.Count);
+                map[_availablePoints[i].X, _availablePoints[i].Y] = (int)cellType;
+                RemovePoints(ref _availablePoints, _availablePoints[i].X, _availablePoints[i].Y, radius);
                 count++;
             }
         }
@@ -314,7 +322,7 @@ namespace Gameplay.Space.Generator
             {
                 for (int y = 0; y < map.GetLength(1); y++)
                 {
-                    if (map[x, y] == 0)
+                    if (map[x, y] == (int)CellType.None)
                     {
                         if (MooreNeighborhoodCount(map, x, y, radius, true) == 0)
                         {
@@ -343,5 +351,11 @@ namespace Gameplay.Space.Generator
             }
         } 
         #endregion
+
+        private void PlayerSpawnPosition(int[,] spaceObjectsMap, int[,] map)
+        {
+            var pseudoRandom = new Random();
+            TrySetCellOnMap(spaceObjectsMap, 1, 0, pseudoRandom, CellType.Player);
+        }
     }
 }

@@ -14,7 +14,6 @@ using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
-using Utilities.Unity;
 
 namespace Gameplay.Player
 {
@@ -39,10 +38,10 @@ namespace Gameplay.Player
 
         public event Action PlayerDestroyed = () => { };
 
-        public PlayerController()
+        public PlayerController(Vector3 playerPosition)
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
-            _view = LoadView<PlayerView>(_viewPath, GetPlayerSpawnPosition());
+            _view = LoadView<PlayerView>(_viewPath, playerPosition);
 
             var inputController = new InputController(_mousePositionInput, _verticalInput, _primaryFireInput, _changeWeaponInput);
             AddController(inputController);
@@ -82,32 +81,6 @@ namespace Gameplay.Player
             var frontalGunsController = new FrontalGunsController(_primaryFireInput, _changeWeaponInput, turretConfigs, view);
             AddController(frontalGunsController);
             return frontalGunsController;
-        }
-
-        private Vector3 GetPlayerSpawnPosition()
-        {
-            Vector3 startPlayerPosition;
-            int tryCount = 0;
-            do
-            {
-                startPlayerPosition = RandomizePlayerStartPosition();
-                tryCount++;
-            }
-            while (UnityHelper.IsAnyObjectAtPosition(startPlayerPosition, PlayerSpawnClearanceRadius) && tryCount <= MaxCountOfPlayerSpawnTries);
-
-            if (tryCount > MaxCountOfPlayerSpawnTries)
-            {
-                //TODO Clear position for player spawn when too many tries happened
-            }
-
-            return startPlayerPosition;
-        }
-
-        private Vector3 RandomizePlayerStartPosition()
-        {
-            var random = new System.Random();
-            //TODO Change according to map boundaries
-            return new Vector3(random.Next(-400, 400), random.Next(-400, 400), 0);
         }
 
         private void AddCrosshair()

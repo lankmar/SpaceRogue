@@ -28,15 +28,15 @@ namespace Gameplay.Space.Generator
         {
             ClearTileMaps();
 
-            DrawLayer(_borderMap, _borderTilemap, _borderTileBase);
-            DrawLayer(_borderMap, _borderMaskTilemap, _borderMaskTileBase);
-            DrawLayer(_nebulaMap, _nebulaTilemap, _nebulaTileBase);
-            DrawLayer(_nebulaMap, _nebulaMaskTilemap, _nebulaMaskTileBase);
+            DrawLayer(_borderMap, _borderTilemap, _borderTileBase, CellType.Border);
+            DrawLayer(_borderMap, _borderMaskTilemap, _borderMaskTileBase, CellType.Border);
+            DrawLayer(_nebulaMap, _nebulaTilemap, _nebulaTileBase, CellType.Obstacle);
+            DrawLayer(_nebulaMap, _nebulaMaskTilemap, _nebulaMaskTileBase, CellType.Obstacle);
 
-            DrawLayer(_starMap, _starTilemap, _starTileBase);
+            DrawLayer(_spaceObjectsMap, _starTilemap, _starTileBase, CellType.Star);
         }
 
-        private void DrawLayer(int[,] map, Tilemap tilemap, TileBase tileBase)
+        private void DrawLayer(int[,] map, Tilemap tilemap, TileBase tileBase, CellType cellType)
         {
             if (map == null)
             {
@@ -49,7 +49,7 @@ namespace Gameplay.Space.Generator
                 {
                     var positionTile = new Vector3Int(-map.GetLength(0) / 2 + x, -map.GetLength(1) / 2 + y, 0);
 
-                    if (map[x, y] == 1)
+                    if (map[x, y] == (int)cellType)
                     {
                         tilemap.SetTile(positionTile, tileBase);
                     }

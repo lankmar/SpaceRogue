@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2121994710559489459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 685187168875692981}
+  m_Layer: 0
+  m_Name: Stars
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &685187168875692981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121994710559489459}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7789438869093251623}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2537417253877497079
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +209,7 @@ Transform:
   - {fileID: 5266590114873089857}
   - {fileID: 7789438869363387566}
   - {fileID: 7789438870495505529}
+  - {fileID: 685187168875692981}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -210,6 +242,7 @@ MonoBehaviour:
   <NebulaTilemap>k__BackingField: {fileID: 7789438870465805298}
   <NebulaMaskTilemap>k__BackingField: {fileID: 7789438870495505531}
   <ObstacleView>k__BackingField: {fileID: 6237093769439381146}
+  <Stars>k__BackingField: {fileID: 685187168875692981}
 --- !u!114 &2334955774268756130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +560,7 @@ GameObject:
   - component: {fileID: 7789438870485658759}
   - component: {fileID: 7789438870485658757}
   - component: {fileID: 7789438870485658756}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}

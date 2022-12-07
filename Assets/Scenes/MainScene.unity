@@ -364,6 +364,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2033701277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2033701278}
+  m_Layer: 0
+  m_Name: Stars
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2033701278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033701277}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8302628140797359860}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &1167501741206827640
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -397,6 +428,7 @@ MonoBehaviour:
   <NebulaTilemap>k__BackingField: {fileID: 8302628142572697377}
   <NebulaMaskTilemap>k__BackingField: {fileID: 8302628142603706536}
   <ObstacleView>k__BackingField: {fileID: 5309711607817013833}
+  <Stars>k__BackingField: {fileID: 2033701278}
 --- !u!1 &4330156770205872164
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +844,7 @@ Transform:
   - {fileID: 6212670476378379154}
   - {fileID: 8302628141521264765}
   - {fileID: 8302628142603706538}
+  - {fileID: 2033701278}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91842,7 +91875,7 @@ GameObject:
   - component: {fileID: 8302628142626234452}
   - component: {fileID: 8302628142626234454}
   - component: {fileID: 8302628142626234455}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}

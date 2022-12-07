@@ -1,9 +1,11 @@
+using System;
 using System.Linq;
 using Abstracts;
 using Gameplay.Space.Generator;
 using Gameplay.Space.Obstacle;
 using Gameplay.Space.Planet;
 using Scriptables.Space;
+using UnityEngine;
 using Utilities.ResourceManagement;
 
 namespace Gameplay.Space
@@ -18,6 +20,7 @@ namespace Gameplay.Space
 
         private readonly SpaceView _view;
         private readonly SpaceObjectFactory _spaceObjectFactory;
+        private readonly LevelGenerator _levelGenerator;
 
         public SpaceController()
         {
@@ -28,16 +31,21 @@ namespace Gameplay.Space
 
             _spaceObjectFactory = new SpaceObjectFactory(starSpawnConfig, planetSpawnConfig);
 
-            var levelGenerator = new LevelGenerator(_view, config, starSpawnConfig);
-            levelGenerator.Generate();
+            _levelGenerator = new(_view, config, starSpawnConfig);
+            _levelGenerator.Generate();
             AddObstacleController(_view.ObstacleView, config.ObstacleForce);
 
-            foreach (var starSpawnPoint in levelGenerator.GetStarSpawnPoints())
+            foreach (var starSpawnPoint in _levelGenerator.GetStarSpawnPoints())
             {
-                var (star, planetControllers) = _spaceObjectFactory.CreateStarSystem(starSpawnPoint);
+                var (star, planetControllers) = _spaceObjectFactory.CreateStarSystem(starSpawnPoint, _view.Stars);
                 AddController(star);
                 AddPlanetControllers(planetControllers);
             }
+        }
+
+        public Vector3 GetRandomPlayerPosition()
+        {
+            return _levelGenerator.GetPlayerPosition();
         }
 
         private void AddPlanetControllers(PlanetController[] planetControllers)

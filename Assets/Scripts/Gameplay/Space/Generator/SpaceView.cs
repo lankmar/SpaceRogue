@@ -13,5 +13,7 @@ namespace Gameplay.Space.Generator
         [field: SerializeField] public Tilemap NebulaMaskTilemap { get; private set; }
 
         [field: SerializeField, Header("Obstacle")] public ObstacleView ObstacleView{ get; private set; }
+
+        [field: SerializeField, Header("Stars")] public Transform Stars { get; private set; }
     }
 }
