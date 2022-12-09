@@ -1,4 +1,3 @@
-using Gameplay.Shooting;
 using UnityEngine;
 
 namespace Scriptables.GameEvent

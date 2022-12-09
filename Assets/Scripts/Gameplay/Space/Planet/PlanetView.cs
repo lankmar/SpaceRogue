@@ -24,5 +24,13 @@ namespace Gameplay.Space.Planet
                 CollisionEnter();
             }
         }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.TryGetComponent(out StarView starView))
+            {
+                CollisionEnter();
+            }
+        }
     }
 }
