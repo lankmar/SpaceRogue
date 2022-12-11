@@ -1,3 +1,4 @@
+using Abstracts;
 using Gameplay.Mechanics.Meter;
 using Scriptables.Modules;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Gameplay.Shooting
         
         private float _currentSprayAngle;
 
-        public FrontalMinigunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
+        public FrontalMinigunController(TurretModuleConfig config, Transform gunPointParentTransform, UnitType unitType) : base(config, gunPointParentTransform, unitType)
         {
             var minigunConfig = config.SpecificWeapon as MinigunWeaponConfig;
             _weaponConfig = minigunConfig ? minigunConfig : throw new System.Exception("wrong config type was provided");

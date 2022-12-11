@@ -14,5 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GameEventType>k__BackingField: 3
   <IsRecurring>k__BackingField: 0
-  <TimerValue>k__BackingField: 0.1
+  <TimerValue>k__BackingField: 15
   <Chance>k__BackingField: 1
+  <CaravanView>k__BackingField: {fileID: 7769291358818104117, guid: 5a660bdf24014e54395bc7dcf298c0d6, type: 3}
+  <Movement>k__BackingField:
+    maximumSpeed: 8
+    maximumBackwardSpeed: 5
+    accelerationTime: 1
+    stoppingSpeed: 2
+    startingTurnSpeed: 1
+    maximumTurnSpeed: 5
+    turnAccelerationTime: 1
+  <Health>k__BackingField: {fileID: 11400000, guid: ed28b2b11fe5f75478b6e9d8534e1a24, type: 2}
+  <Shield>k__BackingField: {fileID: 11400000, guid: bf7f665c236485347817b7390319f34e, type: 2}
+  <AddHealth>k__BackingField: 50
+  <SpawnOffset>k__BackingField: 5
+  <PathDistance>k__BackingField: 200
+  <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 7c10e32674e524940ae0a101cd8e11c0, type: 2}
+  <EnemyCount>k__BackingField: 5
+  <MoveSpeed>k__BackingField: 10

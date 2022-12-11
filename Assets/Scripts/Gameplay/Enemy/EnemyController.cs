@@ -30,17 +30,17 @@ namespace Gameplay.Enemy
         private readonly ResourcePath _enemyHealthShieldStatusBarCanvasPath = 
             new(Constants.Prefabs.Canvas.Game.EnemyHealthShieldStatusBarCanvas);
 
-        public EnemyController(EnemyConfig config, EnemyView view, PlayerController playerController)
+        public EnemyController(EnemyConfig config, EnemyView view, PlayerController playerController, Transform target)
         {
             _playerController = playerController;
             _config = config;
             _view = view;
             AddGameObject(_view.gameObject);
-            _turret = WeaponFactory.CreateFrontalTurret(PickTurret(_config.TurretConfigs, _random), _view.transform);
+            _turret = WeaponFactory.CreateFrontalTurret(PickTurret(_config.TurretConfigs, _random), _view.transform, UnitType.Enemy);
             AddController(_turret);
             
             var movementModel = new MovementModel(_config.Movement);
-            _behaviourController = new EnemyBehaviourController(movementModel, _view, _turret, _playerController, _config.Behaviour);
+            _behaviourController = new(movementModel, _view, _turret, _playerController, _config.Behaviour, target);
             AddController(_behaviourController);
 
             AddEnemyHealthUIController(_config.Health, _config.Shield);
