@@ -1,3 +1,4 @@
+using Gameplay.Player;
 using Scriptables.GameEvent;
 
 namespace Gameplay.GameEvent
@@ -5,7 +6,8 @@ namespace Gameplay.GameEvent
     public sealed class CaravanGameEventController : GameEventController
     {
         private readonly CaravanGameEventConfig _caravanGameEventConfig;
-        public CaravanGameEventController(GameEventConfig config) : base(config)
+
+        public CaravanGameEventController(GameEventConfig config, PlayerController playerController) : base(config, playerController)
         {
             var caravanGameEventConfig = config as CaravanGameEventConfig;
             _caravanGameEventConfig = caravanGameEventConfig
@@ -13,9 +15,9 @@ namespace Gameplay.GameEvent
                 : throw new System.Exception("Wrong config type was provided");
         }
 
-        protected override void RunGameEvent()
+        protected override bool RunGameEvent()
         {
-            
+            return true;
         }
     }
 }

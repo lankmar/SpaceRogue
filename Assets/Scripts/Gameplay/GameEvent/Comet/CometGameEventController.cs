@@ -12,23 +12,20 @@ namespace Gameplay.GameEvent
         private const int MaxCountOfCometSpawnTries = 10;
 
         private readonly CometGameEventConfig _cometGameEventConfig;
-        private readonly PlayerController _playerController;
         private readonly PlayerView _playerView;
         private readonly CometFactory _factory;
         private readonly float _orthographicSize;
 
-        private List<CometController> _cometControllers = new();
-        private bool _isStoped;
+        private readonly List<CometController> _cometControllers = new();
+        private bool _isStopped;
 
-        public CometGameEventController(GameEventConfig config, PlayerController playerController) : base(config)
+        public CometGameEventController(GameEventConfig config, PlayerController playerController) : base(config, playerController)
         {
             var cometGameEventConfig = config as CometGameEventConfig;
             _cometGameEventConfig = cometGameEventConfig
                 ? cometGameEventConfig
                 : throw new System.Exception("Wrong config type was provided");
 
-            _playerController = playerController;
-            _playerController.PlayerDestroyed += OnPlayerDestroyed;
             _playerView = _playerController.View;
             _factory = new(_cometGameEventConfig.CometConfig);
             _orthographicSize = UnityEngine.Camera.main.orthographicSize;
@@ -37,15 +34,14 @@ namespace Gameplay.GameEvent
         protected override void OnDispose()
         {
             base.OnDispose();
-            _playerController.PlayerDestroyed -= OnPlayerDestroyed;
             EntryPoint.UnsubscribeFromUpdate(WaitAllLiveControllers);
         }
 
-        protected override void RunGameEvent()
+        protected override bool RunGameEvent()
         {
-            if (_isStoped)
+            if (_isStopped)
             {
-                return;
+                return true;
             }
 
             for (int i = 0; i < _cometControllers.Count; i++)
@@ -60,19 +56,25 @@ namespace Gameplay.GameEvent
             {
                 if (!TryGetNewCometPosition(out var position))
                 {
-                    Debug("No place for Ñomet");
-                    return;
+                    Debug("No place for Comet");
+                    continue;
                 }
                 var direction = _playerView.transform.position - position;
                 var controller = _factory.CreateComet(position, direction);
                 AddController(controller);
                 _cometControllers.Add(controller);
             }
+
+            if(_cometControllers.Count == 0)
+            {
+                return false;
+            }
+            return true;
         }
 
-        private void OnPlayerDestroyed()
+        protected override void OnPlayerDestroyed()
         {
-            _isStoped = true;
+            _isStopped = true;
             EntryPoint.SubscribeToUpdate(WaitAllLiveControllers);
         }
 

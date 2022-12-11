@@ -31,11 +31,11 @@ namespace Gameplay.GameEvent
         {
             return gameEvent.GameEventType switch
             {
-                GameEventType.Empty => new EmptyGameEventController(gameEvent),
+                GameEventType.Empty => new EmptyGameEventController(gameEvent, playerController),
                 GameEventType.Comet => new CometGameEventController(gameEvent, playerController),
-                GameEventType.Supernova => new SupernovaGameEventController(gameEvent, playerController.View),
-                GameEventType.Caravan => new CaravanGameEventController(gameEvent),
-                GameEventType.CaravanTrap => new CaravanTrapGameEventController(gameEvent),
+                GameEventType.Supernova => new SupernovaGameEventController(gameEvent, playerController),
+                GameEventType.Caravan => new CaravanGameEventController(gameEvent, playerController),
+                GameEventType.CaravanTrap => new CaravanTrapGameEventController(gameEvent, playerController),
                 _ => throw new ArgumentOutOfRangeException(nameof(gameEvent.GameEventType), gameEvent.GameEventType, "A not-existent game event type is provided")
             };
         }

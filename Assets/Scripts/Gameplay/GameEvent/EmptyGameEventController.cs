@@ -1,3 +1,4 @@
+using Gameplay.Player;
 using Scriptables.GameEvent;
 
 namespace Gameplay.GameEvent
@@ -5,7 +6,8 @@ namespace Gameplay.GameEvent
     public sealed class EmptyGameEventController : GameEventController
     {
         private readonly EmptyGameEventConfig _emptyGameEventConfig;
-        public EmptyGameEventController(GameEventConfig config) : base(config)
+
+        public EmptyGameEventController(GameEventConfig config, PlayerController playerController) : base(config, playerController)
         {
             var emptyGameEventConfig = config as EmptyGameEventConfig;
             _emptyGameEventConfig = emptyGameEventConfig
@@ -13,9 +15,10 @@ namespace Gameplay.GameEvent
                 : throw new System.Exception("Wrong config type was provided");
         }
 
-        protected override void RunGameEvent()
+        protected override bool RunGameEvent()
         {
             Debug($"EmptyGameEvent completed");
+            return true;
         }
     }
 }

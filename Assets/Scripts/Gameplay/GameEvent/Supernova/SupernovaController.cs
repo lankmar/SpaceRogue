@@ -4,6 +4,7 @@ using Gameplay.Space.Star;
 using Scriptables.GameEvent;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Reactive.SubscriptionProperty;
 
 namespace Gameplay.GameEvent
 {
@@ -24,6 +25,8 @@ namespace Gameplay.GameEvent
         private Color _currentColor;
         private Vector3 _currentScale;
         private bool _isSupernova;
+
+        public SubscribedProperty<bool> OnDestroy = new();
 
         public SupernovaController(SupernovaGameEventConfig config, StarView starView)
         {
@@ -51,7 +54,7 @@ namespace Gameplay.GameEvent
             if (_starView == null)
             {
                 EntryPoint.UnsubscribeFromUpdate(PrepareSupernova);
-                Dispose();
+                OnDestroy.Value = true;
                 return;
             }
 
@@ -77,7 +80,7 @@ namespace Gameplay.GameEvent
             if(_starView == null)
             {
                 EntryPoint.UnsubscribeFromUpdate(StartSupernova);
-                Dispose();
+                OnDestroy.Value = true;
                 return;
             }
 
@@ -115,7 +118,7 @@ namespace Gameplay.GameEvent
                 _starCircleCollider.enabled = false;
 
                 EntryPoint.UnsubscribeFromUpdate(StartSupernova);
-                Dispose();
+                OnDestroy.Value = true;
                 return;
             }
 

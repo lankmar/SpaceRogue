@@ -10,31 +10,55 @@ namespace Gameplay.GameEvent
     {
         private readonly SupernovaGameEventConfig _supernovaGameEventConfig;
         private readonly PlayerView _playerView;
+        
+        private SupernovaController _supernovaController;
+        private bool _isStopped;
 
-        public SupernovaGameEventController(GameEventConfig config, PlayerView playerView) : base(config)
+        public SupernovaGameEventController(GameEventConfig config, PlayerController playerController) : base(config, playerController)
         {
             var supernovaGameEventConfig = config as SupernovaGameEventConfig;
             _supernovaGameEventConfig = supernovaGameEventConfig
                 ? supernovaGameEventConfig
                 : throw new System.Exception("Wrong config type was provided");
 
-            _playerView = playerView;
+            _playerView = _playerController.View;
         }
 
-        protected override void RunGameEvent()
+        protected override bool RunGameEvent()
         {
-            if(_playerView == null)
+            if (_isStopped)
             {
-                return;
+                return true;
             }
 
-            if(!TryGetNearestStarView(_playerView.transform.position, _supernovaGameEventConfig.SearchRadius, out var starView))
+            if (!TryGetNearestStarView(_playerView.transform.position, _supernovaGameEventConfig.SearchRadius, out var starView))
             {
-                return;
+                return false;
             }
 
-            var supernovaController = new SupernovaController(_supernovaGameEventConfig, starView);
-            AddController(supernovaController);
+            _supernovaController = new(_supernovaGameEventConfig, starView);
+            _supernovaController.OnDestroy.Subscribe(DestroyController);
+            AddController(_supernovaController);
+            return true;
+        }
+
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            _supernovaController?.OnDestroy.Unsubscribe(DestroyController);
+        }
+
+        protected override void OnPlayerDestroyed()
+        {
+            _isStopped = true;
+        }
+
+        private void DestroyController(bool onDestroy)
+        {
+            if (onDestroy)
+            {
+                Dispose();
+            }
         }
 
         private bool TryGetNearestStarView(Vector3 position, float radius, out StarView starView)
