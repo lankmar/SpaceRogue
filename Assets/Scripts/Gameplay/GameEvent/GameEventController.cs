@@ -2,7 +2,10 @@ using Abstracts;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Player;
 using Scriptables.GameEvent;
+using UI.Game;
+using UnityEngine;
 using Utilities.Mathematics;
+using Utilities.ResourceManagement;
 using Random = System.Random;
 
 namespace Gameplay.GameEvent
@@ -13,6 +16,9 @@ namespace Gameplay.GameEvent
         protected readonly PlayerController _playerController;
         protected readonly Random _random = new();
         protected Timer _timer;
+
+        private readonly ResourcePath _gameEventIndicatorCanvasPath =
+            new(Constants.Prefabs.Canvas.Game.GameEventIndicatorCanvas);
 
         private bool _isOnceSuccessfully;
 
@@ -62,6 +68,26 @@ namespace Gameplay.GameEvent
         protected virtual void OnPlayerDestroyed()
         {
             Dispose();
+        }
+
+        protected void AddGameEventObjectToUIController(GameObject gameObject)
+        {
+            if (gameObject.TryGetComponent(out Collider2D collider))
+            {
+                var gameEventUIController = new GameEventUIController(
+                    AddGameEventIndicatorView(GameUIController.GameEventIndicators), 
+                    collider,
+                    _config.Icon,
+                    _config.IndicatorDiameter);
+                AddController(gameEventUIController);
+            }
+        }
+
+        private GameEventIndicatorView AddGameEventIndicatorView(Transform transform)
+        {
+            var gameEventIndicatorView = ResourceLoader.LoadPrefabAsChild<GameEventIndicatorView>
+                (_gameEventIndicatorCanvasPath, transform);
+            return gameEventIndicatorView;
         }
     }
 }

@@ -17,6 +17,8 @@ namespace Gameplay.GameEvent
 
         public bool IsDestroyed { get; private set; } = false;
 
+        public CometView View => _view;
+
         public CometController(CometConfig config, CometView view, Vector3 movementDirection)
         {
             _config = config;

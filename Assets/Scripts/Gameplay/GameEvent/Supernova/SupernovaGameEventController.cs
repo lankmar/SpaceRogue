@@ -39,6 +39,7 @@ namespace Gameplay.GameEvent
             _supernovaController = new(_supernovaGameEventConfig, starView);
             _supernovaController.OnDestroy.Subscribe(DestroyController);
             AddController(_supernovaController);
+            AddGameEventObjectToUIController(starView.gameObject);
             return true;
         }
 

@@ -1,5 +1,4 @@
 using Abstracts;
-using Gameplay.Enemy;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;

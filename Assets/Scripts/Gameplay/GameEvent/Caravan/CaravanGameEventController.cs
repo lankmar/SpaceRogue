@@ -1,7 +1,9 @@
 using Gameplay.Player;
 using Scriptables.GameEvent;
+using UI.Game;
 using UnityEngine;
 using Utilities.Mathematics;
+using Utilities.ResourceManagement;
 using Utilities.Unity;
 
 namespace Gameplay.GameEvent
@@ -43,9 +45,11 @@ namespace Gameplay.GameEvent
                 return false;
             }
 
-            _caravanController =  new(_config, _playerController, CreateCaravanView(position), targetPosition);
+            var caravanView = CreateCaravanView(position);
+            _caravanController = new(_config, _playerController, caravanView, targetPosition);
             _caravanController.OnDestroy.Subscribe(DestroyController);
             AddController(_caravanController);
+            AddGameEventObjectToUIController(caravanView.gameObject);
             return true;
         }
 

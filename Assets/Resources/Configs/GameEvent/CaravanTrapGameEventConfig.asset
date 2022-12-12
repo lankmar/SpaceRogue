@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: CaravanTrapGameEventConfig
   m_EditorClassIdentifier: 
   <GameEventType>k__BackingField: 4
+  <Icon>k__BackingField: {fileID: 21300000, guid: b237c479bee801144bcf9f06132ca2cc, type: 3}
+  <IndicatorDiameter>k__BackingField: 500
   <IsRecurring>k__BackingField: 0
   <TimerValue>k__BackingField: 20
   <Chance>k__BackingField: 1
