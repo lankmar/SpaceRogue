@@ -6,11 +6,11 @@ using Utilities.Unity;
 
 namespace Gameplay.GameEvent
 {
-    public sealed class CaravanGameEventController : GameEventController
+    public class CaravanGameEventController : GameEventController
     {
         private const int MaxCountOfCaravanSpawnTries = 10;
 
-        private readonly CaravanGameEventConfig _caravanGameEventConfig;
+        private readonly BaseCaravanGameEventConfig _baseCaravanGameEvent;
         private readonly PlayerView _playerView;
         private readonly float _orthographicSize;
         private readonly float _caravanSize;
@@ -20,14 +20,14 @@ namespace Gameplay.GameEvent
 
         public CaravanGameEventController(GameEventConfig config, PlayerController playerController) : base(config, playerController)
         {
-            var caravanGameEventConfig = config as CaravanGameEventConfig;
-            _caravanGameEventConfig = caravanGameEventConfig
-                ? caravanGameEventConfig
+            var baseCaravanGameEvent = config as BaseCaravanGameEventConfig;
+            _baseCaravanGameEvent = baseCaravanGameEvent
+                ? baseCaravanGameEvent
                 : throw new System.Exception("Wrong config type was provided");
 
             _playerView = _playerController.View;
             _orthographicSize = UnityEngine.Camera.main.orthographicSize;
-            _caravanSize = _caravanGameEventConfig.CaravanView.transform.localScale.MaxVector3CoordinateOnPlane();
+            _caravanSize = _baseCaravanGameEvent.CaravanConfig.CaravanView.transform.localScale.MaxVector3CoordinateOnPlane();
         }
 
         protected override bool RunGameEvent()
@@ -43,7 +43,7 @@ namespace Gameplay.GameEvent
                 return false;
             }
 
-            _caravanController =  new(_caravanGameEventConfig, _playerController, CreateCaravanView(position), targetPosition);
+            _caravanController =  new(_config, _playerController, CreateCaravanView(position), targetPosition);
             _caravanController.OnDestroy.Subscribe(DestroyController);
             AddController(_caravanController);
             return true;
@@ -71,7 +71,7 @@ namespace Gameplay.GameEvent
         private bool TryGetNewCaravanPositionAndTargetPosition(out Vector3 position, out Vector3 targetPosition)
         {
             var tryCount = 0;
-            var radius = _caravanSize + _caravanGameEventConfig.EnemyCount * 2;
+            var radius = _caravanSize + _baseCaravanGameEvent.EnemyCount * 2;
             do
             {
                 position = GetRandomCaravanPosition();
@@ -94,7 +94,7 @@ namespace Gameplay.GameEvent
         {
             var angleDirection = RandomPicker.PickRandomAngle(360, _random).normalized;
             var playerPosition = _playerView.transform.position;
-            var offset = _orthographicSize * 2 + _caravanSize + _caravanGameEventConfig.SpawnOffset;
+            var offset = _orthographicSize * 2 + _caravanSize + _baseCaravanGameEvent.SpawnOffset;
             var position = playerPosition + angleDirection * offset;
             return position;
         }
@@ -102,14 +102,14 @@ namespace Gameplay.GameEvent
         private Vector3 GetRandomCaravanTargetPosition(Vector3 caravanPosition)
         {
             var angleDirection = RandomPicker.PickRandomAngle(360, _random).normalized;
-            var offset = _caravanSize + _caravanGameEventConfig.PathDistance;
+            var offset = _caravanSize + _baseCaravanGameEvent.PathDistance;
             var position = caravanPosition + angleDirection * offset;
             return position;
         }
 
         private CaravanView CreateCaravanView(Vector3 position)
         {
-            var caravanView = Object.Instantiate(_caravanGameEventConfig.CaravanView, position, Quaternion.identity);
+            var caravanView = Object.Instantiate(_baseCaravanGameEvent.CaravanConfig.CaravanView, position, Quaternion.identity);
             return caravanView;
         }
     }

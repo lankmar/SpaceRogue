@@ -16,7 +16,7 @@ namespace Gameplay.GameEvent
 {
     public sealed class CaravanController : BaseController
     {
-        private readonly CaravanGameEventConfig _caravanGameEventConfig;
+        private readonly BaseCaravanGameEventConfig _baseCaravanGameEvent;
         private readonly PlayerController _playerController;
         private readonly PlayerView _playerView;
         private readonly CaravanView _caravanView;
@@ -28,10 +28,14 @@ namespace Gameplay.GameEvent
 
         public SubscribedProperty<bool> OnDestroy = new();
 
-        public CaravanController(CaravanGameEventConfig config, PlayerController playerController, 
+        public CaravanController(GameEventConfig config, PlayerController playerController, 
             CaravanView caravanView, Vector3 targetPosition)
         {
-            _caravanGameEventConfig = config;
+            var baseCaravanGameEvent = config as BaseCaravanGameEventConfig;
+            _baseCaravanGameEvent = baseCaravanGameEvent
+                ? baseCaravanGameEvent
+                : throw new System.Exception("Wrong config type was provided");
+
             _playerController = playerController;
             _playerView = _playerController.View;
 
@@ -39,10 +43,10 @@ namespace Gameplay.GameEvent
             _caravanView.Init(new(0));
             AddGameObject(_caravanView.gameObject);
 
-            AddCarnavalBehaviourController(_caravanGameEventConfig.Movement, targetPosition);
-            AddCaravanHealthUIController(_caravanGameEventConfig.Health, _caravanGameEventConfig.Shield);
+            AddCarnavalBehaviourController(_baseCaravanGameEvent.CaravanConfig.Movement, targetPosition);
+            AddCaravanHealthUIController(_baseCaravanGameEvent.CaravanConfig.Health, _baseCaravanGameEvent.CaravanConfig.Shield);
 
-            AddEnemyGroup(_caravanGameEventConfig, _caravanView.transform.position, _playerController, _caravanView.transform);
+            AddEnemyGroup(_baseCaravanGameEvent, _caravanView.transform.position, _playerController, _caravanView.transform);
         }
 
         private void AddCarnavalBehaviourController(MovementConfig movement, Vector3 targetPosition)
@@ -78,11 +82,36 @@ namespace Gameplay.GameEvent
 
             if (_caravanView.IsLastDamageFromPlayer)
             {
-                _caravanView.Init(new(-_caravanGameEventConfig.AddHealth));
-                _playerView.TakeDamage(_caravanView);
+                StandardCaravanDestroyed();
+                CaravanTrapDestroyed();
             }
-            
+
             OnDestroy.Value = true;
+        }
+
+        private void StandardCaravanDestroyed()
+        {
+            var config = _baseCaravanGameEvent as CaravanGameEventConfig;
+            
+            if(config == null)
+            {
+                return;
+            }
+
+            _caravanView.Init(new(-config.AddHealth));
+            _playerView.TakeDamage(_caravanView);
+        }
+
+        private void CaravanTrapDestroyed()
+        {
+            var config = _baseCaravanGameEvent as CaravanTrapGameEventConfig;
+
+            if (config == null)
+            {
+                return;
+            }
+
+            Debug($"AlertRadius = {config.AlertRadius}");
         }
 
         private HealthStatusBarView AddHealthStatusBarView(Transform transform)
@@ -100,7 +129,7 @@ namespace Gameplay.GameEvent
             return enemyStatusBarView;
         }
 
-        private void AddEnemyGroup(CaravanGameEventConfig config, Vector3 spawnPoint, 
+        private void AddEnemyGroup(BaseCaravanGameEventConfig config, Vector3 spawnPoint, 
             PlayerController playerController, Transform target)
         {
             var enemyFactory = new EnemyFactory(config.EnemyConfig);

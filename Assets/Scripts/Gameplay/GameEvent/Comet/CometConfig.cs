@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Scriptables.GameEvent
 {
-    [System.Serializable]
-    public sealed class CometConfig
+    [CreateAssetMenu(fileName = nameof(CometConfig), menuName = "Configs/Comet/" + nameof(CometConfig))]
+    public sealed class CometConfig : ScriptableObject
     {
         [field: SerializeField] public CometView CometView { get; private set; }
         [field: SerializeField, Min(1)] public int CometCount { get; private set; } = 1;

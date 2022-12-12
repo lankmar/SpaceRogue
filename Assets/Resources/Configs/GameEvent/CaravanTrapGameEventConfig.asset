@@ -14,5 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GameEventType>k__BackingField: 4
   <IsRecurring>k__BackingField: 0
-  <TimerValue>k__BackingField: 0.1
+  <TimerValue>k__BackingField: 20
   <Chance>k__BackingField: 1
+  <CaravanConfig>k__BackingField: {fileID: 11400000, guid: a82570eb9917acd4285e454e0d8eb357, type: 2}
+  <SpawnOffset>k__BackingField: 5
+  <PathDistance>k__BackingField: 100
+  <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 7c10e32674e524940ae0a101cd8e11c0, type: 2}
+  <EnemyCount>k__BackingField: 3
+  <AlertRadius>k__BackingField: 70
