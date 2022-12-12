@@ -15,12 +15,9 @@ MonoBehaviour:
   <Id>k__BackingField: aa1bcf28-35aa-4c02-9ef8-952cb201c9f3
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: 27092498023504d41ab84199f3270217, type: 3}
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
-  <DamageAmount>k__BackingField: 2
-  <AsteroidType>k__BackingField: 0
-  <AsteroidSizeType>k__BackingField: 1
-  <AsteroidSize>k__BackingField: 1
+  <DamageAmount>k__BackingField: 50
   <AsteroidMoveType>k__BackingField: 2
-  <AsteroidSpeed>k__BackingField: 5
   <Behaviour>k__BackingField:
-    <AsteroidSpeed>k__BackingField: 5
-    <PlayerDetectionRadius>k__BackingField: 0
+    <AsteroidSpeed>k__BackingField: 3
+    <PlayerDetectionRadius>k__BackingField: 150
+  <IsDestroyedOnHit>k__BackingField: 1

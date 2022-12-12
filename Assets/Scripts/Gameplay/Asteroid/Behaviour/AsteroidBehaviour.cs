@@ -1,4 +1,3 @@
-using System;
 using Gameplay.Player;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
@@ -22,18 +21,12 @@ namespace Gameplay.Asteroid.Behaviour
             OnDispose();
             EntryPoint.UnsubscribeFromUpdate(OnUpdate);
         }
-        protected AsteroidBehaviour(SubscribedProperty<AsteroidMoveType> moveType, AsteroidView view, PlayerView playerView, AsteroidBehaviourConfig config)
+        protected AsteroidBehaviour(AsteroidView view, PlayerView playerView, AsteroidBehaviourConfig config)
         {
-            _moveType = moveType;
             View = view;
             PlayerView = playerView;
             Config = config;
             EntryPoint.SubscribeToUpdate(OnUpdate);
-        }
-
-        protected void ChangeMoveType(AsteroidMoveType newState)
-        {
-            if (newState != _moveType.Value) _moveType.Value = newState;
         }
 
         protected virtual void OnUpdate() { }
