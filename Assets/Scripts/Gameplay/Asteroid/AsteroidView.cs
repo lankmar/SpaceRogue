@@ -16,7 +16,7 @@ namespace Gameplay.Asteroid
             DamageModel = damageModel;
         }
 
-        public void OnTriggerEnter2D(Collider2D other)
+        new public void OnCollisionEnter2D(Collision2D collision)
         {
             CollisionEnter();
         }

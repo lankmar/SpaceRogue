@@ -15,7 +15,7 @@ namespace Gameplay.Asteroid
 
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, PlayerView playerView)
         {
-            
+            //return  new(_config, CreateAsteroidView(spawnPosition));
             return  new(_config, CreateAsteroidView(spawnPosition), playerView);
         }
 

@@ -1,9 +1,5 @@
-using Asteroid;
 using Gameplay.Player;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Reactive.SubscriptionProperty;
 using Random = System.Random;
 
 namespace Gameplay.Asteroid.Behaviour
@@ -15,10 +11,9 @@ namespace Gameplay.Asteroid.Behaviour
 
         private float speedRotation = 0.1f;
 
-        public AsteroidStaticBehavior(SubscribedProperty<AsteroidMoveType> asteroidState,
-                AsteroidView view,
+        public AsteroidStaticBehavior(AsteroidView view,
                 PlayerView playerView,
-                AsteroidBehaviourConfig config) : base(asteroidState, view, playerView, config)
+                AsteroidBehaviourConfig config) : base(view, playerView, config)
         {
             asteroidTransform = view.GetComponent<Transform>();
             Random random = new Random();
@@ -27,7 +22,6 @@ namespace Gameplay.Asteroid.Behaviour
             vector = (random.Next(2) == 1) ? new Vector3(0, 0, -speedRotation) : new Vector3(0, 0, speedRotation);
         }
         
-
         protected override void OnUpdate()
         {
             AsteroidRotation();
@@ -36,8 +30,6 @@ namespace Gameplay.Asteroid.Behaviour
         private void AsteroidRotation()
         {
             asteroidTransform.Rotate(vector);
-        }
-        
+        }   
     }
-
 }

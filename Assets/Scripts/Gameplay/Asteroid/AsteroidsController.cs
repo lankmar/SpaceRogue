@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Abstracts;
 using Gameplay.Player;
 using Scriptables.Asteroid;
@@ -17,15 +16,18 @@ namespace Gameplay.Asteroid
 
         public AsteroidsController(PlayerController playerController)
         {
-                var cloudSpawnConfig = ResourceLoader.LoadObject<AsteroidSpawnConfig>(_groupSpawnConfigPath);
+            var cloudSpawnConfig = ResourceLoader.LoadObject<AsteroidSpawnConfig>(_groupSpawnConfigPath);
 
-                _asteroidFactory = new AsteroidFactory(cloudSpawnConfig.AsteroidClouds);
-
-                var unitSize = cloudSpawnConfig.AsteroidClouds.Prefab.transform.localScale;
 
             foreach (var AsteroidGroupSpawn in cloudSpawnConfig.AsteroidCloudsSpawnPoints)
             {
+                var currentcloudSpawnConfig = cloudSpawnConfig.AsteroidClouds[Random.Range(0, cloudSpawnConfig.AsteroidClouds.Count)];
+                _asteroidFactory = new AsteroidFactory(currentcloudSpawnConfig);
+
+                var unitSize = currentcloudSpawnConfig.Prefab.transform.localScale;
+
                 int spawnCircleRadius = AsteroidGroupSpawn.GroupCount * 2;
+
                 for (int i = 0; i < AsteroidGroupSpawn.GroupCount; i++)
                 {
                     var unitSpawnPoint = GetEmptySpawnPoint(AsteroidGroupSpawn.GroupSpawnPoint, unitSize, spawnCircleRadius);
