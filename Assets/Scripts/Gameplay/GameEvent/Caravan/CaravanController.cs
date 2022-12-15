@@ -98,7 +98,7 @@ namespace Gameplay.GameEvent
                 return;
             }
 
-            _caravanView.Init(new(-config.AddHealth));
+            _caravanView.Init(new(config.AddHealth, UnitType.Assistant));
             _playerView.TakeDamage(_caravanView);
         }
 

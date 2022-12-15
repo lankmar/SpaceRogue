@@ -92,6 +92,17 @@ namespace Gameplay.Health
 
         private void TakeDamage(DamageModel damageModel)
         {
+            if(_damageable is UnitView view && view.UnitType == damageModel.UnitType)
+            {
+                return;
+            }
+
+            if(damageModel.UnitType == UnitType.Assistant)
+            {
+                _healthModel.TakeHealth(damageModel.DamageAmount);
+                return;
+            }
+
             _healthModel.TakeDamage(damageModel.DamageAmount);
         }
     }

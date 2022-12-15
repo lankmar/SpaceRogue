@@ -27,7 +27,7 @@ namespace Gameplay.GameEvent
             AddGameObject(_view.gameObject);
             _rigidbody = _view.GetComponent<Rigidbody2D>();
             _speed = RandomPicker.PickRandomBetweenTwoValues(_config.MinSpeed, _config.MaxSpeed, new());
-            _remainingLifeTime = config.LifeTime;
+            _remainingLifeTime = config.LifeTimeInSeconds;
 
             var damageModel = new DamageModel(config.Damage);
             _view.Init(damageModel);

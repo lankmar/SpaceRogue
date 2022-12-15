@@ -27,7 +27,7 @@ namespace Gameplay.GameEvent
             _config = config;
             _playerController = playerController;
             _playerController.PlayerDestroyed += OnPlayerDestroyed;
-            _timer = new(_config.TimerValue);
+            _timer = new(_config.ResponseTimeInSeconds);
             _timer.Start();
 
             EntryPoint.SubscribeToUpdate(CheckEvent);

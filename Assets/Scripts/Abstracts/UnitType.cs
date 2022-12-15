@@ -4,6 +4,7 @@ namespace Abstracts
     {
         None,
         Player,
-        Enemy
+        Enemy,
+        Assistant
     }
 }

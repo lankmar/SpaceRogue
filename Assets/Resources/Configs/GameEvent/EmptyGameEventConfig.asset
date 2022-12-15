@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: EmptyGameEventConfig
   m_EditorClassIdentifier: 
   <GameEventType>k__BackingField: 0
+  <Icon>k__BackingField: {fileID: 0}
+  <IndicatorDiameter>k__BackingField: 625
   <IsRecurring>k__BackingField: 0
-  <TimerValue>k__BackingField: 5
+  <ResponseTimeInSeconds>k__BackingField: 5
   <Chance>k__BackingField: 1

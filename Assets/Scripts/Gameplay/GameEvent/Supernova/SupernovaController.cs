@@ -37,7 +37,7 @@ namespace Gameplay.GameEvent
             _starViewColor = _spriteRenderer.color;
             _starViewScale = _starView.transform.localScale;
 
-            _explosionTimer = new(_supernovaGameEventConfig.ExplosionTimer);
+            _explosionTimer = new(_supernovaGameEventConfig.TimeToExplosionInSeconds);
             _explosionTimer.Start();
 
             EntryPoint.SubscribeToUpdate(PrepareSupernova);

@@ -6,7 +6,7 @@ namespace Scriptables.GameEvent
     public sealed class SupernovaGameEventConfig : GameEventConfig
     {
         [field: SerializeField, Header("Supernova Settings"), Min(0)] public float SearchRadius { get; private set; } = 100;
-        [field: SerializeField, Min(0.1f)] public float ExplosionTimer { get; private set; } = 5;
+        [field: SerializeField, Min(0.1f)] public float TimeToExplosionInSeconds { get; private set; } = 5;
         [field: SerializeField] public Color WarningColor { get; private set; } = Color.red;
         [field: SerializeField] public Sprite SupernovaSprite { get; private set; }
         [field: SerializeField] public Color ShockwaveColor { get; private set; } = Color.red;

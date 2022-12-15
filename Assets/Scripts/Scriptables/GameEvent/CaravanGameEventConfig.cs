@@ -1,7 +1,3 @@
-using Gameplay.GameEvent;
-using Gameplay.Movement;
-using Scriptables.Enemy;
-using Scriptables.Health;
 using UnityEngine;
 
 namespace Scriptables.GameEvent
