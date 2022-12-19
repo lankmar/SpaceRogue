@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
 using Abstracts;
 using Gameplay.Space.Generator;
 using Gameplay.Space.Obstacle;
 using Gameplay.Space.Planet;
+using Scriptables.Enemy;
 using Scriptables.Space;
+using UnityEngine;
 using Utilities.ResourceManagement;
 
 namespace Gameplay.Space
@@ -15,9 +18,11 @@ namespace Gameplay.Space
 
         private readonly ResourcePath _starSpawnConfigPath = new(Constants.Configs.Space.DefaultStarSpawn);
         private readonly ResourcePath _planetSpawnConfigPath = new(Constants.Configs.Space.DefaultPlanetSpawn);
+        private readonly ResourcePath _groupSpawnConfigPath = new(Constants.Configs.Enemy.EnemySpawnConfig);
 
         private readonly SpaceView _view;
         private readonly SpaceObjectFactory _spaceObjectFactory;
+        private readonly LevelGenerator _levelGenerator;
 
         public SpaceController()
         {
@@ -25,19 +30,30 @@ namespace Gameplay.Space
             var config = ResourceLoader.LoadObject<SpaceConfig>(_configPath);
             var starSpawnConfig = ResourceLoader.LoadObject<StarSpawnConfig>(_starSpawnConfigPath);
             var planetSpawnConfig = ResourceLoader.LoadObject<PlanetSpawnConfig>(_planetSpawnConfigPath);
+            var enemySpawnConfig = ResourceLoader.LoadObject<EnemySpawnConfig>(_groupSpawnConfigPath);
 
             _spaceObjectFactory = new SpaceObjectFactory(starSpawnConfig, planetSpawnConfig);
 
-            var levelGenerator = new LevelGenerator(_view, config, starSpawnConfig);
-            levelGenerator.Generate();
+            _levelGenerator = new(_view, config, starSpawnConfig, enemySpawnConfig);
+            _levelGenerator.Generate();
             AddObstacleController(_view.ObstacleView, config.ObstacleForce);
 
-            foreach (var starSpawnPoint in levelGenerator.GetStarSpawnPoints())
+            foreach (var starSpawnPoint in _levelGenerator.GetSpawnPoints(CellType.Star))
             {
-                var (star, planetControllers) = _spaceObjectFactory.CreateStarSystem(starSpawnPoint);
+                var (star, planetControllers) = _spaceObjectFactory.CreateStarSystem(starSpawnPoint, _view.Stars);
                 AddController(star);
                 AddPlanetControllers(planetControllers);
             }
+        }
+
+        public Vector3 GetPlayerSpawnPoint()
+        {
+            return _levelGenerator.GetPlayerSpawnPoint();
+        }
+
+        public List<Vector3> GetEnemySpawnPoints()
+        {
+            return _levelGenerator.GetSpawnPoints(CellType.Enemy);
         }
 
         private void AddPlanetControllers(PlanetController[] planetControllers)

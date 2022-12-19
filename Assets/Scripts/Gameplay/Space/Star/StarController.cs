@@ -1,5 +1,6 @@
 using Abstracts;
 using Gameplay.Damage;
+using UnityEngine;
 
 namespace Gameplay.Space.Star
 {
@@ -9,9 +10,10 @@ namespace Gameplay.Space.Star
 
         private const int FatalDamage = 9999;
 
-        public StarController(StarView starView)
+        public StarController(StarView starView, Transform starsParent)
         {
             StarView = starView;
+            StarView.transform.parent = starsParent;
 
             var damageModel = new DamageModel(FatalDamage);
             starView.Init(damageModel);

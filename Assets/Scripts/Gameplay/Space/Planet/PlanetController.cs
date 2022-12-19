@@ -16,6 +16,7 @@ namespace Gameplay.Space.Planet
         public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, float planetDamage)
         {
             _view = view;
+            _view.transform.parent = starView.transform;
 
             var damageModel = new DamageModel(planetDamage);
             view.Init(damageModel);
