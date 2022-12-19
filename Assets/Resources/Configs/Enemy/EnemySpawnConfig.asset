@@ -17,10 +17,18 @@ MonoBehaviour:
   - <GroupSpawnPoint>k__BackingField: {x: 30, y: -30, z: 0}
     <GroupCount>k__BackingField: 3
   - <GroupSpawnPoint>k__BackingField: {x: -40, y: 50, z: 0}
-    <GroupCount>k__BackingField: 5
+    <GroupCount>k__BackingField: 20
   - <GroupSpawnPoint>k__BackingField: {x: 100, y: 100, z: 0}
-    <GroupCount>k__BackingField: 6
+    <GroupCount>k__BackingField: 20
   - <GroupSpawnPoint>k__BackingField: {x: -50, y: 180, z: 0}
-    <GroupCount>k__BackingField: 10
+    <GroupCount>k__BackingField: 20
   - <GroupSpawnPoint>k__BackingField: {x: -100, y: -150, z: 0}
-    <GroupCount>k__BackingField: 7
+    <GroupCount>k__BackingField: 20
+  - <GroupSpawnPoint>k__BackingField: {x: 200, y: 200, z: 0}
+    <GroupCount>k__BackingField: 20
+  - <GroupSpawnPoint>k__BackingField: {x: -200, y: -200, z: 0}
+    <GroupCount>k__BackingField: 20
+  - <GroupSpawnPoint>k__BackingField: {x: 200, y: -200, z: 0}
+    <GroupCount>k__BackingField: 20
+  - <GroupSpawnPoint>k__BackingField: {x: 0, y: 0, z: 0}
+    <GroupCount>k__BackingField: 10
