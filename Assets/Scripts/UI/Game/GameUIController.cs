@@ -11,6 +11,7 @@ namespace UI.Game
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
         public static PlayerWeaponView PlayerWeaponView { get; private set; }
         public static Transform EnemyHealthBars { get; private set; }
+        public static Transform GameEventIndicators { get; private set; }
 
         private readonly MainCanvasView _mainCanvasView;
 
@@ -37,6 +38,7 @@ namespace UI.Game
             _exitToMenu = exitToMenu;
 
             EnemyHealthBars = _mainCanvasView.EnemyHealthBars;
+            GameEventIndicators = _mainCanvasView.GameEventIndicators;
 
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
@@ -73,6 +75,7 @@ namespace UI.Game
             PlayerSpeedometerView = null;
             PlayerWeaponView = null;
             EnemyHealthBars = null;
+            GameEventIndicators = null;
         }
             
         public void AddDestroyPlayerMessage()

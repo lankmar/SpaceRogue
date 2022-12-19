@@ -2,6 +2,7 @@ using Abstracts;
 using Gameplay.Background;
 using Gameplay.Camera;
 using Gameplay.Enemy;
+using Gameplay.GameEvent;
 using Gameplay.GameState;
 using Gameplay.Player;
 using Gameplay.Space;
@@ -19,6 +20,7 @@ namespace Gameplay
         private readonly PlayerController _playerController;
         private readonly CameraController _cameraController;
         private readonly EnemyForcesController _enemyForcesController;
+        private readonly GeneralGameEventsController _generalGameEventsController;
 
         public GameController(CurrentState currentState, Canvas mainUICanvas)
         {
@@ -42,6 +44,9 @@ namespace Gameplay
 
             _enemyForcesController = new(_playerController, _spaceController.GetEnemySpawnPoints());
             AddController(_enemyForcesController);
+
+            _generalGameEventsController = new(_playerController);
+            AddController(_generalGameEventsController);
         }
 
         private void OnPlayerDestroyed()

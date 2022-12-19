@@ -1,5 +1,4 @@
 using Abstracts;
-using Gameplay.Enemy;
 using UI.Game;
 using UnityEngine;
 using Utilities.Reactive.SubscriptionProperty;
@@ -18,7 +17,7 @@ namespace Gameplay.Health
 
         private readonly SubscribedProperty<bool> _isVisible = new();
 
-        public EnemyHealthUIController(HealthController healthController, EnemyView view)
+        public EnemyHealthUIController(HealthController healthController, UnitView view)
         {
             _camera = UnityEngine.Camera.main;
             _enemyStatusBarView = healthController.StatusBarView;

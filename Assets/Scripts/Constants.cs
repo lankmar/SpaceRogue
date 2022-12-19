@@ -35,6 +35,13 @@ public static class Constants
 
             public static readonly string BackgroundConfig = Path.Combine(BACKGROUND, nameof(BackgroundConfig));
         }
+        
+        public record GameEvent
+        {
+            private static readonly string GAMEEVENT = Path.Combine(CONFIGS, nameof(GameEvent));
+
+            public static readonly string GeneralGameEventConfig = Path.Combine(GAMEEVENT, nameof(GeneralGameEventConfig));
+        }
     }
 
     public record Prefabs
@@ -88,6 +95,7 @@ public static class Constants
                 public static readonly string DestroyPlayerCanvas = Path.Combine(GAME, nameof(DestroyPlayerCanvas));
                 public static readonly string EnemyHealthStatusBarCanvas = Path.Combine(GAME, nameof(EnemyHealthStatusBarCanvas));
                 public static readonly string EnemyHealthShieldStatusBarCanvas = Path.Combine(GAME, nameof(EnemyHealthShieldStatusBarCanvas));
+                public static readonly string GameEventIndicatorCanvas = Path.Combine(GAME, nameof(GameEventIndicatorCanvas));
             }
         }
     }

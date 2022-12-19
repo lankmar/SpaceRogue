@@ -1,3 +1,4 @@
+using Abstracts;
 using Scriptables.Modules;
 using UnityEngine;
 using Utilities.Mathematics;
@@ -9,7 +10,7 @@ namespace Gameplay.Shooting
     {
         private readonly ShotgunWeaponConfig _weaponConfig;
 
-        public FrontalShotgunController(TurretModuleConfig config, Transform gunPointParentTransform) : base(config, gunPointParentTransform)
+        public FrontalShotgunController(TurretModuleConfig config, Transform gunPointParentTransform, UnitType unitType) : base(config, gunPointParentTransform, unitType)
         {
             var shotgunConfig = config.SpecificWeapon as ShotgunWeaponConfig;
             _weaponConfig = shotgunConfig 
