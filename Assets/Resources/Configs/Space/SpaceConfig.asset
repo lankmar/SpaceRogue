@@ -21,10 +21,10 @@ MonoBehaviour:
   <OuterBorder>k__BackingField: 3
   <InnerBorder>k__BackingField: 12
   <SmoothMapType>k__BackingField: 0
-  <FactorSmooth>k__BackingField: 4
+  <FactorSmooth>k__BackingField: 8
   <RandomType>k__BackingField: 0
-  <Chance>k__BackingField: 0.475
+  <Chance>k__BackingField: 0.43
   <StarCount>k__BackingField: 20
   <AutoRadius>k__BackingField: 0
   <ManualRadius>k__BackingField: 5
-  <ObstacleForce>k__BackingField: 1.5
+  <ObstacleForce>k__BackingField: 2

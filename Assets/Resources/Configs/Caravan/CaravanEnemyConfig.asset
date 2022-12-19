@@ -24,12 +24,12 @@ MonoBehaviour:
   - <Weight>k__BackingField: 1
     <Config>k__BackingField: {fileID: 11400000, guid: 2119194d33f8cca4c8da01621327d8e0, type: 2}
   <Movement>k__BackingField:
-    maximumSpeed: 10
-    maximumBackwardSpeed: 5
+    maximumSpeed: 20
+    maximumBackwardSpeed: 8
     accelerationTime: 0.5
-    stoppingSpeed: 2
-    startingTurnSpeed: 3
-    maximumTurnSpeed: 5
+    stoppingSpeed: 4
+    startingTurnSpeed: 5
+    maximumTurnSpeed: 15
     turnAccelerationTime: 0.2
   <Behaviour>k__BackingField:
     <StartEnemyState>k__BackingField: 3

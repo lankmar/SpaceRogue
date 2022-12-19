@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaximumHealth>k__BackingField: 50
   <StartingHealth>k__BackingField: 50
-  <HealthRegen>k__BackingField: 1
+  <HealthRegen>k__BackingField: 0
   <DamageImmunityFrameDuration>k__BackingField: 0
