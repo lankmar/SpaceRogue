@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564988c9a66db3248b3bcd03906d6578, type: 3}
   m_Name: CaravanConfig
   m_EditorClassIdentifier: 
-  <CaravanView>k__BackingField: {fileID: 7769291358818104117, guid: 5a660bdf24014e54395bc7dcf298c0d6, type: 3}
+  <CaravanView>k__BackingField: {fileID: -9105522871961982859, guid: ab210e69498e4e54f8688cf31a4c6cff, type: 3}
   <Movement>k__BackingField:
     maximumSpeed: 8
     maximumBackwardSpeed: 5
