@@ -26,8 +26,8 @@ MonoBehaviour:
   <Movement>k__BackingField:
     maximumSpeed: 20
     maximumBackwardSpeed: 8
-    accelerationTime: 1
-    stoppingSpeed: 4
+    accelerationTime: 4
+    stoppingSpeed: 0.1
     startingTurnSpeed: 5
     maximumTurnSpeed: 15
     turnAccelerationTime: 3
