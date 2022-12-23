@@ -35,7 +35,6 @@ public static class Constants
 
             public static readonly string AsteroidSpawnConfig = Path.Combine(ASTEROID, nameof(AsteroidSpawnConfig));
         }
-
     }
 
     public record Prefabs
@@ -79,6 +78,13 @@ public static class Constants
                 public static readonly string SpeedometerCanvas = Path.Combine(GAME, nameof(SpeedometerCanvas));
                 public static readonly string DestroyPlayerCanvas = Path.Combine(GAME, nameof(DestroyPlayerCanvas));
             }
+        }
+
+        public record AsteroidExplosion
+        {
+            private static readonly string GAMEPLAY = Path.Combine(PREFABS, nameof(Gameplay));
+
+            public static readonly string Explosion = Path.Combine(GAMEPLAY, nameof(Explosion));
         }
     }
 }

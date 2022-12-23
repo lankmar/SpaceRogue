@@ -1,44 +1,50 @@
-using Asteroid;
 using Gameplay.Damage;
 using Gameplay.Player;
 using UnityEngine;
-using Utilities.Reactive.SubscriptionProperty;
 
-namespace Gameplay.Asteroid.Behaviour 
+namespace Gameplay.Asteroid.Behaviour
 {
     public class AsteroidLinearMotion : AsteroidBehaviour
     {
         private Vector3 _derection;
+        private Vector2 _derection2d;
+
         private Vector3 _playerPosition;
         private float _playerDetectionRadius = 150;
         private float _speed = 10;
         Transform _asteroidTransform;
         IDamagingView _damagingView;
+        private int _spawnOffset = 5;
 
-        public AsteroidLinearMotion(
-            SubscribedProperty<AsteroidMoveType> moveType,
-            AsteroidView view,
+        public AsteroidLinearMotion(AsteroidView view,
             PlayerView playerView,
-            AsteroidBehaviourConfig config) : base(moveType, view, playerView, config)
+            AsteroidBehaviourConfig config) : base(view, playerView, config)
         {
             _playerPosition = playerView.GetComponent<Transform>().transform.position;
+
             _asteroidTransform = view.GetComponent<Transform>();
             _derection = _playerPosition - _asteroidTransform.position;
-            _derection.x = _derection.x + Random.Range(-10,10);
-            _derection.z = _playerPosition.z + Random.Range(-10,10);
+            _derection.x = _derection.x + Random.Range(-_spawnOffset, _spawnOffset);
+            _derection.y = _derection.y + Random.Range(-_spawnOffset, _spawnOffset);
+            _derection2d = new Vector2(_derection.x, _derection.y);
+
             _damagingView = view;
-            _speed = config.AsteroidSpeed/100;
+            _speed = config.AsteroidSpeed/10;
+
+            EntryPoint.SubscribeToUpdate(Move);
+            EntryPoint.SubscribeToUpdate(DetectPlayer);
         }
 
-        protected override void OnUpdate()
+        protected override void OnDispose()
         {
-            DetectPlayer();
-            Move();
+            View.CollisionEnter -= Dispose;
+            EntryPoint.UnsubscribeFromUpdate(Move);
+            EntryPoint.UnsubscribeFromUpdate(DetectPlayer);
         }
 
-        private void Move()
+        private void Move(float deltaTime)
         {
-            _asteroidTransform.position += new Vector3(_derection.x * _speed *Time.deltaTime, _derection.y * _speed * Time.deltaTime, _derection.z * _speed * Time.deltaTime); 
+            View.GetComponent<Rigidbody2D>().AddForce(_derection2d * _speed * Time.deltaTime, ForceMode2D.Force);
         }
 
         private void DetectPlayer()
@@ -46,7 +52,6 @@ namespace Gameplay.Asteroid.Behaviour
             if (Vector3.Distance(View.transform.position, PlayerView.transform.position) > _playerDetectionRadius)
             {
                 View.TakeDamage(_damagingView);
-                Debug.Log("Destroi Asteroid");
             }
         }
     }
