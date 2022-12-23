@@ -30,9 +30,7 @@ namespace Gameplay.Asteroid.Behaviour
 
                 default: return;
             }
-
         }
-
 
         protected override void OnDispose()
         {

@@ -1,4 +1,5 @@
 using Abstracts;
+using Asteroid;
 using Gameplay.Asteroid.Behaviour;
 using Gameplay.Damage;
 using Gameplay.Health;
@@ -15,13 +16,16 @@ namespace Gameplay.Asteroid
         private readonly PlayerView _playerView;
         private readonly AsteroidBehaviourController _behaviourController;
         private readonly HealthController _healthController;
+        private readonly AsteroidExplosionController _asteroidExplosionController;
+        private readonly CloudAsteroidsSpawnController _cloudAsteroidsSpawnController;
 
-        public AsteroidController(AsteroidConfig config, AsteroidView view, PlayerView playerView)
+        public AsteroidController(AsteroidConfig config, AsteroidView view, PlayerView playerView, AsteroidExplosionController asteroidExplosionController)
         {
             _config = config;
             _view = view;
             AddGameObject(_view.gameObject);
             _playerView = playerView;
+            _asteroidExplosionController = asteroidExplosionController;
 
             var damageModel = new DamageModel(config.DamageAmount);
             _view.Init(damageModel);
@@ -31,8 +35,18 @@ namespace Gameplay.Asteroid
             AddHealthController(_config.Health);
         }
 
+        public AsteroidController(AsteroidConfig config, AsteroidView view, PlayerView playerView, AsteroidExplosionController asteroidExplosionController, CloudAsteroidsSpawnController cloudAsteroidsSpawnController) : this(config, view, playerView, asteroidExplosionController)
+        {
+            _cloudAsteroidsSpawnController = cloudAsteroidsSpawnController;
+        }
+
         protected override void OnDispose()
         {
+            _asteroidExplosionController.AsteroidDestructionView.PlayExplosion(_view.transform.position);
+            if (_config.AsteroidSizeType == AsteroidSizeType.Big | _config.AsteroidSizeType == AsteroidSizeType.Middle)
+            {
+                _cloudAsteroidsSpawnController.CloudAsteroidsSpawn(_view.transform.position);
+            }
             _view.TakeDamage(_view);
             _view.CollisionEnter -= Dispose;
         }

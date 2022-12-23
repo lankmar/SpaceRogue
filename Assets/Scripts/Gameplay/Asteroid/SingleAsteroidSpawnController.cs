@@ -1,6 +1,5 @@
 using Abstracts;
 using UnityEngine;
-using Utilities.ResourceManagement;
 using Gameplay.Player;
 using Utilities.Unity;
 using Scriptables.Asteroid;
@@ -10,20 +9,24 @@ namespace Gameplay.Asteroid
 {
     public class SingleAsteroidSpawnController : BaseController
     {
-        private readonly ResourcePath _groupSpawnConfigPath = new(Constants.Configs.Asteroid.AsteroidSpawnConfig);
         private AsteroidFactory _asteroidFactory;
         int _spawnCircleRadius = 50;
-        PlayerView _playerView;
         private float _currentAsteroidSpawnTime = 1;
-        AsteroidSpawnConfig _asteroidSpawnConfig;
         private AsteroidSpawnConfig _spawnConfig;
         private float _spawnOffset = 30;
+        private readonly AsteroidSpawnConfig _asteroidSpawnConfig;
+        private readonly PlayerView _playerView;
+        private readonly AsteroidExplosionController _asteroidExplosionController;
+        private readonly CloudAsteroidsSpawnController _cloudAsteroidsSpawnController;
 
-        public SingleAsteroidSpawnController(PlayerView playerView, AsteroidSpawnConfig asteroidSpawnConfig)
+        public SingleAsteroidSpawnController(PlayerView playerView, AsteroidSpawnConfig asteroidSpawnConfig, AsteroidExplosionController asteroidExplosionController, CloudAsteroidsSpawnController cloudAsteroidsSpawnController)
         {
             _playerView = playerView;
             _asteroidSpawnConfig = asteroidSpawnConfig;
-            _spawnConfig = ResourceLoader.LoadObject<AsteroidSpawnConfig>(_groupSpawnConfigPath);
+            _spawnConfig = asteroidSpawnConfig;
+            _asteroidExplosionController = asteroidExplosionController;
+            _cloudAsteroidsSpawnController = cloudAsteroidsSpawnController;
+
             if (_spawnConfig.SingleAsteroid.Count != 0 && _spawnConfig.FastAsteroid.Count != 0)
             {
                 EntryPoint.SubscribeToUpdate(OnUpdate);
@@ -56,8 +59,9 @@ namespace Gameplay.Asteroid
 
             var unitSpawnPoint = GetEmptySpawnPoint(_playerView.gameObject.transform.position, unitSize, _spawnCircleRadius);
 
-                var asteroidController = _asteroidFactory.CreateAsteroid(unitSpawnPoint,_playerView);
-                AddController(asteroidController);
+            var asteroidController = _asteroidFactory.CreateAsteroid(unitSpawnPoint,_playerView, _asteroidExplosionController, _cloudAsteroidsSpawnController);
+           
+            AddController(asteroidController);
             
         }
 

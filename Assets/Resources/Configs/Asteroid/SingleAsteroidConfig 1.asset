@@ -16,8 +16,12 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: 10c95f1d3116c314fbc1e1753c78950f, type: 3}
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
   <DamageAmount>k__BackingField: 30
+  <AsteroidSizeType>k__BackingField: 0
+  <MinimumSize>k__BackingField: 6
+  <MaximumSize>k__BackingField: 8
   <AsteroidMoveType>k__BackingField: 2
   <Behaviour>k__BackingField:
     <AsteroidSpeed>k__BackingField: 1
     <PlayerDetectionRadius>k__BackingField: 150
   <IsDestroyedOnHit>k__BackingField: 1
+  <AsteroidDestructionView>k__BackingField: {fileID: 5767000743481137879, guid: f9634004e24decf4cb5738f286280e45, type: 3}

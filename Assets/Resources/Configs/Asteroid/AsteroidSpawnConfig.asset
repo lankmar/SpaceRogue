@@ -24,8 +24,9 @@ MonoBehaviour:
   <AsteroidClouds>k__BackingField:
   - {fileID: 11400000, guid: 6673ffd7661144b4cbdb23a06b5e1109, type: 2}
   - {fileID: 11400000, guid: 2b8b5f2f33462074daf04f70005e7e71, type: 2}
-  <AsteroidCloudsSpawnPoints>k__BackingField:
+  <AsteroidCloudsSpawnConfig>k__BackingField:
   - <GroupSpawnPoint>k__BackingField: {x: 0, y: 0, z: 0}
-    <GroupCount>k__BackingField: 5
-  - <GroupSpawnPoint>k__BackingField: {x: 150, y: 0, z: 200}
-    <GroupCount>k__BackingField: 13
+    <GroupCount>k__BackingField: 30
+    <CloudAsteroidType>k__BackingField: 0
+    <MinimumRadius>k__BackingField: 30
+    <MaximumRadius>k__BackingField: 30

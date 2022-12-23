@@ -1,17 +1,13 @@
 using Gameplay.Player;
-using UnityEngine;
-using Utilities.Reactive.SubscriptionProperty;
-using Asteroid;
 
 namespace Gameplay.Asteroid.Behaviour
 {
-    public class AsteroidBehaviour : MonoBehaviour
+    public class AsteroidBehaviour
     {
         protected readonly AsteroidView View;
         protected readonly PlayerView PlayerView;
         protected readonly AsteroidBehaviourConfig Config;
 
-        private readonly SubscribedProperty<AsteroidMoveType> _moveType;
         private bool _isDisposed;
         public void Dispose()
         {

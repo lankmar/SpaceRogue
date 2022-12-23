@@ -4,6 +4,19 @@ namespace Asteroid
     {
         Static = 0,
         OrbitalMotion,
-        LinearMotion,
+        LinearMotion
+    }
+
+    public enum CloudAsteroidType
+    {
+        SmallCloud = 0,
+        BigCloud
+    }
+
+    public enum AsteroidSizeType
+    { 
+        Small = 0,
+        Middle,
+        Big
     }
 }

@@ -1,10 +1,6 @@
-using Asteroid;
 using Gameplay.Damage;
 using Gameplay.Player;
-using Scriptables.Asteroid;
 using UnityEngine;
-using Utilities.Reactive.SubscriptionProperty;
-using Utilities.ResourceManagement;
 
 namespace Gameplay.Asteroid.Behaviour
 {
@@ -33,8 +29,7 @@ namespace Gameplay.Asteroid.Behaviour
             _derection2d = new Vector2(_derection.x, _derection.y);
 
             _damagingView = view;
-            _speed = config.AsteroidSpeed / 100;
-
+            _speed = config.AsteroidSpeed/10;
 
             EntryPoint.SubscribeToUpdate(Move);
             EntryPoint.SubscribeToUpdate(DetectPlayer);
@@ -49,7 +44,7 @@ namespace Gameplay.Asteroid.Behaviour
 
         private void Move(float deltaTime)
         {
-            View.GetComponent<Rigidbody2D>().AddForce(_derection2d * _speed, ForceMode2D.Force);
+            View.GetComponent<Rigidbody2D>().AddForce(_derection2d * _speed * Time.deltaTime, ForceMode2D.Force);
         }
 
         private void DetectPlayer()
