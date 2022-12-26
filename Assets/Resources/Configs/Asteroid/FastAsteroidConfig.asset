@@ -16,7 +16,7 @@ MonoBehaviour:
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: fca845bd830ceef46bff748314154207, type: 3}
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
   <DamageAmount>k__BackingField: 30
-  <AsteroidSizeType>k__BackingField: 0
+  <AsteroidSizeType>k__BackingField: 1
   <MinimumSize>k__BackingField: 2
   <MaximumSize>k__BackingField: 5
   <AsteroidMoveType>k__BackingField: 2

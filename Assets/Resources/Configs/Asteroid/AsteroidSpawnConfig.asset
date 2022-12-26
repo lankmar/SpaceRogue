@@ -19,14 +19,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 461738dae2e7fde4f820b3cd3e0e9c3e, type: 2}
   - {fileID: 11400000, guid: 1b12a8f7205478446abc5b0447a0d42b, type: 2}
   <SpawnOffset>k__BackingField: 40
-  <MinTimeAsteroidSpawn>k__BackingField: 0
-  <MaxTimeAsteroidSpawn>k__BackingField: 1
+  <MinTimeAsteroidSpawn>k__BackingField: 1
+  <MaxTimeAsteroidSpawn>k__BackingField: 2
+  <SmallCloudConfig>k__BackingField:
+    <MinimumCount>k__BackingField: 1
+    <MaximumCount>k__BackingField: 4
+    <MinimumRadius>k__BackingField: 3
+    <MaximumRadius>k__BackingField: 5
   <AsteroidClouds>k__BackingField:
   - {fileID: 11400000, guid: 6673ffd7661144b4cbdb23a06b5e1109, type: 2}
   - {fileID: 11400000, guid: 2b8b5f2f33462074daf04f70005e7e71, type: 2}
   <AsteroidCloudsSpawnConfig>k__BackingField:
   - <GroupSpawnPoint>k__BackingField: {x: 0, y: 0, z: 0}
-    <GroupCount>k__BackingField: 30
-    <CloudAsteroidType>k__BackingField: 0
-    <MinimumRadius>k__BackingField: 30
+    <GroupCount>k__BackingField: 10
+    <CloudAsteroidType>k__BackingField: 1
+    <MinimumRadius>k__BackingField: 15
     <MaximumRadius>k__BackingField: 30
